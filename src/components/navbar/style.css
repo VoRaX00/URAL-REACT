@@ -1,0 +1,17 @@
+img{
+    max-width: 30px;
+    max-height: 30px;
+}
+
+nav{
+    background-color: #217C6F;
+}
+
+.navbar-dark .navbar-nav .nav-link{
+    text-transform: uppercase;
+}
+
+.navbar-nav .dropdown-menu{
+    right: 0;
+    left: auto;
+}
