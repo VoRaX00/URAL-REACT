@@ -1,0 +1,5 @@
+.register-form {
+  width: 100%;
+  max-width: 400px; /* Максимальная ширина формы */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для формы */
+}

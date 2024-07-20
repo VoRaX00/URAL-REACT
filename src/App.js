@@ -8,6 +8,7 @@ import MainPage from "./pages/Main";
 import CarsPage from "./pages/Cars";
 import CargoPage from "./pages/Cargo";
 import Login from "./pages/Login";
+import Registration from "./pages/Registration";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<MainPage/>}/>
                     <Route path="/login" element={<Login/>}/>
+                    <Route path="/registration" element={<Registration/>}/>
                     <Route path="/cars" element={<CarsPage/>}/>
                     <Route path="/cargo" element={<CargoPage/>}/>
                 </Routes>
