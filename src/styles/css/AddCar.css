@@ -1,0 +1,35 @@
+.car__phone{
+    max-width: 200px
+}
+
+.custom-select .select__control {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.custom-select .select__control--is-focused {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.custom-select .select__menu {
+  z-index: 100;
+}
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-text {
+  font-size: 0.875rem;
+}
+
+.label-row-min, .label-row {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}

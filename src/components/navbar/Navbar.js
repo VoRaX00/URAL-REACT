@@ -4,6 +4,8 @@ import "./../../styles/css/style.css"
 import "./style.css"
 import CustomDropdown from "../dropdown/Dropdown";
 
+import {NavLink} from "react-router-dom";
+
 const options = [
   { value: 'Мои уведомления', label: 'Мои уведомления', url: '/notifications' },
   { value: 'Мои отклики', label: 'Мои отклики', url: '/responses' },
@@ -25,7 +27,8 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg- top-menu">
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Главная страница</a>
+                            <NavLink className="nav-link" activeClassName="active" to="/"></NavLink>
+                            {/*<a className="nav-link" href="#">Главная страница</a>*/}
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="#">Найти машину</a>

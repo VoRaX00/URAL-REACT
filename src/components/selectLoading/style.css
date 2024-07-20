@@ -1,0 +1,39 @@
+/* style.css */
+.multi-select .select__control {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  box-shadow: none;
+  padding: 0.5rem;
+}
+
+.multi-select .select__menu {
+  margin-top: 0;
+  border-radius: 0.25rem;
+}
+
+.multi-select .select__multi-value {
+  background-color: #e9ecef;
+  border-radius: 0.25rem;
+}
+
+.multi-select .select__multi-value__label {
+  padding: 0.25rem;
+}
+
+.multi-select .select__multi-value__remove {
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.multi-select .select__option {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.multi-select .select__option--is-focused {
+  background-color: #f0f0f0;
+}
+
+.multi-select .select__option--is-selected {
+  background-color: #d4edda;
+}

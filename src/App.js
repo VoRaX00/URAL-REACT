@@ -9,6 +9,7 @@ import CarsPage from "./pages/Cars";
 import CargoPage from "./pages/Cargo";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
+import AddCar from "./pages/AddCar";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                     <Route path="/registration" element={<Registration/>}/>
                     <Route path="/cars" element={<CarsPage/>}/>
                     <Route path="/cargo" element={<CargoPage/>}/>
+                    <Route path="/addCar" element={<AddCar/>}/>
                 </Routes>
                 <Footer />
             </Router>
