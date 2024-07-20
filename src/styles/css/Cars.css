@@ -1,0 +1,15 @@
+.btn{
+    background-color: #217C6F;
+}
+
+.m32{
+    max-width: 32rem;
+}
+
+.car-info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Центрирование контейнеров */
+  gap: 1%; /* Пространство между контейнерами */
+  width: 100%;
+}
