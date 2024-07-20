@@ -1,12 +1,8 @@
-.btn{
-    background-color: #217C6F;
-}
-
-.cars__container{
+.cargo__container{
     max-width: 32rem;
 }
 
-.cars__car-info-grid {
+.cargo__cargo-info-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center; /* Центрирование контейнеров */
@@ -15,18 +11,18 @@
 }
 
 /* Стиль контейнера поиска */
-.cars__search-container {
+.cargo__search-container {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
   transition: box-shadow 0.3s ease;
 }
 
-.cars__search-container:hover {
+.cargo__search-container:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-.cars__search-input {
+.cargo__search-input {
   border: none;
   border-radius: 8px 0 0 8px;
   padding: 15px;
@@ -34,7 +30,7 @@
   box-shadow: none;
 }
 
-.cars__search-btn {
+.cargo__search-btn {
   background-color: #217C6F;
   border: none;
   border-radius: 0 8px 8px 0;
@@ -44,12 +40,12 @@
   transition: background-color 0.3s ease;
 }
 
-.cars__search-btn:hover {
+.cargo__search-btn:hover {
   background-color: #1a5a51;
 }
 
-.cars__search-input:focus,
-.cars__search-btn:focus {
+.cargo__search-input:focus,
+.cargo__search-btn:focus {
   box-shadow: none;
   outline: none;
 }
