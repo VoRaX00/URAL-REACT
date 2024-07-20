@@ -1,0 +1,30 @@
+/* Обертка для формы входа */
+.login-form {
+  width: 100%;
+  max-width: 400px; /* Максимальная ширина формы */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень для формы */
+}
+
+/* Выравнивание текста внутри формы */
+.form-text {
+  font-size: 14px; /* Размер текста */
+}
+
+/* Стили для ссылки регистрации */
+.register-link {
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
+
+/* Стили для теней */
+.shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
+}
