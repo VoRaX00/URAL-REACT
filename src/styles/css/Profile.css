@@ -1,0 +1,140 @@
+/* Profile.css */
+#content {
+    padding: 20px;
+}
+
+.page-heading {
+    margin-bottom: 20px;
+}
+
+.media {
+    display: flex;
+    align-items: center;
+}
+
+.media-left.pr30 {
+    padding-right: 30px;
+}
+
+.media-object.profile__media-object {
+    max-width: 150px;
+    border-radius: 50%;
+}
+
+.media-body.va-m {
+    display: flex;
+    flex-direction: column;
+}
+
+.media-heading {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.profile__btn{
+    color:white;
+}
+
+.btn-dark {
+    background-color: #343a40;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-dark:hover {
+    background-color: #23272b;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.col-md-4, .col-md-8 {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.panel {
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+.panel-icon {
+    margin-right: 10px;
+}
+
+.panel-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+.form-text-contact {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.tab-block {
+    background: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.profile__tab-content {
+    background: #fff;
+    border-radius: 5px;
+    padding: 30px;
+}
+
+.cargo__container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.cargo__cargo-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 767.98px) {
+    .media {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .media-left.pr30 {
+        padding-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .col-md-4, .col-md-8 {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .profile__tab-content {
+        padding: 20px;
+    }
+}

@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import AddCar from "./pages/AddCar";
 import AddCargo from "./pages/AddCargo";
+import Profile from "./pages/Profile";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/cargo" element={<CargoPage/>}/>
                     <Route path="/add-car" element={<AddCar/>}/>
                     <Route path="/add-cargo" element={<AddCargo/>}/>
+                    <Route path="/profile" element={<Profile/>}/>
                 </Routes>
                 <Footer />
             </Router>
