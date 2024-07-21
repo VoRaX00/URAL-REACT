@@ -35,30 +35,29 @@
     color:white;
 }
 
-.btn-dark {
-    background-color: #343a40;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+/*.btn-dark {*/
+/*    color: white;*/
+/*    border: none;*/
+/*    padding: 10px 20px;*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.3s ease;*/
+/*}*/
 
-.btn-dark:hover {
-    background-color: #23272b;
-}
+/*.btn-dark:hover {*/
+/*    background-color: #23272b;*/
+/*}*/
 
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-}
+/*.row {*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    margin-right: -15px;*/
+/*    margin-left: -15px;*/
+/*}*/
 
-.col-md-4, .col-md-8 {
-    padding-right: 15px;
-    padding-left: 15px;
-}
+/*.col-md-4, .col-md-8 {*/
+/*    padding-right: 15px;*/
+/*    padding-left: 15px;*/
+/*}*/
 
 .panel {
     background: #fff;
@@ -103,12 +102,6 @@
     background: #fff;
     border-radius: 5px;
     padding: 30px;
-}
-
-.cargo__container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
 }
 
 .cargo__cargo-info-grid {

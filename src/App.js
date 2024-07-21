@@ -12,6 +12,7 @@ import Registration from "./pages/Registration";
 import AddCar from "./pages/AddCar";
 import AddCargo from "./pages/AddCargo";
 import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/add-car" element={<AddCar/>}/>
                     <Route path="/add-cargo" element={<AddCargo/>}/>
                     <Route path="/profile" element={<Profile/>}/>
+                    <Route path="/edit-profile" element={<EditProfile/>}/>
                 </Routes>
                 <Footer />
             </Router>
