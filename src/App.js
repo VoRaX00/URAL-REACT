@@ -10,6 +10,7 @@ import CargoPage from "./pages/Cargo";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import AddCar from "./pages/AddCar";
+import AddCargo from "./pages/AddCargo";
 
 
 function App() {
@@ -17,14 +18,14 @@ function App() {
         <div className="App">
             <Router>
                 <Navbar />
-
                 <Routes>
                     <Route path="/" element={<MainPage/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/registration" element={<Registration/>}/>
                     <Route path="/cars" element={<CarsPage/>}/>
                     <Route path="/cargo" element={<CargoPage/>}/>
-                    <Route path="/addCar" element={<AddCar/>}/>
+                    <Route path="/add-car" element={<AddCar/>}/>
+                    <Route path="/add-cargo" element={<AddCargo/>}/>
                 </Routes>
                 <Footer />
             </Router>

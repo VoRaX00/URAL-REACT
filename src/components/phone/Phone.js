@@ -19,7 +19,7 @@ const Phone = ({ value, onChange }) => {
 
   return (
     <div className="phone-input">
-      <label className="form-text" htmlFor="phone">Телефон:</label>
+      <label className="carAdd__form-text" htmlFor="phone">Телефон:</label>
       <input
         type="tel"
         className="form-control"
