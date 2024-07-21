@@ -13,6 +13,9 @@ import AddCar from "./pages/AddCar";
 import AddCargo from "./pages/AddCargo";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
+import Notifications from "./pages/Notifications";
+import Match from "./pages/Match";
+import Responses from "./pages/Responses";
 
 
 function App() {
@@ -30,6 +33,9 @@ function App() {
                     <Route path="/add-cargo" element={<AddCargo/>}/>
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/edit-profile" element={<EditProfile/>}/>
+                    <Route path="/notifications" element={<Notifications/>}/>
+                    <Route path="/responses" element={<Responses/>}/>
+                    <Route path="/match" element={<Match/>}/>
                 </Routes>
                 <Footer />
             </Router>

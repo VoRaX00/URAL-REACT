@@ -1,0 +1,50 @@
+.notifications__container{
+    max-width: 32rem;
+}
+
+.notifications__notifications-info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Центрирование контейнеров */
+  gap: 1%; /* Пространство между контейнерами */
+  width: 100%;
+}
+
+/* Стиль контейнера поиска */
+.notifications__search-container {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.notifications__search-container:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.notifications__search-input {
+    border: none;
+    border-radius: 8px 0 0 8px;
+    padding: 15px;
+    font-size: 16px;
+    box-shadow: none;
+}
+
+.notifications__search-btn {
+    background-color: #217C6F;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.notifications__search-btn:hover {
+  background-color: #1a5a51;
+}
+
+.notifications__search-input:focus, .notifications__search-btn:focus {
+  box-shadow: none;
+  outline: none;
+}
