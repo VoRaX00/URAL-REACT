@@ -132,7 +132,7 @@ const AddCar = (props: {userPhone: BigInteger}) => {
                             onChange={e => setReadyFrom(e.target.value)}/>
                     </div>
                     <div className="col">
-                        <label className="carAdd__form-text" htmlFor="readyTo">Готов к загрузке до:</label>
+                        <label className="carAdd__form-text" htmlFor="readyTo">Готов к разгрузке:</label>
                         <input type="date" min={toDate} className="form-control" id="readyTo" name="readyTo" required
                             onChange={e => setReadyTo(e.target.value)}/>
                     </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './style.css';
 
-const Car = ({ car }) => {
+const Car = ({car}) => {
     const [activeTab, setActiveTab] = useState('info');
 
     return (
@@ -16,14 +16,34 @@ const Car = ({ car }) => {
             </div>
             {activeTab === 'info' ? (
                 <div className="tab-content">
-                <h3>{car.name}</h3>
-                <p>Модель: {car.model}</p>
-                <p>Год: {car.year}</p>
-                <p>Цена: {car.price}</p>
+                    <h3>{car.name}</h3>
+                    <div>
+                        <h3>Тип кузова:</h3>
+                        <ul>
+                            {car.bodyTypes.map((bodyType) => (
+                                <li key={bodyType.id}>{bodyType.name}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Тип разгрузки:</h3>
+                        <ul>
+                            {car.loadingTypes.map((loadingType) => (
+                                <li key={loadingType.id}>{loadingType.name}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    <p>Вместимость: {car.capacity}</p>
+                    <p>Объем: {car.volume}</p>
+                    <p>Ширина: {car.length}</p>
+                    <p>Высота: {car.height}</p>
+                    <p>Откуда: {car.whereFrom} Куда: {car.whereTo}</p>
+                    <p>Загрузка: {car.whereFrom} Разгрузка: {car.whereTo}</p>
+                    <p>Телефон: {car.phone}</p>
                 </div>
             ) : (
                 <div className="tab-content-comment">
-                  <h5>{car.comment}</h5>
+                    <h5>{car.comment}</h5>
                 </div>
             )}
         </div>

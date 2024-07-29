@@ -1,6 +1,7 @@
 import "./../styles/css/Cargo.css"
 import CargoInfo from "../components/cargo/Cargo";
-import React, {SyntheticEvent} from "react";
+import React, {SyntheticEvent, useEffect, useState} from "react";
+import axios from "axios";
 
 const cargoData = [
   { name: 'Cargo 1', weight: 10, year: 2020, price: '$20,000', comment: 'Комментарий'},
@@ -10,25 +11,37 @@ const cargoData = [
 ];
 
 const Cargo = () => {
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const [redirect, setRedirect] = React.useState(false);
+    const [name, setName] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(8);
+    const [cargo, setCargo] = useState([]);
 
-    const response = async (e: SyntheticEvent) => {
-        e.preventDefault()
-
-        const response = await fetch("http://localhost:5036/api/login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            credentials: 'include',
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            })
-        });
-
-        const content = await response.json();
+    const getAllCargo = async () => {
+        const response = await axios.get("http://localhost:5036/api/Cargo/GetAll")
+        setCargo(response.data);
     }
+
+    const submit = async (e: SyntheticEvent) => {
+        try{
+            let response;
+            if(name !== ''){
+                response = await axios.get("http://localhost:5036/api/Car/GetByName", {
+                    params: {
+                        name: name,
+                        page: currentPage,
+                    }
+                })
+                setCargo(response.data);
+            }
+            else {
+                await getAllCargo()
+            }
+        } catch (error) {
+            console.log('Error getting cargo', error);
+        }
+    }
+
+    useEffect(getAllCargo, []);
 
     return (
         <>
@@ -37,7 +50,7 @@ const Cargo = () => {
                 <div className="container cargo__container cargo__search-from form-margin">
                     <div className="row justify-content-center">
                         <div className="col-md-8">
-                            <form action="#" method="post">
+                            <form action="#" method="post" onSubmit={submit}>
                                 <div className="input-group cargo__search-container">
                                     <input type="text" className="form-control cargo__search-input" name="search_input"
                                            id="search-input" placeholder="Поиск..."/>
@@ -51,9 +64,11 @@ const Cargo = () => {
                 </div>
 
                 <div className="container cargo__container cargo__cargo-info-grid">
-                    {cargoData.map((cargo, index) => (
-                        <CargoInfo key={index} cargo={cargo}/>
-                    ))}
+                    {cargo.length > 0 ? (cargo.map((c, index) => (
+                        <CargoInfo key={index} cargo={c}/>
+                    ))) : (
+                        <p>Загрузка...</p>
+                    )}
                 </div>
             </div>
         </>

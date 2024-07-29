@@ -45,10 +45,6 @@ const Cars = () => {
 
     useEffect(getAllCars, []);
 
-    // const lastPostIndex = currentPage * postsPerPage;
-    // const firstPostIndex = lastPostIndex - postsPerPage;
-
-
     return(
         <>
             <br/>
@@ -56,7 +52,7 @@ const Cars = () => {
                 <div className="container cars__container cars__search-from form-margin">
                     <div className="row justify-content-center">
                         <div className="col-md-8">
-                            <form action="#" method="post">
+                            <form action="#" method="post" onSubmit={submit}>
                                 <div className="input-group cars__search-container">
                                     <input type="text" className="form-control cars__search-input" name="search_input"
                                            id="search-input" placeholder="Поиск..."/>
@@ -71,9 +67,13 @@ const Cars = () => {
 
 
                 <div className="container cars__container cars__car-info-grid">
-                    {carData.map((car, index) => (
-                        <Car key={index} car={car}/>
-                    ))}
+                    {cars.length > 0 ? (
+                        cars.map((car, index) => (
+                            <Car key={index} car={car}/>
+                        ))
+                    ) : (
+                        <p>Загрузка...</p>
+                    )}
                 </div>
             </div>
             <Pagination
