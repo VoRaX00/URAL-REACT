@@ -2,6 +2,10 @@ import React from 'react';
 import './../styles/css/AddCargo.css';
 
 const AddCargo = () => {
+    const curr = new Date();
+    curr.setDate(curr.getDate());
+    const date = curr.toISOString().substring(0, 10);
+
     return (
         <div className="cargoAdd__container min-vh-100 d-flex justify-content-center align-items-center">
             <form className='card p-5 cargoAdd__form' action="#" method="post">
@@ -42,11 +46,11 @@ const AddCargo = () => {
                 <div className="mb-3 row">
                     <div className="col-md-6">
                         <label className="cargoAdd__form-text" htmlFor="loadingDate">Дата загрузки:</label>
-                        <input type="date" className="form-control" id="loadingDate" name="loadingDate" required />
+                        <input type="date" min={date} className="form-control" id="loadingDate" name="loadingDate" required />
                     </div>
                     <div className="col-md-6">
                         <label className="cargoAdd__form-text" htmlFor="unloadingDate">Дата разгрузки:</label>
-                        <input type="date" className="form-control" id="unloadingDate" name="unloadingDate" required />
+                        <input type="date" min={date} className="form-control" id="unloadingDate" name="unloadingDate" required />
                     </div>
                 </div>
                 <div className="mb-3">

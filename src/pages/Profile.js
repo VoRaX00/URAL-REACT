@@ -10,18 +10,32 @@ const cargoData = [
     { name: 'Cargo 4', weight: 40, year: 2022, price: '$25,000', comment: 'Комментарий'},
 ];
 
-const Profile = () => {
+const Profile = (props: {user: User, setUser: (user: User) => void}) => {
+    let image;
+    if (props.user.image === '') {
+        image = (
+            <a href="#">
+                <img className="media-object profile__media-object mw150" src={user} alt="connect"/>
+            </a>
+        )
+    }
+    else {
+        image = (
+            <a href="#">
+                <img className="media-object profile__media-object mw150" src={user} alt="connect"/>
+            </a>
+        )
+    }
+
     return (
         <section id="content" className="container">
             <div className="page-heading">
                 <div className="media">
                     <div className="media-left pr30">
-                        <a href="#">
-                            <img className="media-object profile__media-object mw150" src={user} alt="connect"/>
-                        </a>
+                        {image}
                     </div>
                     <div className="media-body va-m">
-                        <h2 className="media-heading">Username</h2>
+                        <h2 className="media-heading">{props.user.name}</h2>
                         <div className="media-body va-m">
                             <NavLink className="btn profile__btn" to={"/edit-profile"}>Редактировать профиль</NavLink>
                             <br/>
