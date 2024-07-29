@@ -1,5 +1,8 @@
 import "./../styles/css/Cars.css"
 import Car from "../components/сar/Car"
+import {SyntheticEvent, useEffect, useState} from "react";
+import axios, {get} from "axios";
+import Pagination from "../components/Pagination/Pagination";
 
 const carData = [
   { name: 'Car 1', model: 'Model A', year: 2020, price: '$20,000', comment: 'Комментарий'},
@@ -10,6 +13,40 @@ const carData = [
 
 
 const Cars = () => {
+    const [name, setName] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(8);
+    const [cars, setCars] = useState([]);
+
+    const getAllCars = async () => {
+        const response = await axios.get("http://localhost:5036/api/Car/GetAll")
+        setCars(response.data);
+    }
+
+    const submit = async (e: SyntheticEvent) => {
+        try{
+            let response;
+            if(name !== ''){
+                response = await axios.get("http://localhost:5036/api/Car/GetByName", {
+                    params: {
+                        name: name,
+                        page: currentPage,
+                    }
+                })
+                setCars(response.data);
+            }
+            else {
+                await getAllCars()
+            }
+        } catch (error) {
+            console.log('Error getting cars', error);
+        }
+    }
+
+    useEffect(getAllCars, []);
+
+    // const lastPostIndex = currentPage * postsPerPage;
+    // const firstPostIndex = lastPostIndex - postsPerPage;
 
 
     return(
@@ -39,6 +76,12 @@ const Cars = () => {
                     ))}
                 </div>
             </div>
+            <Pagination
+                totalPosts={cars.length}
+                posts={postsPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
         </>
     )
 }
