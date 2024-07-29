@@ -58,15 +58,15 @@ function App() {
                     <Route path="/" element={<MainPage/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/registration" element={<Registration/>}/>
-                    <Route path="/cars" element={<CarsPage/>}/>
-                    <Route path="/cargo" element={<CargoPage/>}/>
-                    <Route path="/add-car" element={<AddCar/>}/>
-                    <Route path="/add-cargo" element={<AddCargo/>}/>
-                    <Route  path="/profile" element={<Profile/>}/>
-                    <Route path="/edit-profile" element={<EditProfile/>}/>
-                    <Route path="/notifications" element={<Notifications/>}/>
-                    <Route path="/responses" element={<Responses/>}/>
-                    <Route path="/match" element={<Match/>}/>
+                    <Route userId={user.id} path="/cars" element={<CarsPage/>}/>
+                    <Route userId={user.id} path="/cargo" element={<CargoPage/>}/>
+                    <Route userPhone={user.phoneNumber} path="/add-car" element={<AddCar/>}/>
+                    <Route userPhone={user.phoneNumber} path="/add-cargo" element={<AddCargo/>}/>
+                    <Route user={user} path="/profile" element={<Profile/>}/>
+                    <Route user={user} path="/edit-profile" element={<EditProfile/>}/>
+                    <Route userId={user.id} path="/notifications" element={<Notifications/>}/>
+                    <Route userId={user.id} path="/responses" element={<Responses/>}/>
+                    <Route userId={user.id} path="/match" element={<Match/>}/>
                 </Routes>
                 <Footer />
             </Router>
