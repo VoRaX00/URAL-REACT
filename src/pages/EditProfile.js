@@ -7,10 +7,12 @@ const EditProfile = (props: {user: User => void}) => {
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        await fetch("http://localhost:5036/api/User/EditProfile", {
-            method: "POST",
+        await fetch("http://localhost:5036/api/User/Update", {
+            method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
+                id: props.user.id,
+                password: props.user.password,
                 userName: props.user.name,
                 email: props.user.email,
                 phoneNumber: props.user.phoneNumber,

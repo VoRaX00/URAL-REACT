@@ -16,10 +16,18 @@ const Cargo = ({cargo}) => {
             </div>
             {activeTab === 'info' ? (
                 <div className="tab-content">
-                <h3>{cargo.name}</h3>
-                <p>Вес: {cargo.weight}</p>
-                <p>Объем: {cargo.year}</p>
-                <p>Цена: {cargo.price}</p>
+                    <h3>{cargo.name}</h3>
+                    <p>Длина: {cargo.length}</p>
+                    <p>Ширина: {cargo.width}</p>
+                    <p>Высота: {cargo.height}</p>
+                    <p>Вес: {cargo.weight}</p>
+                    <p>Объем: {cargo.volume}</p>
+                    <p>Кол-во места в евро: {cargo.countPlace}</p>
+                    <p>Дата загрузки: {cargo.loadingDate}   Дата разгрузки: {cargo.unloadingDate}</p>
+                    {cargo.cash ? (<p>Цена наличными: {cargo.priceCash}</p>) : ""}
+                    {cargo.cashlessNds ? (<p>Цена безналичными с НДС: {cargo.priceCashNds}</p>) : ""}
+                    {cargo.cashlessWithoutNds ? (<p>Цена безналичными с НДС: {cargo.priceCashWithoutNds}</p>) : ""}
+                    {cargo.requestPrice ? (<p>Пользователь запрашивает цену</p>) : ""}
                 </div>
             ) : (
                 <div className="tab-content-comment">
