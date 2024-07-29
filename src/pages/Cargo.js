@@ -1,5 +1,6 @@
 import "./../styles/css/Cargo.css"
 import CargoInfo from "../components/cargo/Cargo";
+import React, {SyntheticEvent} from "react";
 
 const cargoData = [
   { name: 'Cargo 1', weight: 10, year: 2020, price: '$20,000', comment: 'Комментарий'},
@@ -9,6 +10,26 @@ const cargoData = [
 ];
 
 const Cargo = () => {
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [redirect, setRedirect] = React.useState(false);
+
+    const response = async (e: SyntheticEvent) => {
+        e.preventDefault()
+
+        const response = await fetch("http://localhost:5036/api/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            credentials: 'include',
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            })
+        });
+
+        const content = await response.json();
+    }
+
     return (
         <>
             <br/>

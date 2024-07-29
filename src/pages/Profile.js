@@ -10,18 +10,33 @@ const cargoData = [
     { name: 'Cargo 4', weight: 40, year: 2022, price: '$25,000', comment: 'Комментарий'},
 ];
 
-const Profile = () => {
+const Profile = (props: {user: User => void}) => {
+    let image;
+    if (props.user.image === '') {
+        image = (
+            <a href="#">
+                <img className="media-object profile__media-object mw150" src={user} alt="connect"/>
+            </a>
+        )
+    }
+    else {
+        image = (
+            <a href="#">
+                <img className="media-object profile__media-object mw150" src={user} alt="connect"/>
+            </a>
+        )
+    }
+
     return (
         <section id="content" className="container">
             <div className="page-heading">
                 <div className="media">
                     <div className="media-left pr30">
-                        <a href="#">
-                            <img className="media-object profile__media-object mw150" src={user} alt="connect"/>
-                        </a>
+                        {image}
                     </div>
+
                     <div className="media-body va-m">
-                        <h2 className="media-heading">Username</h2>
+                        <h2 className="media-heading">{props.user.name}</h2>
                         <div className="media-body va-m">
                             <NavLink className="btn profile__btn" to={"/edit-profile"}>Редактировать профиль</NavLink>
                             <br/>
@@ -42,8 +57,8 @@ const Profile = () => {
                         </div>
                         <div className="panel-body pn">
                             <ul>
-                                <li className="form-text-contact">email: email@email.com</li>
-                                <li className="form-text-contact">Номер телефон: +79991259178</li>
+                                <li className="form-text-contact">email: {props.user.email}</li>
+                                <li className="form-text-contact">Номер телефон: {props.user.phoneNumber}</li>
                             </ul>
                         </div>
                     </div>
@@ -55,7 +70,7 @@ const Profile = () => {
                             <span className="panel-title">Обо мне</span>
                         </div>
                         <div className="panel-body pb5">
-                            <h6>Я люблю программировать)</h6>
+                            <h6>{props.user.aboutMe}</h6>
                         </div>
                     </div>
                 </div>
