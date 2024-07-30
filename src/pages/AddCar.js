@@ -4,7 +4,6 @@ import SelectLoading from "../components/selectLoading/SelectLoading";
 import "./../styles/css/AddCar.css"
 import Phone from "../components/phone/Phone";
 import {NavLink} from "react-router-dom";
-import {pem as jwt} from "node-forge";
 import axios from "axios";
 import Car from "../Entity/Car";
 import {jwtDecode} from "jwt-decode";
@@ -16,7 +15,7 @@ const AddCar = () => {
 
     const promise = axios.get("http://localhost:5036/api/User/Get/" + object.Id, {
         headers: {
-            "Authorization": "Bearer " + token,
+            "Authorization": `Bearer ${token}`,
         },
     });
 
