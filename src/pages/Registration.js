@@ -1,6 +1,6 @@
 import React, {SyntheticEvent, useState} from "react";
 import '../styles/css/Registration.css'
-import {NavLink} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
 import Phone from "../components/phone/Phone";
 
 const Registration = () => {
@@ -13,9 +13,12 @@ const Registration = () => {
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        await fetch("http://localhost:5036/api/User/Register", {
+        const response = await fetch("http://localhost:5036/api/User/Register", {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "clientUri": "http://localhost:3000/auth/",
+            },
             body: JSON.stringify({
                 password: password,
                 userName: name,
@@ -23,15 +26,21 @@ const Registration = () => {
                 phoneNumber: phone,
             })
         });
-        if(password === passwordAccess && password.length > 0){
-            setRedirect(true);
-        } else{
-            console.log("Пароли не совпадают");
+
+        if (response.ok) {
+            if (password === passwordAccess && password.length > 0) {
+                setRedirect(true);
+            } else {
+                console.log("Пароли не совпадают");
+            }
+        }
+        else{
+            console.log("Error with registration");
         }
     }
 
     if(redirect) {
-        return <NavLink to={"/login"}/>
+        return <Navigate to={"/login"}/>
     }
 
     return (

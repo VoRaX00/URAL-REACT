@@ -4,7 +4,8 @@ import "./../../styles/css/style.css"
 import "./style.css"
 import CustomDropdown from "../dropdown/Dropdown";
 
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import Cookies from "universal-cookie";
 
 const notification = [
   { value: 'Мои уведомления', label: 'Мои уведомления', url: '/notifications' },
@@ -22,40 +23,25 @@ const unauthorized = [
   { value: 'Регистрация', label: 'Регистрация', url: '/registration' },
 ];
 
-const handleDropdownChangeNotify = (selectedOption) => {
-  window.location.href = selectedOption.url;
-};
+const Navbar = () => {
+    const navigate = useNavigate();
 
-const handleDropdownChangeProfile = (selectedOption) => {
-    window.location.href = selectedOption.url;
-}
+    const handleDropdownChangeNotify = (selectedOption) => {
+        navigate(selectedOption.url);
+    };
 
-const logout = async({token}) => {
-        // const response = await fetch("http://localhost:5036/api/Login", {
-        //     method: "POST",
-        //     headers: {"Content-Type": "application/json"},
-        //     body: JSON.stringify({
-        //         password: "1111",
-        //         userName: "Nikita",
-        //         email: "nikita@gmail.com",
-        //         phoneNumber: 79991259179,
-        //     })
-        // })
-        token = ''
-        // if(!response.ok)
-        //     return;
-        //
-        // const content = await response.json();
-        // console.log(content);
-        // props.setName('');
+    const handleDropdownChangeProfile = (selectedOption) => {
+        navigate(selectedOption.url);
     }
 
-const Navbar = ({token}) => {
+    const logout = async() => {
+        new Cookies().remove("jwt_authorization");
+        navigate("/login")
+    }
 
-
+    const cookie = new Cookies().get("jwt_authorization");
     let menu;
-
-    if (token === '') {
+    if (cookie === undefined) {
         menu = (
             <>
                 <ul className="navbar-nav me-auto mb-2 mb-lg- top-menu">
@@ -110,7 +96,6 @@ const Navbar = ({token}) => {
                         onChange={handleDropdownChangeProfile}
                         dropdownIndicatorImg={user}
                         logout={logout}
-                        token={token}
                     />
                 </ul>
             </>

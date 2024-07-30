@@ -1,5 +1,4 @@
 class Cargo {
-
     constructor() {
         this.name = "";
         this.length = 0;

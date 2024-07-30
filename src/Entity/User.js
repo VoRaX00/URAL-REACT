@@ -7,29 +7,31 @@ class User {
         this.aboutMe = "";
         this.phoneNumber = "";
         this.image = "";
+
+        this.setName = this.setName.bind(this);
+        this.setEmail = this.setEmail.bind(this);
+        this.setPhoneNumber = this.setPhoneNumber.bind(this);
+        this.setAboutMe = this.setAboutMe.bind(this);
+        this.setImage = this.setImage.bind(this);
     }
 
-    setId(id) {
-        this.id = id;
-    }
-
-    setName(name) {
+    setName = (name) => {
         this.name = name;
     }
 
-    setEmail(email) {
+    setEmail = (email) => {
         this.email = email;
     }
 
-    setAboutMe(aboutMe) {
+    setAboutMe = (aboutMe) => {
         this.aboutMe = aboutMe;
     }
 
-    setPhoneNumber(number) {
+    setPhoneNumber = (number) => {
         this.phoneNumber = number;
     }
 
-    setImage(image) {
+    setImage = (image) => {
         this.image = image;
     }
 }
