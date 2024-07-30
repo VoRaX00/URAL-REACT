@@ -1,11 +1,12 @@
 class User {
-    constructor(id, name, email, aboutMe, phoneNumber, image) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.aboutMe = aboutMe;
-        this.phoneNumber = phoneNumber;
-        this.image = image;
+
+    constructor() {
+        this.id = "";
+        this.name = "";
+        this.email = "";
+        this.aboutMe = "";
+        this.phoneNumber = "";
+        this.image = "";
     }
 
     setId(id) {
@@ -32,3 +33,5 @@ class User {
         this.image = image;
     }
 }
+
+export default User;
