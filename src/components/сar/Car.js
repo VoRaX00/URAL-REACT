@@ -46,6 +46,7 @@ const Car = ({car}) => {
                     <h5>{car.comment}</h5>
                 </div>
             )}
+
         </div>
     );
 };

@@ -19,10 +19,10 @@ const CustomMenu = (props) => {
     );
 };
 
-const CustomDropdown = ({ options, onChange, dropdownIndicatorImg, logout }) => {
+const CustomDropdown = ({ options, onChange, dropdownIndicatorImg, logout, token }) => {
     const handleChange = (selectedOption) => {
         if (selectedOption.action === 'logout') {
-            logout();
+            logout(token);
         } else {
             onChange(selectedOption);
         }

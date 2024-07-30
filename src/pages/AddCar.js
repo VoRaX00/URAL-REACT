@@ -4,31 +4,45 @@ import SelectLoading from "../components/selectLoading/SelectLoading";
 import "./../styles/css/AddCar.css"
 import Phone from "../components/phone/Phone";
 import {NavLink} from "react-router-dom";
+import {pem as jwt} from "node-forge";
+import axios from "axios";
+import Car from "../Entity/Car";
 
-const AddCar = (props: {userPhone: BigInteger}) => {
-    const [selectedOptionsBody, setSelectedOptionsBody] = useState([]);
-    const [selectedOptionsLoading, setSelectedOptionsLoading] = useState([]);
+const AddCar = ({token}) => {
+    const object = jwt.decode(token);
 
-    const handleMultiSelectChangeBody = (selectedOptions) => {
-        setSelectedOptionsBody(selectedOptions);
-    };
+    const user = axios.get("http://localhost:5036/api/User/Get", {
+        params: {
+            id: object.Id
+        },
+    });
 
-    const handleMultiSelectChangeLoading = (selectedOptions) => {
-        setSelectedOptionsLoading(selectedOptions);
-    };
+    // const [selectedOptionsBody, setSelectedOptionsBody] = useState([]);
+    // const [selectedOptionsLoading, setSelectedOptionsLoading] = useState([]);
+    //
+    // const handleMultiSelectChangeBody = (selectedOptions) => {
+    //     setSelectedOptionsBody(selectedOptions);
+    // };
+    //
+    // const handleMultiSelectChangeLoading = (selectedOptions) => {
+    //     setSelectedOptionsLoading(selectedOptions);
+    // };
 
-    const [name, setName] = useState("");
-    const [capacity, setCapacity] = useState(0);
-    const [volume, setVolume] = useState(0);
-    const [length, setLength] = useState(0);
-    const [width, setWidth] = useState(0);
-    const [height, setHeight] = useState(0);
-    const [whereFrom, setWhereFrom] = useState("");
-    const [whereTo, setWhereTo] = useState("");
-    const [readyFrom, setReadyFrom] = useState("");
-    const [readyTo, setReadyTo] = useState("");
-    const [phone, setPhone] = useState(props.userPhone);
-    const [comment, setComment] = useState("")
+    // const [name, setName] = useState("");
+    // const [capacity, setCapacity] = useState(0);
+    // const [volume, setVolume] = useState(0);
+    // const [length, setLength] = useState(0);
+    // const [width, setWidth] = useState(0);
+    // const [height, setHeight] = useState(0);
+    // const [whereFrom, setWhereFrom] = useState("");
+    // const [whereTo, setWhereTo] = useState("");
+    // const [readyFrom, setReadyFrom] = useState("");
+    // const [readyTo, setReadyTo] = useState("");
+    // const [phone, setPhone] = useState(user.phoneNumber);
+    // const [comment, setComment] = useState("")
+
+    let car = new Car();
+
     const [redirect, setRedirect] = useState(false);
 
     const curr = new Date();
@@ -43,20 +57,20 @@ const AddCar = (props: {userPhone: BigInteger}) => {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                name: name,
-                capacity: capacity,
-                volume: volume,
-                length: length,
-                width: width,
-                height: height,
-                whereFrom: whereFrom,
-                whereTo: whereTo,
-                readyFrom: readyFrom,
-                readyTo: readyTo,
-                phone: phone,
-                comment: comment,
-                bodyTypes: selectedOptionsBody,
-                loadingTypes: selectedOptionsLoading
+                name: car.name,
+                capacity: car.capacity,
+                volume: car.volume,
+                length: car.length,
+                width: car.width,
+                height: car.height,
+                whereFrom: car.whereFrom,
+                whereTo: car.whereTo,
+                readyFrom: car.readyFrom,
+                readyTo: car.readyTo,
+                phone: car.phoneNumber,
+                comment: car.comment,
+                bodyTypes: car.bodyTypes,
+                loadingTypes: car.loadingTypes,
             })
         });
         setRedirect(true);
@@ -72,78 +86,78 @@ const AddCar = (props: {userPhone: BigInteger}) => {
                 <div className="mb-3">
                     <label className="carAdd__form-text" htmlFor="car">Автомобиль</label>
                     <input type="text" name="car" id="car" className="form-control" required
-                        onChange={e => setName(e.target.value)}/>
+                        onChange={e => car.setName(e.target.value)}/>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
                         <label className="carAdd__form-text">Тип кузова:</label>
-                        <SelectBody value={selectedOptionsBody} onChange={handleMultiSelectChangeBody}/>
+                        <SelectBody value={car.bodyTypes} onChange={car.handleMultiSelectChangeBody}/>
                     </div>
                     <div className="col">
                         <label className="carAdd__form-text" htmlFor="loadingType">Тип загрузки:</label>
-                        <SelectLoading value={selectedOptionsLoading} onChange={handleMultiSelectChangeLoading}/>
+                        <SelectLoading value={car.handleMultiSelectChangeLoading} onChange={car.handleMultiSelectChangeLoading}/>
                     </div>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
                         <label className="carAdd__form-text carAdd__label-row-min" htmlFor="capacity">Грузоподъемность, т:</label>
                         <input type="number" step="any" min="0" className="form-control" id="capacity" name="capacity" required
-                            onChange={e => setCapacity(e.target.value)}/>
+                            onChange={e => car.setCapacity(e.target.value)}/>
                     </div>
                     <div className="col">
                         <label className="carAdd__form-text carAdd__label-row-min" htmlFor="volume">Объем, м^3:</label>
                         <input type="number" step="any" min="0" className="form-control" id="volume" name="volume" required
-                            onchange={e => setVolume(e.target.value)}/>
+                            onChange={e => car.setVolume(e.target.value)}/>
                     </div>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
                         <label className="carAdd__form-text carAdd__label-row" htmlFor="length">Внутренняя длина кузова:</label>
                         <input type="number" step="any" min="0" className="form-control carAdd__form-text" id="length" name="length" required
-                            onChange={e => setLength(e.target.value)}/>
+                            onChange={e => car.setLength(e.target.value)}/>
                     </div>
                     <div className="col">
                         <label className="carAdd__form-text carAdd__label-row" htmlFor="width">Внутренняя ширина кузова:</label>
                         <input type="number" step="any" min="0" className="form-control carAdd__form-text" id="width" name="width" required
-                            onChange={e => setWidth(e.target.value)}/>
+                            onChange={e => car.setWidth(e.target.value)}/>
                     </div>
                     <div className="col">
                         <label className="carAdd__form-text carAdd__label-row" htmlFor="height">Внутренняя высота кузова:</label>
                         <input type="number" step="any" min="0" className="form-control carAdd__form-text" id="height" name="height" required
-                            onChange={e => setHeight(e.target.value)}/>
+                            onChange={e => car.setHeight(e.target.value)}/>
                     </div>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
                         <label className="carAdd__form-text" htmlFor="place_from">Откуда:</label>
                         <input type="text" className="form-control" id="place_from" name="place_from" required
-                            onChange={e => setWhereFrom(e.target.value)}/>
+                            onChange={e => car.setWhereFrom(e.target.value)}/>
                     </div>
                     <div className="col">
                         <label className="carAdd__form-text" htmlFor="place_to">Куда:</label>
                         <input type="text" className="form-control" id="place_to" name="place_to" required
-                            onChange={e => setWhereTo(e.target.value)}/>
+                            onChange={e => car.setWhereTo(e.target.value)}/>
                     </div>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
                         <label className="carAdd__form-text" htmlFor="readyFrom">Готов к загрузке с:</label>
                         <input type="date" min={date} className="form-control" id="readyFrom" name="readyFrom" required
-                            onChange={e => setReadyFrom(e.target.value)}/>
+                            onChange={e => car.setReadyFrom(e.target.value)}/>
                     </div>
                     <div className="col">
                         <label className="carAdd__form-text" htmlFor="readyTo">Готов к разгрузке:</label>
                         <input type="date" min={toDate} className="form-control" id="readyTo" name="readyTo" required
-                            onChange={e => setReadyTo(e.target.value)}/>
+                            onChange={e => car.setReadyTo(e.target.value)}/>
                     </div>
                 </div>
                 <div className="mb-3">
-                    <Phone value={phone} onChange={setPhone}/>
+                    <Phone value={car.phoneNumber} onChange={car.setPhoneNumber}/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="comment" className="carAdd__form-label carAdd__form-text">Комментарий:</label>
                     <textarea className="form-control" id="comment" name="comment" rows="5"
-                              onChange={e => setComment(e.target.value)}></textarea>
+                              onChange={e => car.setComment(e.target.value)}></textarea>
                 </div>
                 <button type="submit" className="btn btn-dark carAdd__form-text">Отправить</button>
             </form>

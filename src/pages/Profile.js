@@ -2,6 +2,8 @@ import CargoInfo from "../components/cargo/Cargo";
 import "./../styles/css/Profile.css";
 import user from "../img/default.png";
 import {NavLink} from "react-router-dom";
+import {pem as jwt} from "node-forge";
+import axios from "axios";
 
 const cargoData = [
     { name: 'Cargo 1', weight: 10, year: 2020, price: '$20,000', comment: 'Комментарий'},
@@ -10,9 +12,17 @@ const cargoData = [
     { name: 'Cargo 4', weight: 40, year: 2022, price: '$25,000', comment: 'Комментарий'},
 ];
 
-const Profile = (props: {user: User => void}) => {
+const Profile = ({token}) => {
+    const object = jwt.decode(token);
+
+    const user = axios.get("http://localhost:5036/api/User/Get", {
+        params: {
+            id: object.Id
+        },
+    });
+    
     let image;
-    if (props.user.image === '') {
+    if (user.image === '') {
         image = (
             <a href="#">
                 <img className="media-object profile__media-object mw150" src={user} alt="connect"/>
@@ -36,7 +46,7 @@ const Profile = (props: {user: User => void}) => {
                     </div>
 
                     <div className="media-body va-m">
-                        <h2 className="media-heading">{props.user.name}</h2>
+                        <h2 className="media-heading">{user.name}</h2>
                         <div className="media-body va-m">
                             <NavLink className="btn profile__btn" to={"/edit-profile"}>Редактировать профиль</NavLink>
                             <br/>
@@ -57,8 +67,8 @@ const Profile = (props: {user: User => void}) => {
                         </div>
                         <div className="panel-body pn">
                             <ul>
-                                <li className="form-text-contact">email: {props.user.email}</li>
-                                <li className="form-text-contact">Номер телефон: {props.user.phoneNumber}</li>
+                                <li className="form-text-contact">email: {user.email}</li>
+                                <li className="form-text-contact">Номер телефон: {user.phoneNumber}</li>
                             </ul>
                         </div>
                     </div>
@@ -70,7 +80,7 @@ const Profile = (props: {user: User => void}) => {
                             <span className="panel-title">Обо мне</span>
                         </div>
                         <div className="panel-body pb5">
-                            <h6>{props.user.aboutMe}</h6>
+                            <h6>{user.aboutMe}</h6>
                         </div>
                     </div>
                 </div>

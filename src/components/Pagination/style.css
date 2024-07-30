@@ -4,7 +4,7 @@
   margin-top: 20px;
 }
 
-.button {
+.buttonPagination {
   padding: 10px 15px;
   margin: 0 5px;
   border: none;
@@ -15,20 +15,20 @@
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.button:hover {
+.buttonPagination:hover {
   background-color: #1a5a51;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.button:focus {
+.buttonPagination:focus {
   box-shadow: none;
   outline: none;
 }
 
-.active {
+.buttonPaginationActive {
   background-color: #1a5a51;
 }
 
-.no-active {
+.buttonPagination {
   background-color: #217C6F;
 }

@@ -2,6 +2,7 @@ import "./styles/bootstrap5/css/bootstrap.css"
 
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
+import User from "./Entity/User";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import MainPage from "./pages/Main";
@@ -20,8 +21,7 @@ import {useEffect, useState} from "react";
 
 
 function App() {
-
-    const [user, setUser] = useState(null);
+    const [token, setToken] = useState("");
     // const [id, setId] = useState('');
     // const [name, setName] = useState('Nikita');
     // const [email, setEmail] = useState('');
@@ -53,20 +53,20 @@ function App() {
     return (
         <div className="App">
             <Router>
-                <Navbar name={user.name} setName={user.setName} />
+                <Navbar token={token} />
                 <Routes>
                     <Route path="/" element={<MainPage/>}/>
-                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/login" element={<Login setToken={setToken} />}/>
                     <Route path="/registration" element={<Registration/>}/>
-                    <Route userId={user.id} path="/cars" element={<CarsPage/>}/>
-                    <Route userId={user.id} path="/cargo" element={<CargoPage/>}/>
-                    <Route userPhone={user.phoneNumber} path="/add-car" element={<AddCar/>}/>
-                    <Route userPhone={user.phoneNumber} path="/add-cargo" element={<AddCargo/>}/>
-                    <Route user={user} path="/profile" element={<Profile/>}/>
-                    <Route user={user} path="/edit-profile" element={<EditProfile/>}/>
-                    <Route userId={user.id} path="/notifications" element={<Notifications/>}/>
-                    <Route userId={user.id} path="/responses" element={<Responses/>}/>
-                    <Route userId={user.id} path="/match" element={<Match/>}/>
+                    <Route path="/cars" element={<CarsPage token={token} />}/>
+                    <Route path="/cargo" element={<CargoPage token={token}/>}/>
+                    <Route path="/add-car" element={<AddCar token={token}/>}/>
+                    <Route path="/add-cargo" element={<AddCargo token={token}/>}/>
+                    <Route path="/profile" element={<Profile token={token}/>}/>
+                    <Route path="/edit-profile" element={<EditProfile token={token}/>}/>
+                    <Route path="/notifications" element={<Notifications token={token}/>}/>
+                    <Route path="/responses" element={<Responses token={token}/>}/>
+                    <Route path="/match" element={<Match token={token}/>}/>
                 </Routes>
                 <Footer />
             </Router>

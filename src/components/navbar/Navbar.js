@@ -30,32 +30,32 @@ const handleDropdownChangeProfile = (selectedOption) => {
     window.location.href = selectedOption.url;
 }
 
-const logout = async(props: {name: string, setName: (name: string) => void}) => {
-        const response = await fetch("http://localhost:5036/api/Login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                password: "1111",
-                userName: "Nikita",
-                email: "nikita@gmail.com",
-                phoneNumber: 79991259179,
-            })
-        })
-
-        if(!response.ok)
-            return;
-
-        const content = await response.json();
-        console.log(content);
-        props.setName('');
+const logout = async({token}) => {
+        // const response = await fetch("http://localhost:5036/api/Login", {
+        //     method: "POST",
+        //     headers: {"Content-Type": "application/json"},
+        //     body: JSON.stringify({
+        //         password: "1111",
+        //         userName: "Nikita",
+        //         email: "nikita@gmail.com",
+        //         phoneNumber: 79991259179,
+        //     })
+        // })
+        token = ''
+        // if(!response.ok)
+        //     return;
+        //
+        // const content = await response.json();
+        // console.log(content);
+        // props.setName('');
     }
 
-const Navbar = (props: {name: string, setName: (name: string) => void}) => {
+const Navbar = ({token}) => {
 
 
     let menu;
 
-    if (props.name === '') {
+    if (token === '') {
         menu = (
             <>
                 <ul className="navbar-nav me-auto mb-2 mb-lg- top-menu">
@@ -109,7 +109,8 @@ const Navbar = (props: {name: string, setName: (name: string) => void}) => {
                         options={profile}
                         onChange={handleDropdownChangeProfile}
                         dropdownIndicatorImg={user}
-                        logout={logout(props)}
+                        logout={logout}
+                        token={token}
                     />
                 </ul>
             </>
