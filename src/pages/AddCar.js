@@ -7,15 +7,23 @@ import {NavLink} from "react-router-dom";
 import {pem as jwt} from "node-forge";
 import axios from "axios";
 import Car from "../Entity/Car";
+import {jwtDecode} from "jwt-decode";
+import Cookies from "universal-cookie";
 
-const AddCar = ({token}) => {
-    const object = jwt.decode(token);
+const AddCar = () => {
+    const token = new Cookies().get("jwt_authorization");
+    const object = jwtDecode(token);
 
-    const user = axios.get("http://localhost:5036/api/User/Get", {
-        params: {
-            id: object.Id
+    const promise = axios.get("http://localhost:5036/api/User/Get/" + object.Id, {
+        headers: {
+            "Authorization": "Bearer " + token,
         },
     });
+
+    let user;
+    promise.then((res) => {
+        user = res.data
+    })
 
     // const [selectedOptionsBody, setSelectedOptionsBody] = useState([]);
     // const [selectedOptionsLoading, setSelectedOptionsLoading] = useState([]);
@@ -27,19 +35,6 @@ const AddCar = ({token}) => {
     // const handleMultiSelectChangeLoading = (selectedOptions) => {
     //     setSelectedOptionsLoading(selectedOptions);
     // };
-
-    // const [name, setName] = useState("");
-    // const [capacity, setCapacity] = useState(0);
-    // const [volume, setVolume] = useState(0);
-    // const [length, setLength] = useState(0);
-    // const [width, setWidth] = useState(0);
-    // const [height, setHeight] = useState(0);
-    // const [whereFrom, setWhereFrom] = useState("");
-    // const [whereTo, setWhereTo] = useState("");
-    // const [readyFrom, setReadyFrom] = useState("");
-    // const [readyTo, setReadyTo] = useState("");
-    // const [phone, setPhone] = useState(user.phoneNumber);
-    // const [comment, setComment] = useState("")
 
     let car = new Car();
 

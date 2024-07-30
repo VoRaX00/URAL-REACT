@@ -22,7 +22,7 @@ const Cargo = ({cargo}) => {
                     <p>Высота: {cargo.height}</p>
                     <p>Вес: {cargo.weight}</p>
                     <p>Объем: {cargo.volume}</p>
-                    <p>Кол-во места в евро: {cargo.countPlace}</p>
+                    <p>Кол-во места в европалетах: {cargo.countPlace}</p>
                     <p>Дата загрузки: {cargo.loadingDate}   Дата разгрузки: {cargo.unloadingDate}</p>
                     {cargo.cash ? (<p>Цена наличными: {cargo.priceCash}</p>) : ""}
                     {cargo.cashlessNds ? (<p>Цена безналичными с НДС: {cargo.priceCashNds}</p>) : ""}

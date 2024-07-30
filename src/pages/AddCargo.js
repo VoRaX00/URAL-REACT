@@ -1,158 +1,139 @@
-import React, {SyntheticEvent, useState} from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import './../styles/css/AddCargo.css';
-import {NavLink} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Phone from "../components/phone/Phone";
-import {pem as jwt} from "node-forge";
-import axios from "axios";
-import Cargo from "../Entity/Cargo";
+import Cookies from "universal-cookie";
+import {jwtDecode} from "jwt-decode";
 
-const AddCargo = ({token}) => {
-    //const object = jwt.decode(token);
 
-    // const user = axios.get("http://localhost:5036/api/User/Get", {
-    //     params: {
-    //         id: object.Id
-    //     },
-    // });
+const AddCargo = () => {
+    const token = new Cookies().get("jwt_authorization");
+    const object = jwtDecode(token);
+    const [cargo, setCargo] = useState({
+        name: '',
+        length: 0,
+        width: 0,
+        height: 0,
+        weight: 0,
+        volume: 0,
+        countPlace: 0,
+        loadingDate: '',
+        unloadingDate: '',
+        phoneNumber: parseInt(object.PhoneNumber),
+        loadingPlace: '',
+        unloadingPlace: '',
+        cash: false,
+        cashless: false,
+        cashlessNds: false,
+        cashlessWithoutNds: false,
+        priceCash: 0,
+        priceCashNds: 0,
+        priceCashWithoutNds: 0,
+        requestPrice: false,
+        comment: ''
+    });
+    const [redirect, setRedirect] = useState(false);
+
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setCargo(prevCargo => ({
+            ...prevCargo,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
 
     const curr = new Date();
     curr.setDate(curr.getDate());
     const date = curr.toISOString().substring(0, 10);
 
-    let cargo = new Cargo()
-
-    // const [name, setName] = useState("");
-    // const [length, setLength] = useState(0);
-    // const [width, setWidth] = useState(0);
-    // const [height, setHeight] = useState(0);
-    // const [weight, setWeight] = useState(0);
-    // const [volume, setVolume] = useState(0);
-    // const [countPlace, setCountPlace] = useState(0);
-    // const [loadingDate, setLoadingDate] = useState("");
-    // const [unloadingDate, setUnloadingDate] = useState("");
-    const [phone, setPhone] = useState(cargo.phoneNumber);
-    // const [loadingPlace, setLoadingPlace] = useState("");
-    // const [unloadingPlace, setUnloadingPlace] = useState("");
-    // const [cash, setCash] = useState(false);
-    // const [cashless, setCashless] = useState(false);
-    // const [cashlessNds, setCashlessNds] = useState(false);
-    // const [cashlessWithoutNds, setCashlessWithoutNds] = useState(false);
-    // const [priceCash, setPriceCash] = useState(0);
-    // const [priceCashNds, setPriceCashNds] = useState(0);
-    // const [priceCashWithoutNds, setPriceCashWithoutNds] = useState(0);
-    // const [requestPrice, setRequestPrice] = useState(false);
-    // const [comment, setComment] = useState("")
-    const [redirect, setRedirect] = useState(false);
-
-    const handleChange = (setter) => (e) => {
-        setter(e.target.value);
-    };
-
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        await fetch("http://localhost:5036/api/Car/Add", {
+        const response = await fetch("http://localhost:5036/api/Cargo/Add", {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                name: cargo.name,
-                length: cargo.length,
-                width: cargo.width,
-                height: cargo.height,
-                weight: cargo.weight,
-                volume: cargo.volume,
-                countPlace: cargo.countPlace,
-                loadingDate: cargo.loadingDate,
-                unloadingDate: cargo.unloadingDate,
-                phone: cargo.phoneNumber,
-                loadingPlace: cargo.loadingPlace,
-                unloadingPlace: cargo.unloadingPlace,
-                cash: cargo.cash,
-                cashless: cargo.cashless,
-                cashlessNds: cargo.cashlessNds,
-                cashlessWithoutNds: cargo.cashlessWithoutNds,
-                priceCash: cargo.priceCash,
-                priceCashNds: cargo.priceCashNds,
-                priceCashWithoutNds: cargo.priceCashWithoutNds,
-                requestPrice: cargo.requestPrice,
-                comment: cargo.comment,
-            })
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(cargo)
         });
-        setRedirect(true);
-    }
+        if (response.ok)
+            setRedirect(true);
+        else
+            console.log("Error with addCargo");
+    };
 
-    if(redirect) {
-        return <NavLink to={"/profile"}/>
-    }
+    if (redirect)
+        return <Navigate to={"/cargo"} />
 
     return (
         <div className="cargoAdd__container min-vh-100 d-flex justify-content-center align-items-center">
             <form className='card p-5 cargoAdd__form' method="post" onSubmit={submit}>
                 <div className="mb-3">
-                    <label className="cargoAdd__form-text" htmlFor="cargoName">Наименование груза:</label>
-                    <input type="text" className="form-control" id="cargoName" name="cargoName" required
-                        onChange={handleChange(cargo.setName)}/>
+                    <label className="cargoAdd__form-text" htmlFor="name">Наименование груза:</label>
+                    <input type="text" className="form-control" id="name" name="name" required
+                        onChange={handleInputChange} />
                 </div>
                 <div className="form-group row mb-3">
                     <div className="col-md-4">
                         <label className="cargoAdd__form-text label-row-cargo" htmlFor="length">Длина (м):</label>
                         <input type="number" step="any" className="form-control short-input" id="length" name="length" min="0" required
-                            onChange={handleChange(cargo.setLength)}/>
+                            onChange={handleInputChange} />
                     </div>
                     <div className="col-md-4">
                         <label className="cargoAdd__form-text label-row-cargo" htmlFor="width">Ширина (м):</label>
                         <input type="number" step="any" className="form-control short-input" id="width" name="width" min="0" required
-                            onChange={handleChange(cargo.setWidth)}/>
+                            onChange={handleInputChange} />
                     </div>
                     <div className="col-md-4">
                         <label className="cargoAdd__form-text label-row-cargo" htmlFor="height">Высота (м):</label>
                         <input type="number" step="any" className="form-control short-input" id="height" name="height" min="0" required
-                            onChange={handleChange(cargo.setHeight)}/>
+                            onChange={handleInputChange} />
                     </div>
                 </div>
                 <div className="mb-3 row">
                     <div className="col-md-6">
-                        <label className="cargoAdd__form-text label-row" htmlFor="cargoWeight">Вес груза (т):</label>
-                        <input type="number" step="any" className="form-control label-row" id="cargoWeight" name="cargoWeight" min="0" required
-                            onChange={handleChange(cargo.setWeight)}/>
+                        <label className="cargoAdd__form-text label-row" htmlFor="weight">Вес груза (т):</label>
+                        <input type="number" step="any" className="form-control label-row" id="weight" name="weight" min="0" required
+                            onChange={handleInputChange} />
                     </div>
                     <div className="col-md-6">
                         <label className="cargoAdd__form-text label-row" htmlFor="volume">Объем (м<sup>3</sup>):</label>
                         <input type="number" step="any" className="form-control label-row" id="volume" name="volume" min="0" required
-                            onChange={handleChange(cargo.setVolume)}/>
+                            onChange={handleInputChange} />
                     </div>
                 </div>
                 <div className="mb-3 row">
                     <div className="col-md-6">
                         <label className="cargoAdd__form-text label-row" htmlFor="countPlace">Кол-во мест (расчет в европалеттах):</label>
                         <input type="number" step="any" className="form-control label-row" id="countPlace" name="countPlace" min="0" required
-                            onChange={handleChange(cargo.setCountPlace)}/>
+                            onChange={handleInputChange} />
                     </div>
                 </div>
                 <div className="mb-3 row">
                     <div className="col-md-6">
                         <label className="cargoAdd__form-text" htmlFor="loadingDate">Дата загрузки:</label>
                         <input type="date" min={date} className="form-control" id="loadingDate" name="loadingDate" required
-                            onChange={handleChange(cargo.setLoadingDate)}/>
+                            onChange={handleInputChange} />
                     </div>
                     <div className="col-md-6">
                         <label className="cargoAdd__form-text" htmlFor="unloadingDate">Дата разгрузки:</label>
                         <input type="date" min={date} className="form-control" id="unloadingDate" name="unloadingDate" required
-                            onChange={handleChange(cargo.setUnloadingDate)}/>
+                            onChange={handleInputChange} />
                     </div>
                 </div>
                 <div className="mb-3">
-                    <Phone value={phone} onChange={setPhone}/>
+                    <Phone value={cargo.phoneNumber} onChange={(value) => setCargo({ ...cargo, phoneNumber: value })} />
                 </div>
                 <div className="mb-3 row">
                     <div className="col-md-6">
-                        <label className="cargoAdd__form-text" htmlFor="loading_address">Адрес загрузки:</label>
-                        <input id="loading_address" name="loading_address" type="text" className="form-control" required
-                            onChange={handleChange(cargo.setLoadingPlace)}/>
+                        <label className="cargoAdd__form-text" htmlFor="loadingPlace">Адрес загрузки:</label>
+                        <input id="loadingPlace" name="loadingPlace" type="text" className="form-control" required
+                            onChange={handleInputChange} />
                     </div>
                     <div className="col-md-6">
-                        <label className="cargoAdd__form-text" htmlFor="unloading_address">Адрес разгрузки:</label>
-                        <input type="text" className="form-control" id="unloading_address" name="unloading_address" required
-                            onChange={handleChange(cargo.setUnloadingPlace)}/>
+                        <label className="cargoAdd__form-text" htmlFor="unloadingPlace">Адрес разгрузки:</label>
+                        <input type="text" className="form-control" id="unloadingPlace" name="unloadingPlace" required
+                            onChange={handleInputChange} />
                     </div>
                 </div>
                 <div className="mb-3">
@@ -160,24 +141,24 @@ const AddCargo = ({token}) => {
                 </div>
                 <div className="mb-3 row">
                     <div className="col-auto">
-                        <input className="form-check-input" type="checkbox" name="cash" id="cboxCash" value="cash"
-                            onChange={handleChange(cargo.setCash)}/>
+                        <input className="form-check-input" type="checkbox" name="cash" id="cboxCash" checked={cargo.cash}
+                            onChange={handleInputChange} />
                         <label className="cargoAdd__form-text form-check-label" htmlFor="cboxCash">Наличные</label>
                     </div>
                     <div className="col-auto">
-                        <input className="form-check-input" type="checkbox" name="cash" id="cboxCashless" value="cashless"
-                            onChange={handleChange(cargo.setCashless)}/>
+                        <input className="form-check-input" type="checkbox" name="cashless" id="cboxCashless" checked={cargo.cashless}
+                            onChange={handleInputChange} />
                         <label className="cargoAdd__form-text form-check-label" htmlFor="cboxCashless">Безналичный расчет</label>
                     </div>
                     <div className="col-auto" id="extra_checkbox">
                         <div className="mb-3">
-                            <input className="form-check-input" type="checkbox" name="cashless" id="nds" value="nds"
-                                onChange={handleChange(cargo.setCashlessNds)}/>
+                            <input className="form-check-input" type="checkbox" name="cashlessNds" id="nds" checked={cargo.cashlessNds}
+                                onChange={handleInputChange} />
                             <label className="form-check-label cargoAdd__form-text" htmlFor="nds">НДС</label>
                         </div>
                         <div className="mb-3">
-                            <input className="form-check-input" type="checkbox" name="cashless" id="without_nds" value="without_nds"
-                                onChange={handleChange(cargo.setCashlessWithoutNds)}/>
+                            <input className="form-check-input" type="checkbox" name="cashlessWithoutNds" id="without_nds" checked={cargo.cashlessWithoutNds}
+                                onChange={handleInputChange} />
                             <label className="form-check-label cargoAdd__form-text" htmlFor="without_nds">Без НДС</label>
                         </div>
                     </div>
@@ -189,8 +170,8 @@ const AddCargo = ({token}) => {
                                 <label className="cargoAdd__form-text" htmlFor="deliveryCostCash">Наличными</label>
                             </div>
                             <div className="col-8">
-                                <input type="number" step="any" placeholder="Наличными" className="form-control cargoAdd__form-text" id="deliveryCostCash" name="deliveryCostCash" min="1"
-                                    onChange={handleChange(cargo.setPriceCash)}/>
+                                <input type="number" step="any" placeholder="Наличными" className="form-control cargoAdd__form-text" id="deliveryCostCash" name="priceCash" min="1"
+                                    onChange={handleInputChange} />
                             </div>
                         </div>
                         <div className="mb-3 row" id="price_cashless_nds">
@@ -198,8 +179,8 @@ const AddCargo = ({token}) => {
                                 <label className="cargoAdd__form-text" htmlFor="deliveryCostNDS">С НДС</label>
                             </div>
                             <div className="col-8">
-                                <input type="number" step="any" placeholder="С НДС" className="form-control cargoAdd__form-text" id="deliveryCostNDS" name="deliveryCostNDS" min="1"
-                                    onChange={handleChange(cargo.setPriceCashNds)}/>
+                                <input type="number" step="any" placeholder="С НДС" className="form-control cargoAdd__form-text" id="deliveryCostNDS" name="priceCashNds" min="1"
+                                    onChange={handleInputChange} />
                             </div>
                         </div>
                         <div className="mb-3 row">
@@ -207,14 +188,14 @@ const AddCargo = ({token}) => {
                                 <label className="cargoAdd__form-text" htmlFor="deliveryCostWithoutNDS">Без НДС</label>
                             </div>
                             <div className="col-8">
-                                <input type="number" step="any" placeholder="Без НДС" className="form-control cargoAdd__form-text" id="deliveryCostWithoutNDS" name="deliveryCostWithoutNDS" min="1"
-                                    onChange={handleChange(cargo.setPriceCashWithoutNds)}/>
+                                <input type="number" step="any" placeholder="Без НДС" className="form-control cargoAdd__form-text" id="deliveryCostWithoutNDS" name="priceCashWithoutNds" min="1"
+                                    onChange={handleInputChange} />
                             </div>
                         </div>
                         <div className="mb-3 row">
                             <div className="col-auto">
-                                <input className="form-check-input" name="request_price" type="checkbox" id="requestPrice" value="request"
-                                    onChange={handleChange(cargo.setRequestPrice)}/>
+                                <input className="form-check-input" name="requestPrice" type="checkbox" id="requestPrice" checked={cargo.requestPrice}
+                                    onChange={handleInputChange} />
                                 <label className="form-check-label cargoAdd__form-text" htmlFor="requestPrice">Запрос цены</label>
                             </div>
                         </div>
@@ -222,7 +203,7 @@ const AddCargo = ({token}) => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="comment" className="form-label cargoAdd__form-text">Комментарий:</label>
-                    <textarea className="form-control" id="comment" name="comment" rows="5" onChange={handleChange(cargo.setComment)}></textarea>
+                    <textarea className="form-control" id="comment" name="comment" rows="5" onChange={handleInputChange}></textarea>
                 </div>
                 <button type="submit" className="btn btn-dark cargoAdd__form-text">Отправить</button>
             </form>
@@ -231,3 +212,223 @@ const AddCargo = ({token}) => {
 };
 
 export default AddCargo;
+
+
+// import React, {SyntheticEvent, useState} from 'react';
+// import './../styles/css/AddCargo.css';
+// import {Navigate} from "react-router-dom";
+// import Phone from "../components/phone/Phone";
+// import Cookies from "universal-cookie";
+// import {jwtDecode} from "jwt-decode";
+//
+// const AddCargo = () => {
+//     const token = new Cookies().get("jwt_authorization");
+//     const object = jwtDecode(token);
+//     const [cargo, setCargo] = useState({});
+//     const [phone, setPhone] = useState(object.phoneNumber);
+//     const [redirect, setRedirect] = useState(false);
+//     const [cash, setCash] = useState(false);
+//     const [cashless, setCashless] = useState(false);
+//     const [cashlessNds, setCashlessNds] = useState(false);
+//     const [cashlessWithoutNds, setCashlessWithoutNds] = useState(false);
+//     const handleInputChange = (e) => {
+//         const { name, value } = e.target;
+//         setCargo(prevCargo => ({
+//             ...prevCargo,
+//             [name]: value
+//         }));
+//     };
+//
+//     const curr = new Date();
+//     curr.setDate(curr.getDate());
+//     const date  = curr.toISOString().substring(0, 10);
+//
+//     const submit = async (e: SyntheticEvent) => {
+//         e.preventDefault();
+//         console.log(cargo.name)
+//         const response = await fetch("http://localhost:5036/api/Cargo/Add", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 "Authorization": `Bearer ${token}`,
+//             },
+//             body: JSON.stringify({
+//                 name: cargo.name,
+//                 length: cargo.length,
+//                 width: cargo.width,
+//                 height: cargo.height,
+//                 weight: cargo.weight,
+//                 volume: cargo.volume,
+//                 countPlace: cargo.countPlace,
+//                 loadingDate: cargo.loadingDate,
+//                 unloadingDate: cargo.unloadingDate,
+//                 phone: cargo.phoneNumber,
+//                 loadingPlace: cargo.loadingPlace,
+//                 unloadingPlace: cargo.unloadingPlace,
+//                 cash: cash,
+//                 cashless: cashless,
+//                 cashlessNds: cashlessNds,
+//                 cashlessWithoutNds: cashlessWithoutNds,
+//                 priceCash: cargo.priceCash,
+//                 priceCashNds: cargo.priceCashNds,
+//                 priceCashWithoutNds: cargo.priceCashWithoutNds,
+//                 requestPrice: cargo.requestPrice,
+//                 comment: cargo.comment,
+//             })
+//         });
+//         if(response.ok)
+//             setRedirect(true);
+//         else
+//             console.log("Error with addCargo");
+//     }
+//
+//     if(redirect)
+//         return <Navigate to={"/cargo"}/>
+//
+//     return (
+//         <div className="cargoAdd__container min-vh-100 d-flex justify-content-center align-items-center">
+//             <form className='card p-5 cargoAdd__form' method="post" onSubmit={submit}>
+//                 <div className="mb-3">
+//                     <label className="cargoAdd__form-text" htmlFor="name">Наименование груза:</label>
+//                     <input type="text" className="form-control" id="name" name="name" required
+//                         onChange={handleInputChange}/>
+//                 </div>
+//                 <div className="form-group row mb-3">
+//                     <div className="col-md-4">
+//                         <label className="cargoAdd__form-text label-row-cargo" htmlFor="length">Длина (м):</label>
+//                         <input type="number" step="any" className="form-control short-input" id="length" name="length" min="0" required
+//                             onChange={handleInputChange}/>
+//                     </div>
+//                     <div className="col-md-4">
+//                         <label className="cargoAdd__form-text label-row-cargo" htmlFor="width">Ширина (м):</label>
+//                         <input type="number" step="any" className="form-control short-input" id="width" name="width" min="0" required
+//                             onChange={handleInputChange}/>
+//                     </div>
+//                     <div className="col-md-4">
+//                         <label className="cargoAdd__form-text label-row-cargo" htmlFor="height">Высота (м):</label>
+//                         <input type="number" step="any" className="form-control short-input" id="height" name="height" min="0" required
+//                             onChange={handleInputChange}/>
+//                     </div>
+//                 </div>
+//                 <div className="mb-3 row">
+//                     <div className="col-md-6">
+//                         <label className="cargoAdd__form-text label-row" htmlFor="weight">Вес груза (т):</label>
+//                         <input type="number" step="any" className="form-control label-row" id="weight" name="weight" min="0" required
+//                             onChange={handleInputChange}/>
+//                     </div>
+//                     <div className="col-md-6">
+//                         <label className="cargoAdd__form-text label-row" htmlFor="volume">Объем (м<sup>3</sup>):</label>
+//                         <input type="number" step="any" className="form-control label-row" id="volume" name="volume" min="0" required
+//                             onChange={handleInputChange}/>
+//                     </div>
+//                 </div>
+//                 <div className="mb-3 row">
+//                     <div className="col-md-6">
+//                         <label className="cargoAdd__form-text label-row" htmlFor="countPlace">Кол-во мест (расчет в европалеттах):</label>
+//                         <input type="number" step="any" className="form-control label-row" id="countPlace" name="countPlace" min="0" required
+//                             onChange={handleInputChange}/>
+//                     </div>
+//                 </div>
+//                 <div className="mb-3 row">
+//                     <div className="col-md-6">
+//                         <label className="cargoAdd__form-text" htmlFor="loadingDate">Дата загрузки:</label>
+//                         <input type="date" min={date} className="form-control" id="loadingDate" name="loadingDate" required
+//                             onChange={handleInputChange}/>
+//                     </div>
+//                     <div className="col-md-6">
+//                         <label className="cargoAdd__form-text" htmlFor="unloadingDate">Дата разгрузки:</label>
+//                         <input type="date" min={date} className="form-control" id="unloadingDate" name="unloadingDate" required
+//                             onChange={handleInputChange}/>
+//                     </div>
+//                 </div>
+//                 <div className="mb-3">
+//                     <Phone value={phone || ''} onChange={setPhone}/>
+//                 </div>
+//                 <div className="mb-3 row">
+//                     <div className="col-md-6">
+//                         <label className="cargoAdd__form-text" htmlFor="loadingPlace">Адрес загрузки:</label>
+//                         <input id="loadingPlace" name="loadingPlace" type="text" className="form-control" required
+//                             onChange={handleInputChange}/>
+//                     </div>
+//                     <div className="col-md-6">
+//                         <label className="cargoAdd__form-text" htmlFor="unloadingPlace">Адрес разгрузки:</label>
+//                         <input type="text" className="form-control" id="unloadingPlace" name="unloadingPlace" required
+//                             onChange={handleInputChange}/>
+//                     </div>
+//                 </div>
+//                 <div className="mb-3">
+//                     <label className="cargoAdd__form-text" htmlFor="deliveryCost">Способ оплаты:</label>
+//                 </div>
+//                 <div className="mb-3 row">
+//                     <div className="col-auto">
+//                         <input className="form-check-input" type="checkbox" name="cash" id="cboxCash" value={cash}
+//                             onChange={setCash}/>
+//                         <label className="cargoAdd__form-text form-check-label" htmlFor="cboxCash">Наличные</label>
+//                     </div>
+//                     <div className="col-auto">
+//                         <input className="form-check-input" type="checkbox" name="cashless" id="cboxCashless" value={cashless}
+//                             onChange={setCashless}/>
+//                         <label className="cargoAdd__form-text form-check-label" htmlFor="cboxCashless">Безналичный расчет</label>
+//                     </div>
+//                     <div className="col-auto" id="extra_checkbox">
+//                         <div className="mb-3">
+//                             <input className="form-check-input" type="checkbox" name="cashlessNds" id="nds" value={cashlessNds}
+//                                 onChange={setCashlessNds}/>
+//                             <label className="form-check-label cargoAdd__form-text" htmlFor="nds">НДС</label>
+//                         </div>
+//                         <div className="mb-3">
+//                             <input className="form-check-input" type="checkbox" name="cashlessWithoutNds" id="without_nds" value={setCashlessWithoutNds()}
+//                                 onChange={setCashlessWithoutNds}/>
+//                             <label className="form-check-label cargoAdd__form-text" htmlFor="without_nds">Без НДС</label>
+//                         </div>
+//                     </div>
+//                 </div>
+//                 <div className="mb-3 row">
+//                     <div className="col-12">
+//                         <div className="mb-3 row" id="price_cash_checkbox">
+//                             <div className="col-4">
+//                                 <label className="cargoAdd__form-text" htmlFor="deliveryCostCash">Наличными</label>
+//                             </div>
+//                             <div className="col-8">
+//                                 <input type="number" step="any" placeholder="Наличными" className="form-control cargoAdd__form-text" id="deliveryCostCash" name="priceCash" min="1"
+//                                     onChange={handleInputChange}/>
+//                             </div>
+//                         </div>
+//                         <div className="mb-3 row" id="price_cashless_nds">
+//                             <div className="col-4">
+//                                 <label className="cargoAdd__form-text" htmlFor="deliveryCostNDS">С НДС</label>
+//                             </div>
+//                             <div className="col-8">
+//                                 <input type="number" step="any" placeholder="С НДС" className="form-control cargoAdd__form-text" id="deliveryCostNDS" name="priceCashNds" min="1"
+//                                     onChange={handleInputChange}/>
+//                             </div>
+//                         </div>
+//                         <div className="mb-3 row">
+//                             <div className="col-4">
+//                                 <label className="cargoAdd__form-text" htmlFor="deliveryCostWithoutNDS">Без НДС</label>
+//                             </div>
+//                             <div className="col-8">
+//                                 <input type="number" step="any" placeholder="Без НДС" className="form-control cargoAdd__form-text" id="deliveryCostWithoutNDS" name="priceCashWithoutNds" min="1"
+//                                     onChange={handleInputChange}/>
+//                             </div>
+//                         </div>
+//                         <div className="mb-3 row">
+//                             <div className="col-auto">
+//                                 <input className="form-check-input" name="requestPrice" type="checkbox" id="requestPrice" value="request"
+//                                     onChange={handleInputChange}/>
+//                                 <label className="form-check-label cargoAdd__form-text" htmlFor="requestPrice">Запрос цены</label>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </div>
+//                 <div className="mb-3">
+//                     <label htmlFor="comment" className="form-label cargoAdd__form-text">Комментарий:</label>
+//                     <textarea className="form-control" id="comment" name="comment" rows="5" onChange={handleInputChange}></textarea>
+//                 </div>
+//                 <button type="submit" className="btn btn-dark cargoAdd__form-text">Отправить</button>
+//             </form>
+//         </div>
+//     );
+// };
+//
+// export default AddCargo;

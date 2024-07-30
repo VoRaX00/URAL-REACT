@@ -40,8 +40,8 @@ const Cargo = () => {
             console.log('Error getting cargo', error);
         }
     }
-
-    useEffect(getAllCargo, []);
+    getAllCargo()
+    // useEffect(getAllCargo, []);
 
     return (
         <>
