@@ -1,42 +1,150 @@
+import React, { SyntheticEvent, useState } from "react";
 import SelectBody from "../components/selectBody/SelectBody";
-import React, {SyntheticEvent, useState} from "react";
 import SelectLoading from "../components/selectLoading/SelectLoading";
-import "./../styles/css/AddCar.css"
+import "./../styles/css/AddCar.css";
 import Phone from "../components/phone/Phone";
-import {NavLink} from "react-router-dom";
-import {pem as jwt} from "node-forge";
-import axios from "axios";
-import Car from "../Entity/Car";
+import { Navigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import Cookies from "universal-cookie";
+
+const bodyTypesMap = {
+  'тентовый': 1,
+  'контейнер': 2,
+  'открытый конт.': 3,
+  'площадка без бортов': 4,
+  'фургон': 5,
+  'цельнометалл': 6,
+  'изотермический': 7,
+  'рефрижератор': 8,
+  'реф. мультирежимный': 9,
+  'реф. с перегородкой': 10,
+  'реф. -тушевоз': 11,
+  'бортовой': 12,
+  'самосвал': 13,
+  'шаланда': 14,
+  'низкорамный': 15,
+  'низкорам.платф.': 16,
+  'телескопический': 17,
+  'трал': 18,
+  'балковоз(негабарит)': 19,
+  'автобус': 20,
+  'автовоз': 21,
+  'автовышка': 22,
+  'автотранспортер': 23,
+  'бетоновоз': 24,
+  'битумовоз': 25,
+  'бензовоз': 26,
+  'вездеход': 27,
+  'газовоз': 28,
+  'зерновоз': 29,
+  'коневоз': 30,
+  'контейнеровоз': 31,
+  'кормовоз': 32,
+  'кран': 33,
+  'лесовоз': 34,
+  'ломовоз': 35,
+  'манипулятор': 36,
+  'микроавтобус': 37,
+  'муковоз': 38,
+  'панелевоз': 39,
+  'пикап': 40,
+  'пухтовоз': 41,
+  'пирамида': 42,
+  'рулоновоз': 43,
+  'седельный тягач': 44,
+  'скотовоз': 45,
+  'стекловоз': 46,
+  'трубовоз': 47,
+  'цементовоз': 48,
+  'автоцистерна': 49,
+  'щеповоз': 50,
+  'эвакуатор': 51,
+  'грузопассажирский': 52,
+  'клюшковоз': 53,
+  'мусоровоз': 54,
+  'jumbo': 55,
+  '20 танк-контейнер': 56,
+  '40 танк-контейнер': 57,
+  'мега фура': 58,
+  'допельшток': 59,
+  'Раздвижной полуприцеп 20/40': 60,
+};
+
+const loadingTypesMap = {
+  'боковая': 1,
+  'верхняя': 2,
+  'задняя': 3,
+  'с полной растентовкой': 4,
+  'со снятием поперечных перекладин': 5,
+  'со снятием стоек': 6,
+  'без ворот': 7,
+  'гидроборт': 8,
+  'аппарели': 9,
+  'с обрешеткой': 10,
+  'с бортами': 11,
+  'боковая с 2-х сторон': 12,
+  'налив': 13,
+  'электрический': 14,
+  'гидравлический': 15,
+  'пневматический': 16,
+  'дизельный компрессор': 17,
+};
 
 const AddCar = () => {
     const token = new Cookies().get("jwt_authorization");
     const object = jwtDecode(token);
 
-    const promise = axios.get("http://localhost:5036/api/User/Get/" + object.Id, {
-        headers: {
-            "Authorization": "Bearer " + token,
-        },
+    const [selectedOptionsBody, setSelectedOptionsBody] = useState([]);
+    const [selectedOptionsLoading, setSelectedOptionsLoading] = useState([]);
+
+    const handleMultiSelectChangeBody = (selectedOptions) => {
+        setSelectedOptionsBody(selectedOptions);
+        setCar(prevCar => ({
+            ...prevCar,
+            bodyTypes: selectedOptions.map(option => ({ id: bodyTypesMap[option.value] }))
+        }));
+    };
+
+    const handleMultiSelectChangeLoading = (selectedOptions) => {
+        setSelectedOptionsLoading(selectedOptions);
+        setCar(prevCar => ({
+            ...prevCar,
+            loadingTypes: selectedOptions.map(option => ({ id: loadingTypesMap[option.value] }))
+        }));
+    };
+
+    const [car, setCar] = useState({
+        name: "",
+        capacity: 0,
+        volume: 0,
+        length: 0,
+        width: 0,
+        height: 0,
+        whereFrom: "",
+        whereTo: "",
+        readyFrom: '',
+        readyTo: '',
+        phone: parseInt(object.PhoneNumber),
+        comment: "",
+        bodyTypes: [],
+        loadingTypes: [],
     });
 
-    let user;
-    promise.then((res) => {
-        user = res.data
-    })
-
-    // const [selectedOptionsBody, setSelectedOptionsBody] = useState([]);
-    // const [selectedOptionsLoading, setSelectedOptionsLoading] = useState([]);
-    //
-    // const handleMultiSelectChangeBody = (selectedOptions) => {
-    //     setSelectedOptionsBody(selectedOptions);
-    // };
-    //
-    // const handleMultiSelectChangeLoading = (selectedOptions) => {
-    //     setSelectedOptionsLoading(selectedOptions);
-    // };
-
-    let car = new Car();
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setCar(prevCar => ({
+            ...prevCar,
+            [name]: name === 'capacity' || name === 'volume' || name === 'length' || name === 'width' || name === 'height'
+                ? parseInt(value) || 0 // Преобразуем значение в число, если поле числовое
+                : value
+    }));
+};
+    const handlePhoneChange = (value) => {
+        setCar(prevCar => ({
+            ...prevCar,
+            phone: Number(value) // Преобразуем значение в число
+        }));
+    };
 
     const [redirect, setRedirect] = useState(false);
 
@@ -48,31 +156,23 @@ const AddCar = () => {
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        await fetch("http://localhost:5036/api/Car/Add", {
+        const response = await fetch("http://localhost:5036/api/Car/Add", {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                name: car.name,
-                capacity: car.capacity,
-                volume: car.volume,
-                length: car.length,
-                width: car.width,
-                height: car.height,
-                whereFrom: car.whereFrom,
-                whereTo: car.whereTo,
-                readyFrom: car.readyFrom,
-                readyTo: car.readyTo,
-                phone: car.phoneNumber,
-                comment: car.comment,
-                bodyTypes: car.bodyTypes,
-                loadingTypes: car.loadingTypes,
-            })
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(car)
         });
-        setRedirect(true);
+        if (response.ok) {
+            setRedirect(true);
+        } else {
+            console.log("Error with addCargo");
+        }
     }
 
-    if(redirect) {
-        return <NavLink to={"/profile"}/>
+    if (redirect) {
+        return <Navigate to={"/cars"} />
     }
 
     return (
@@ -80,81 +180,103 @@ const AddCar = () => {
             <form className="card p-5 shadow-sm" action="#" method="post" onSubmit={submit}>
                 <div className="mb-3">
                     <label className="carAdd__form-text" htmlFor="car">Автомобиль</label>
-                    <input type="text" name="car" id="car" className="form-control" required
-                        onChange={e => car.setName(e.target.value)}/>
+                    <input type="text" name="name" id="car" className="form-control" required
+                           onChange={handleInputChange}/>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
-                        <label className="carAdd__form-text">Тип кузова:</label>
-                        <SelectBody value={car.bodyTypes} onChange={car.handleMultiSelectChangeBody}/>
+                        <label className="carAdd__form-text" htmlFor="bodyType">Тип кузова:</label>
+                        <SelectBody value={selectedOptionsBody} onChange={handleMultiSelectChangeBody}/>
                     </div>
                     <div className="col">
                         <label className="carAdd__form-text" htmlFor="loadingType">Тип загрузки:</label>
-                        <SelectLoading value={car.handleMultiSelectChangeLoading} onChange={car.handleMultiSelectChangeLoading}/>
+                        <SelectLoading value={selectedOptionsLoading} onChange={handleMultiSelectChangeLoading}/>
                     </div>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
-                        <label className="carAdd__form-text carAdd__label-row-min" htmlFor="capacity">Грузоподъемность, т:</label>
-                        <input type="number" step="any" min="0" className="form-control" id="capacity" name="capacity" required
-                            onChange={e => car.setCapacity(e.target.value)}/>
+                        <label className="carAdd__form-text carAdd__label-row-min" htmlFor="capacity">Грузоподъемность,
+                            т:</label>
+                        <input type="number" step="any" min="0" className="form-control" id="capacity" name="capacity"
+                               required
+                               onChange={handleInputChange}/>
                     </div>
                     <div className="col">
                         <label className="carAdd__form-text carAdd__label-row-min" htmlFor="volume">Объем, м^3:</label>
-                        <input type="number" step="any" min="0" className="form-control" id="volume" name="volume" required
-                            onChange={e => car.setVolume(e.target.value)}/>
+                        <input type="number" step="any" min="0" className="form-control" id="volume" name="volume"
+                               required
+                               onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div className="mb-3 row">
                     <div className="col">
-                        <label className="carAdd__form-text carAdd__label-row" htmlFor="length">Внутренняя длина кузова:</label>
-                        <input type="number" step="any" min="0" className="form-control carAdd__form-text" id="length" name="length" required
-                            onChange={e => car.setLength(e.target.value)}/>
+                        <label className="carAdd__form-text carAdd__label-row" htmlFor="length">Внутренняя длина
+                            кузова:</label>
+                        <input type="number" step="any" min="0" className="form-control carAdd__form-text" id="length"
+                               name="length" required
+                               onChange={handleInputChange}/>
                     </div>
                     <div className="col">
-                        <label className="carAdd__form-text carAdd__label-row" htmlFor="width">Внутренняя ширина кузова:</label>
-                        <input type="number" step="any" min="0" className="form-control carAdd__form-text" id="width" name="width" required
-                            onChange={e => car.setWidth(e.target.value)}/>
+                        <label className="carAdd__form-text carAdd__label-row" htmlFor="width">Внутренняя ширина
+                            кузова:</label>
+                        <input type="number" step="any" min="0" className="form-control carAdd__form-text" id="width"
+                               name="width" required
+                               onChange={handleInputChange}/>
                     </div>
                     <div className="col">
-                        <label className="carAdd__form-text carAdd__label-row" htmlFor="height">Внутренняя высота кузова:</label>
-                        <input type="number" step="any" min="0" className="form-control carAdd__form-text" id="height" name="height" required
-                            onChange={e => car.setHeight(e.target.value)}/>
-                    </div>
-                </div>
-                <div className="mb-3 row">
-                    <div className="col">
-                        <label className="carAdd__form-text" htmlFor="place_from">Откуда:</label>
-                        <input type="text" className="form-control" id="place_from" name="place_from" required
-                            onChange={e => car.setWhereFrom(e.target.value)}/>
-                    </div>
-                    <div className="col">
-                        <label className="carAdd__form-text" htmlFor="place_to">Куда:</label>
-                        <input type="text" className="form-control" id="place_to" name="place_to" required
-                            onChange={e => car.setWhereTo(e.target.value)}/>
-                    </div>
-                </div>
-                <div className="mb-3 row">
-                    <div className="col">
-                        <label className="carAdd__form-text" htmlFor="readyFrom">Готов к загрузке с:</label>
-                        <input type="date" min={date} className="form-control" id="readyFrom" name="readyFrom" required
-                            onChange={e => car.setReadyFrom(e.target.value)}/>
-                    </div>
-                    <div className="col">
-                        <label className="carAdd__form-text" htmlFor="readyTo">Готов к разгрузке:</label>
-                        <input type="date" min={toDate} className="form-control" id="readyTo" name="readyTo" required
-                            onChange={e => car.setReadyTo(e.target.value)}/>
+                        <label className="carAdd__form-text carAdd__label-row" htmlFor="height">Внутренняя высота
+                            кузова:</label>
+                        <input type="number" step="any" min="0" className="form-control carAdd__form-text" id="height"
+                               name="height" required
+                               onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div className="mb-3">
-                    <Phone value={car.phoneNumber} onChange={car.setPhoneNumber}/>
+                    <label className="carAdd__form-text" htmlFor="whereFrom">Откуда:</label>
+                    <input type="text" name="whereFrom" id="whereFrom" className="form-control" required
+                           onChange={handleInputChange}/>
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="comment" className="carAdd__form-label carAdd__form-text">Комментарий:</label>
-                    <textarea className="form-control" id="comment" name="comment" rows="5"
-                              onChange={e => car.setComment(e.target.value)}></textarea>
+                    <label className="carAdd__form-text" htmlFor="whereTo">Куда:</label>
+                    <input type="text" name="whereTo" id="whereTo" className="form-control" required
+                           onChange={handleInputChange}/>
                 </div>
-                <button type="submit" className="btn btn-dark carAdd__form-text">Отправить</button>
+                <div className="mb-3 row">
+                    <div className="col-md-6">
+                        <label className="cargoAdd__form-text" htmlFor="loadingDate">Дата загрузки:</label>
+                        <input type="date" min={date} className="form-control" id="readyFrom" name="readyFrom"
+                               required
+                               onChange={handleInputChange}/>
+                    </div>
+                    <div className="col-md-6">
+                        <label className="cargoAdd__form-text" htmlFor="unloadingDate">Дата разгрузки:</label>
+                        <input type="date" min={date} className="form-control" id="readyTo" name="readyTo"
+                               required
+                               onChange={handleInputChange}/>
+                    </div>
+                </div>
+                {/*<div className="mb-3">*/}
+                {/*    <label className="carAdd__form-text" htmlFor="readyFrom">Готовность с:</label>*/}
+                {/*    <input type="date" name="readyFrom" id="readyFrom" className="form-control" defaultValue={date} required*/}
+                {/*        onChange={handleInputChange} />*/}
+                {/*</div>*/}
+                {/*<div className="mb-3">*/}
+                {/*    <label className="carAdd__form-text" htmlFor="readyTo">Готовность по:</label>*/}
+                {/*    <input type="date" name="readyTo" id="readyTo" className="form-control" defaultValue={toDate} required*/}
+                {/*        onChange={handleInputChange} />*/}
+                {/*</div>*/}
+                <div className="mb-3">
+                    {/*(value) => setCar({ ...car, phone: value })*/}
+                    <Phone phone={car.phone} onChange={handlePhoneChange}/>
+                </div>
+                <div className="mb-3">
+                    <label className="carAdd__form-text" htmlFor="comment">Комментарий:</label>
+                    <input type="text" name="comment" id="comment" className="form-control"
+                           onChange={handleInputChange}/>
+                </div>
+                <div className="text-center">
+                    <button className="btn btn-primary" type="submit">Добавить</button>
+                </div>
             </form>
         </div>
     );

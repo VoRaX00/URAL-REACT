@@ -47,7 +47,6 @@ const EditProfile = () => {
             },
             body: JSON.stringify({
                 id: user.id,
-                password: "1111", //user.password,
                 userName: user.userName,
                 email: user.email,
                 phoneNumber: user.phoneNumber,
@@ -64,7 +63,7 @@ const EditProfile = () => {
 
     return (
         <div className="container min-vh-100 d-flex justify-content-center align-items-center">
-            <form className="card p-5" action="#" encType="multipart/form-data" method="post" onSubmit={submit}>
+            <form className="card p-5" encType="multipart/form-data" method="post" onSubmit={submit}>
                 <div className="mb-3">
                     <label htmlFor="exampleInputName" className="form-label form-text">Имя</label>
                     <input

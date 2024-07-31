@@ -1,47 +1,64 @@
-import "./../styles/css/Cargo.css"
+import "./../styles/css/Cargo.css";
 import CargoInfo from "../components/cargo/Cargo";
-import React, {SyntheticEvent, useEffect, useState} from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
-
-const cargoData = [
-  { name: 'Cargo 1', weight: 10, year: 2020, price: '$20,000', comment: 'Комментарий'},
-  { name: 'Cargo 2', weight: 20, year: 2021, price: '$22,000', comment: 'Комментарий'},
-  { name: 'Cargo 3', weight: 30, year: 2019, price: '$18,000', comment: 'Комментарий'},
-  { name: 'Cargo 4', weight: 40, year: 2022, price: '$25,000', comment: 'Комментарий'},
-];
+import Pagination from "../components/Pagination/Pagination";
 
 const Cargo = () => {
     const [name, setName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(8);
+    const [postsPerPage, setPostsPerPage] = useState(4);
+    const [totalCargo, setTotalCargo] = useState(0);
     const [cargo, setCargo] = useState([]);
 
     const getAllCargo = async () => {
-        const response = await axios.get("http://localhost:5036/api/Cargo/GetAll")
-        setCargo(response.data);
-    }
-
-    const submit = async (e: SyntheticEvent) => {
-        try{
-            let response;
-            if(name !== ''){
-                response = await axios.get("http://localhost:5036/api/Car/GetByName", {
-                    params: {
-                        name: name,
-                        page: currentPage,
-                    }
-                })
-                setCargo(response.data);
-            }
-            else {
-                await getAllCargo()
+        try {
+            const response = await axios.get("http://localhost:5036/api/Cargo/Get", {
+                params: { pageNumber: currentPage }
+            });
+            if (response.data && response.data.items) {
+                setCargo(response.data.items);
+                setTotalCargo(response.data.totalCount); // Предполагаем, что сервер возвращает общее количество элементов
+            } else {
+                console.log("No data received");
             }
         } catch (error) {
-            console.log('Error getting cargo', error);
+            console.log('Error getting all cargo', error);
         }
     }
-    getAllCargo()
-    // useEffect(getAllCargo, []);
+
+    const getCargoByName = async (name) => {
+        try {
+            const response = await axios.get("http://localhost:5036/api/Cargo/GetByName", {
+                params: { name: name, pageNumber: currentPage }
+            });
+            if (response.data && response.data.items.length > 0) {
+                setCargo(response.data.items);
+                setTotalCargo(response.data.totalCount); // Предполагаем, что сервер возвращает общее количество элементов
+            } else {
+                console.log("No cargo found with the given name");
+            }
+        } catch (error) {
+            console.log('Error getting cargo by name', error);
+        }
+    }
+
+    useEffect(() => {
+        if (name === '') {
+            getAllCargo();
+        } else {
+            getCargoByName(name);
+        }
+    }, [currentPage, name]);
+
+    const submit = (e: SyntheticEvent) => {
+        e.preventDefault();
+        if (name !== '') {
+            getCargoByName(name);
+        } else {
+            getAllCargo();
+        }
+    }
 
     return (
         <>
@@ -53,7 +70,7 @@ const Cargo = () => {
                             <form action="#" method="post" onSubmit={submit}>
                                 <div className="input-group cargo__search-container">
                                     <input type="text" className="form-control cargo__search-input" name="search_input"
-                                           id="search-input" placeholder="Поиск..."/>
+                                           id="search-input" placeholder="Поиск..." value={name} onChange={(e) => setName(e.target.value)} />
                                     <div className="input-group-append">
                                         <button className="btn btn-dark cargo__search-btn" type="submit">Поиск</button>
                                     </div>
@@ -64,15 +81,23 @@ const Cargo = () => {
                 </div>
 
                 <div className="container cargo__container cargo__cargo-info-grid">
-                    {cargo.length > 0 ? (cargo.map((c, index) => (
-                        <CargoInfo key={index} cargo={c}/>
-                    ))) : (
+                    {cargo.length > 0 ? (
+                        cargo.map((cargo, index) => (
+                        <CargoInfo key={index} cargo={cargo} />
+                    ))
+                    ) : (
                         <p>Загрузка...</p>
                     )}
                 </div>
             </div>
+            <Pagination
+                totalPosts={totalCargo}
+                postsPerPage={postsPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+            />
         </>
-    )
+    );
 }
 
-export default Cargo
+export default Cargo;
