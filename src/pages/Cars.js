@@ -1,49 +1,65 @@
 import "./../styles/css/Cars.css"
-import Car from "../components/сar/Car"
+import Car from "../components/car/Car"
 import {SyntheticEvent, useEffect, useState} from "react";
-import axios, {get} from "axios";
+import axios from "axios";
 import Pagination from "../components/Pagination/Pagination";
-
-const carData = [
-  { name: 'Car 1', model: 'Model A', year: 2020, price: '$20,000', comment: 'Комментарий'},
-  { name: 'Car 2', model: 'Model B', year: 2021, price: '$22,000', comment: 'Комментарий'},
-  { name: 'Car 3', model: 'Model C', year: 2019, price: '$18,000', comment: 'Комментарий'},
-  { name: 'Car 4', model: 'Model D', year: 2022, price: '$25,000', comment: 'Комментарий'},
-];
 
 
 const Cars = () => {
     const [name, setName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(8);
+    const [postsPerPage] = useState(4);
+    const [totalCars, setTotalCars] = useState(0);
     const [cars, setCars] = useState([]);
 
     const getAllCars = async () => {
-        const response = await axios.get("http://localhost:5036/api/Car/GetAll")
-        setCars(response.data);
-    }
-
-    const submit = async (e: SyntheticEvent) => {
-        try{
-            let response;
-            if(name !== ''){
-                response = await axios.get("http://localhost:5036/api/Car/GetByName", {
-                    params: {
-                        name: name,
-                        page: currentPage,
-                    }
-                })
-                setCars(response.data);
-            }
-            else {
-                await getAllCars()
+        try {
+            const response = await axios.get("http://localhost:5036/api/Car/Get", {
+                params: { pageNumber: currentPage }
+            });
+            if (response.data && response.data.items) {
+                setCars(response.data.items);
+                setTotalCars(response.data.totalCount); // Предполагаем, что сервер возвращает общее количество элементов
+            } else {
+                console.log("No data received");
             }
         } catch (error) {
-            console.log('Error getting cars', error);
+            console.log('Error getting all cargo', error);
         }
     }
 
-    useEffect(getAllCars, []);
+    const getCarsByName = async (name) => {
+        try {
+            const response = await axios.get("http://localhost:5036/api/Car/GetByName", {
+                params: { name: name, pageNumber: currentPage }
+            });
+            if (response.data && response.data.items.length > 0) {
+                setCars(response.data.items);
+                setTotalCars(response.data.totalCount); // Предполагаем, что сервер возвращает общее количество элементов
+            } else {
+                console.log("No cargo found with the given name");
+            }
+        } catch (error) {
+            console.log('Error getting cargo by name', error);
+        }
+    }
+
+    useEffect(() => {
+        if (name === '') {
+            getAllCars();
+        } else {
+            getCarsByName(name);
+        }
+    }, [currentPage, name]);
+
+    const submit = (e: SyntheticEvent) => {
+        e.preventDefault();
+        if (name !== '') {
+            getCarsByName(name);
+        } else {
+            getAllCars();
+        }
+    }
 
     return(
         <>
@@ -55,7 +71,7 @@ const Cars = () => {
                             <form action="#" method="post" onSubmit={submit}>
                                 <div className="input-group cars__search-container">
                                     <input type="text" className="form-control cars__search-input" name="search_input"
-                                           id="search-input" placeholder="Поиск..."/>
+                                           id="search-input" value={name} onChange={setName} placeholder="Поиск..."/>
                                     <div className="input-group-append">
                                         <button className="btn btn-dark cars__search-btn" type="submit">Поиск</button>
                                     </div>
@@ -64,8 +80,6 @@ const Cars = () => {
                         </div>
                     </div>
                 </div>
-
-
                 <div className="container cars__container cars__car-info-grid">
                     {cars.length > 0 ? (
                         cars.map((car, index) => (
@@ -77,11 +91,12 @@ const Cars = () => {
                 </div>
             </div>
             <Pagination
-                totalPosts={cars.length}
+                totalPosts={totalCars}
                 posts={postsPerPage}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
             />
+            <br/>
         </>
     )
 }
