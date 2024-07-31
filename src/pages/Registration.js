@@ -17,7 +17,7 @@ const Registration = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "clientUri": "http://localhost:3000/auth/",
+                "clientUri": "http://localhost:3000/confirmEmail/",
             },
             body: JSON.stringify({
                 password: password,
