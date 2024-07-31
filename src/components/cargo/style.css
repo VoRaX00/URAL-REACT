@@ -10,6 +10,16 @@
   transition: box-shadow 0.3s ease; /* Добавляем плавный переход для тени */
 }
 
+.respond-button {
+    bottom: 20px;
+    background-color: #217C6F;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
 
 .cargo-info-container:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* Эффект тени при наведении */

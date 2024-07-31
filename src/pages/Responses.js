@@ -1,40 +1,66 @@
 import "../styles/css/Responses.css"
 import CargoInfo from "../components/cargo/Cargo";
-
-const cargoData = [
-  { name: 'Cargo 1', weight: 10, year: 2020, price: '$20,000', comment: 'Комментарий'},
-  { name: 'Cargo 2', weight: 20, year: 2021, price: '$22,000', comment: 'Комментарий'},
-  { name: 'Cargo 3', weight: 30, year: 2019, price: '$18,000', comment: 'Комментарий'},
-  { name: 'Cargo 4', weight: 40, year: 2022, price: '$25,000', comment: 'Комментарий'},
-];
-
+import Cookies from "universal-cookie";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import Car from "../components/car/Car";
+import Pagination from "../components/Pagination/Pagination";
 
 const Responses = () => {
+    const token = new Cookies().get("jwt_authorization");
+    const [currentPageResponses, setCurrentPageResponses] = useState(1);
+    const [postsPerPageResponses] = useState(4);
+    const [totalResponses, setTotalResponses] = useState(0);
+    const [responses, setResponses] = useState([]);
+
+    const getAllResponses= async () => {
+        try {
+            const response = await axios.get("http://localhost:5036/api/Notifications/GetUserResponses", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: {
+                    pageNumber: currentPageResponses,
+                }
+            });
+            if (response.data && response.data.items) {
+                setResponses(response.data.items);
+                console.log(responses)
+                setTotalResponses(response.data.totalCount);
+            } else {
+                console.log("No data received");
+            }
+        } catch (error) {
+            console.log('Error getting all cargo', error);
+        }
+    }
+
+    useEffect(() => {
+            getAllResponses();
+    }, [currentPageResponses]);
+
     return (
         <>
             <br/>
             <div className="container content-with-filters">
-                <div className="container responses__container responses__search-from form-margin">
-                    <div className="row justify-content-center">
-                        <div className="col-md-8">
-                            <form action="#" method="post">
-                                <div className="input-group responses__search-container">
-                                    <input type="text" className="form-control responses__search-input" name="search_input"
-                                           id="search-input" placeholder="Поиск..."/>
-                                    <div className="input-group-append">
-                                        <button className="btn btn-dark responses__search-btn" type="submit">Поиск</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
                 <div className="container responses__container responses__responses-info-grid">
-                    {cargoData.map((cargo, index) => (
-                        <CargoInfo key={index} cargo={cargo}/>
-                    ))}
+                    {responses.length > 0 ? (
+                        responses.map((response, index) => (response.notifyType === 0 ? (
+                                <CargoInfo key={index} cargo={response.notification}/>
+                            ) : (
+                                <Car key={index} car={response.notification}/>
+                            )
+                        ))) : (
+                        <p>Загрузка...</p>
+                    )}
                 </div>
+                <Pagination
+                    totalPosts={totalResponses}
+                    postsPerPage={postsPerPageResponses}
+                    setCurrentPage={setCurrentPageResponses}
+                    currentPage={currentPageResponses}
+                />
+                <br/>
             </div>
         </>
     )
