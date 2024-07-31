@@ -58,6 +58,7 @@ const Cars = () => {
             getCarsByName(name);
         } else {
             getAllCars();
+            console.log(cars)
         }
     }
 

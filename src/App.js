@@ -14,6 +14,7 @@ import EditProfile from "./pages/EditProfile";
 import Notifications from "./pages/Notifications";
 import Match from "./pages/Match";
 import Responses from "./pages/Responses";
+import ConfirmEmail from "./pages/ConfirmEmail";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/" element={<MainPage/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/registration" element={<Registration/>}/>
+                    <Route path="/confirmEmail" element={<ConfirmEmail/>}/>
                     <Route path="/cars" element={<CarsPage/>}/>
                     <Route path="/cargo" element={<CargoPage/>}/>
                     <Route path="/add-car" element={<AddCar/>}/>
