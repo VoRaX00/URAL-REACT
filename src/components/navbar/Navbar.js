@@ -1,11 +1,11 @@
-import notify from "./../../img/notification.svg"
-import user from "./../../img/user-regular.svg"
-import "./../../styles/css/style.css"
-import "./style.css"
+import notify from "./../../img/notification.svg";
+import user from "./../../img/user-regular.svg";
+import "./../../styles/css/style.css";
+import "./style.css";
 import CustomDropdown from "../dropdown/Dropdown";
 
-import {NavLink, useNavigate} from "react-router-dom";
-import Cookies from "universal-cookie";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const notification = [
   { value: 'Мои уведомления', label: 'Мои уведомления', url: '/notifications' },
@@ -24,6 +24,7 @@ const unauthorized = [
 ];
 
 const Navbar = () => {
+    const { isAuthenticated, logout } = useAuth();
     const navigate = useNavigate();
 
     const handleDropdownChangeNotify = (selectedOption) => {
@@ -31,77 +32,68 @@ const Navbar = () => {
     };
 
     const handleDropdownChangeProfile = (selectedOption) => {
-        navigate(selectedOption.url);
-    }
+        if (selectedOption.action === 'logout') {
+            logout();
+            navigate("/login");
+        } else {
+            navigate(selectedOption.url);
+        }
+    };
 
-    const logout = async() => {
-        new Cookies().remove("jwt_authorization");
-        navigate("/login")
-    }
-
-    const cookie = new Cookies().get("jwt_authorization");
-    let menu;
-    if (cookie === undefined) {
-        menu = (
-            <>
-                <ul className="navbar-nav me-auto mb-2 mb-lg- top-menu">
-                    <li className="nav-item">
-                        <NavLink to={"/login"} className="nav-link">Найти машину</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to={"/login"} className="nav-link">Найти груз</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to={"/login"} className="nav-link">Разместить машину</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to={"/login"} className="nav-link">Разместить груз</NavLink>
-                    </li>
-                </ul>
-                <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <CustomDropdown
-                        options={unauthorized}
-                        onChange={handleDropdownChangeProfile}
-                        dropdownIndicatorImg={user}
-                    />
-                </ul>
-            </>
-        )
-    }
-    else{
-        menu = (
-            <>
-                <ul className="navbar-nav me-auto mb-2 mb-lg- top-menu">
-                    <li className="nav-item">
-                        <NavLink to={"/cars"} className="nav-link">Найти машину</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to={"/cargo"} className="nav-link">Найти груз</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to={"/add-car"} className="nav-link">Разместить машину</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to={"/add-cargo"} className="nav-link">Разместить груз</NavLink>
-                    </li>
-                </ul>
-                <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <CustomDropdown
-                        options={notification}
-                        onChange={handleDropdownChangeNotify}
-                        dropdownIndicatorImg={notify}
-                    />
-                    <CustomDropdown
-                        options={profile}
-                        onChange={handleDropdownChangeProfile}
-                        dropdownIndicatorImg={user}
-                        logout={logout}
-                    />
-                </ul>
-            </>
-        )
-    }
-
+    const menu = isAuthenticated ? (
+        <>
+            <ul className="navbar-nav me-auto mb-2 mb-lg- top-menu">
+                <li className="nav-item">
+                    <NavLink to={"/cars"} className="nav-link">Найти машину</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink to={"/cargo"} className="nav-link">Найти груз</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink to={"/add-car"} className="nav-link">Разместить машину</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink to={"/add-cargo"} className="nav-link">Разместить груз</NavLink>
+                </li>
+            </ul>
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                <CustomDropdown
+                    options={notification}
+                    onChange={handleDropdownChangeNotify}
+                    dropdownIndicatorImg={notify}
+                />
+                <CustomDropdown
+                    options={profile}
+                    onChange={handleDropdownChangeProfile}
+                    dropdownIndicatorImg={user}
+                />
+            </ul>
+        </>
+    ) : (
+        <>
+            <ul className="navbar-nav me-auto mb-2 mb-lg- top-menu">
+                <li className="nav-item">
+                    <NavLink to={"/login"} className="nav-link">Найти машину</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink to={"/login"} className="nav-link">Найти груз</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink to={"/login"} className="nav-link">Разместить машину</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink to={"/login"} className="nav-link">Разместить груз</NavLink>
+                </li>
+            </ul>
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                <CustomDropdown
+                    options={unauthorized}
+                    onChange={handleDropdownChangeProfile}
+                    dropdownIndicatorImg={user}
+                />
+            </ul>
+        </>
+    );
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark top-menu">
@@ -115,6 +107,6 @@ const Navbar = () => {
             </div>
         </nav>
     );
-}
+};
 
 export default Navbar;

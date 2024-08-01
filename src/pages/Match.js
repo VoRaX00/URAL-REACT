@@ -36,8 +36,8 @@ const Match = () => {
     }
 
     useEffect(() => {
-            getAllMatches();
-    }, [currentPageMatch]);
+        getAllMatches();
+    }, [currentPageMatch, getAllMatches]);
 
     return(
         <>

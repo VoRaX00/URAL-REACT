@@ -1,9 +1,10 @@
 import React from "react";
 import '../styles/css/Login.css'
-import {Navigate, NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {SyntheticEvent} from "react";
 import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
+import {useAuth} from "../context/AuthContext";
 
 const addTokenInCookie = (token) => {
     const cookies = new Cookies()
@@ -23,6 +24,7 @@ const Login = () => {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const navigate = useNavigate()
+    const {login} = useAuth()
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -37,7 +39,8 @@ const Login = () => {
         if(response.ok) {
             const token = await response.text();
             if(token) {
-                addTokenInCookie(token)
+                login(token)
+                //addTokenInCookie(token)
                 navigate("/")
             }
         }
