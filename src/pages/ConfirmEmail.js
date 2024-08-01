@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useSearchParams} from "react-router-dom";
 import axios from "axios";
-import user from "../Entity/User";
+import user from "../entity/User";
 
 const ConfirmEmailPage = () => {
     const [searchParams] = useSearchParams();

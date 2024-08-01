@@ -38,7 +38,7 @@ const Car = ({car}) => {
                     <p>Ширина: {car.length}</p>
                     <p>Высота: {car.height}</p>
                     <p>Откуда: {car.whereFrom} Куда: {car.whereTo}</p>
-                    <p>Загрузка: {car.whereFrom} Разгрузка: {car.whereTo}</p>
+                    <p>Загрузка: {car.readyFrom} Разгрузка: {car.readyTo}</p>
                     <p>Телефон: {car.phone}</p>
                 </div>
             ) : (

@@ -1,6 +1,6 @@
 import React, {SyntheticEvent, useState} from "react";
 import '../styles/css/Registration.css'
-import {Navigate, NavLink} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import Phone from "../components/phone/Phone";
 
 const Registration = () => {

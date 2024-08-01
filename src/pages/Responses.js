@@ -36,8 +36,8 @@ const Responses = () => {
     }
 
     useEffect(() => {
-            getAllResponses();
-    }, [currentPageResponses]);
+        getAllResponses();
+    }, [currentPageResponses, getAllResponses]);
 
     return (
         <>

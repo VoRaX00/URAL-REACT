@@ -37,8 +37,8 @@ const Notifications = () => {
     }
 
     useEffect(() => {
-            getAllNotifications();
-    }, [currentPageNotify]);
+        getAllNotifications();
+    }, [currentPageNotify, getAllNotifications]);
 
     return (
         <>
