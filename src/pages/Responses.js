@@ -1,7 +1,7 @@
 import "../styles/css/Responses.css"
 import CargoInfo from "../components/cargo/Cargo";
 import Cookies from "universal-cookie";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Car from "../components/car/Car";
 import Pagination from "../components/Pagination/Pagination";
@@ -13,7 +13,7 @@ const Responses = () => {
     const [totalResponses, setTotalResponses] = useState(0);
     const [responses, setResponses] = useState([]);
 
-    const getAllResponses= async () => {
+    const getAllResponses = useCallback(async () => {
         try {
             const response = await axios.get("http://localhost:5036/api/Notifications/GetUserResponses", {
                 headers: {
@@ -23,17 +23,16 @@ const Responses = () => {
                     pageNumber: currentPageResponses,
                 }
             });
-            if (response.data && response.data.items) {
+            if (response.data && response.data.items.length > 0) {
                 setResponses(response.data.items);
-                console.log(responses)
                 setTotalResponses(response.data.totalCount);
-            } else {
+            } else{
                 console.log("No data received");
             }
         } catch (error) {
             console.log('Error getting all cargo', error);
         }
-    }
+    }, [token, currentPageResponses]);
 
     useEffect(() => {
         getAllResponses();
@@ -45,10 +44,10 @@ const Responses = () => {
             <div className="container content-with-filters">
                 <div className="container responses__container responses__responses-info-grid">
                     {responses.length > 0 ? (
-                        responses.map((response, index) => (response.notifyType === 0 ? (
-                                <CargoInfo key={index} cargo={response.notification}/>
+                        responses.map((response, index) => (response.car === null ? (
+                                <CargoInfo key={index} cargo={response.cargo}/>
                             ) : (
-                                <Car key={index} car={response.notification}/>
+                                <Car key={index} car={response.car}/>
                             )
                         ))) : (
                         <p>Загрузка...</p>

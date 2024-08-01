@@ -13,7 +13,7 @@ const Match = () => {
     const [totalMatch, setTotalMatch] = useState(0);
     const [matches, setMatches] = useState([]);
 
-    const getAllMatches= async () => {
+    const getAllMatches = async () => {
         try {
             const response = await axios.get("http://localhost:5036/api/Notifications/GetUserMatch", {
                 headers: {
@@ -23,7 +23,7 @@ const Match = () => {
                     pageNumber: currentPageMatch,
                 }
             });
-            if (response.data && response.data.items) {
+            if (response.data && response.data.items.length > 0) {
                 setMatches(response.data.items);
                 console.log(matches)
                 setTotalMatch(response.data.totalCount);

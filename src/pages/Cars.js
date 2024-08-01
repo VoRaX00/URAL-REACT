@@ -1,6 +1,6 @@
 import "./../styles/css/Cars.css"
 import Car from "../components/car/Car"
-import {SyntheticEvent, useEffect, useState} from "react";
+import {SyntheticEvent, useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Pagination from "../components/Pagination/Pagination";
 
@@ -12,7 +12,7 @@ const Cars = () => {
     const [totalCars, setTotalCars] = useState(0);
     const [cars, setCars] = useState([]);
 
-    const getAllCars = async () => {
+    const getAllCars = useCallback(async () => {
         try {
             const response = await axios.get("http://localhost:5036/api/Car/Get", {
                 params: { pageNumber: currentPage }
@@ -26,31 +26,32 @@ const Cars = () => {
         } catch (error) {
             console.log('Error getting all cargo', error);
         }
-    }
+    })
 
-    const getCarsByName = async (name) => {
+    const getCarsByName = useCallback(async (name) => {
         try {
             const response = await axios.get("http://localhost:5036/api/Car/GetByName", {
                 params: { name: name, pageNumber: currentPage }
             });
             if (response.data && response.data.items.length > 0) {
                 setCars(response.data.items);
-                setTotalCars(response.data.totalCount); // Предполагаем, что сервер возвращает общее количество элементов
+                setTotalCars(response.data.totalCount);
             } else {
                 console.log("No cargo found with the given name");
             }
         } catch (error) {
             console.log('Error getting cargo by name', error);
         }
-    }
+    })
 
     useEffect(() => {
         if (name === '') {
             getAllCars();
+            console.log(cars)
         } else {
             getCarsByName(name);
         }
-    }, [currentPage, name]);
+    }, [cars, currentPage, getAllCars, getCarsByName, name]);
 
     const submit = (e: SyntheticEvent) => {
         e.preventDefault();
