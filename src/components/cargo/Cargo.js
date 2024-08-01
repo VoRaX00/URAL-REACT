@@ -19,12 +19,12 @@ const Cargo = ({ cargo }) => {
             }
 
             await axios.post("http://localhost:5036/api/NotifyCargo/Add", {
-                firstUserComment: "",
+                firstUserComment: "empty",
                 secondUserComment: cargo.comment,
                 cargoId: cargo.id,
                 firstUserId: userId,
                 secondUserId: cargo.userId,
-            });
+            }, {headers: {"Authorization": `Bearer ${token}`}});
         } catch (err) {
             console.log(err);
         }
