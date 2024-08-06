@@ -3,7 +3,7 @@ import './style.css';
 import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
 import axios from "axios";
-import ip from "../env";
+import ip from "../../env/env"
 
 const Car = ({car}) => {
     const [activeTab, setActiveTab] = useState('info');

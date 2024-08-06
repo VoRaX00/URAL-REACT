@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useSearchParams} from "react-router-dom";
 import axios from "axios";
-import ip from "../env";
+import ip from "../env/env";
 
 const ConfirmEmailPage = () => {
     const [searchParams] = useSearchParams();

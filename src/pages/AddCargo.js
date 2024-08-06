@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import Phone from "../components/phone/Phone";
 import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
-import ip from "../env";
+import ip from "../env/env";
 
 
 const AddCargo = () => {

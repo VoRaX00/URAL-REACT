@@ -2,7 +2,7 @@ import React, {SyntheticEvent, useState} from "react";
 import '../styles/css/Registration.css'
 import {Navigate} from "react-router-dom";
 import Phone from "../components/phone/Phone";
-import ip from "../env";
+import ip from "../env/env";
 
 const Registration = () => {
     const [name, setName] = React.useState("");
