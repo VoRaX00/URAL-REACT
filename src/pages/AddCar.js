@@ -6,6 +6,7 @@ import Phone from "../components/phone/Phone";
 import { Navigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import Cookies from "universal-cookie";
+import ip from "../env"
 
 const bodyTypesMap = {
   'тентовый': 1,
@@ -156,7 +157,7 @@ const AddCar = () => {
     const submit = async (e: SyntheticEvent) => {
         try {
             e.preventDefault();
-            const response = await fetch("http://localhost:5036/api/Car/Add", {
+            const response = await fetch(`http://${ip}:5036/api/Car/Add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

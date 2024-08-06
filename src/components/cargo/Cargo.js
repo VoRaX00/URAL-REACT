@@ -3,6 +3,7 @@ import './style.css';
 import axios from "axios";
 import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
+import ip from "../env";
 
 const Cargo = ({ cargo }) => {
     const [activeTab, setActiveTab] = useState('info');
@@ -18,7 +19,7 @@ const Cargo = ({ cargo }) => {
                 throw new Error("Id equals");
             }
 
-            await axios.post("http://localhost:5036/api/NotifyCargo/Add", {
+            await axios.post(`http://${ip}/api/NotifyCargo/Add`, {
                 firstUserComment: "empty",
                 secondUserComment: cargo.comment,
                 cargoId: cargo.id,

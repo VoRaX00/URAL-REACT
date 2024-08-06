@@ -2,6 +2,7 @@ import React, {SyntheticEvent, useState} from "react";
 import '../styles/css/Registration.css'
 import {Navigate} from "react-router-dom";
 import Phone from "../components/phone/Phone";
+import ip from "../env";
 
 const Registration = () => {
     const [name, setName] = React.useState("");
@@ -14,11 +15,11 @@ const Registration = () => {
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:5036/api/User/Register", {
+            const response = await fetch(`http://${ip}/api/User/Register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "clientUri": "http://localhost:3000/confirmEmail/",
+                    "clientUri": "http://bscar-go.ru/confirmEmail/",
                 },
                 body: JSON.stringify({
                     password: password,
@@ -29,15 +30,12 @@ const Registration = () => {
             });
 
             if (response.ok) {
-                if (password === passwordAccess && password.length > 0) {
+                if (password === passwordAccess && password.length > 0)
                     setRedirect(true);
-                } else {
+                else
                     throw "Пароли не совпадают"
-                }
-            } else {
+            } else
                 throw "Не удалось выполнить запрос"
-                // console.log("Error with registration");
-            }
         }
         catch (error) {
             console.log(error);

@@ -3,6 +3,7 @@ import CargoInfo from "../components/cargo/Cargo";
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
 import Pagination from "../components/Pagination/Pagination";
+import ip from "../env";
 
 const Cargo = () => {
     const [name, setName] = useState('');
@@ -13,7 +14,7 @@ const Cargo = () => {
 
     const getAllCargo = async () => {
         try {
-            const response = await axios.get("http://localhost:5036/api/Cargo/Get", {
+            const response = await axios.get(`http://${ip}/api/Cargo/Get`, {
                 params: { pageNumber: currentPage }
             });
             if (response.data && response.data.items) {
@@ -29,7 +30,7 @@ const Cargo = () => {
 
     const getCargoByName = async (name) => {
         try {
-            const response = await axios.get("http://localhost:5036/api/Cargo/GetByName", {
+            const response = await axios.get(`http://${ip}/api/Cargo/GetByName`, {
                 params: { name: name, pageNumber: currentPage }
             });
             if (response.data && response.data.items.length > 0) {

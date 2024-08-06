@@ -2,23 +2,8 @@ import React from "react";
 import '../styles/css/Login.css'
 import {NavLink, useNavigate} from "react-router-dom";
 import {SyntheticEvent} from "react";
-import Cookies from "universal-cookie";
-import {jwtDecode} from "jwt-decode";
 import {useAuth} from "../context/AuthContext";
-
-const addTokenInCookie = (token) => {
-    const cookies = new Cookies()
-    try {
-        const decodedToken = jwtDecode(token)
-        const data = new Date(decodedToken.exp * 1000)
-        cookies.set("jwt_authorization", token, {
-            expires: data,
-        });
-    }
-    catch(e) {
-        console.error('Error with addCookie',e);
-    }
-}
+import ip from "../env";
 
 const Login = () => {
     const [email, setEmail] = React.useState("");
@@ -29,7 +14,7 @@ const Login = () => {
     const submit = async (e: SyntheticEvent) => {
         try {
             e.preventDefault();
-            const response = await fetch("http://localhost:5036/api/User/Login", {
+            const response = await fetch(`http://${ip}/api/User/Login`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({

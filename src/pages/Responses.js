@@ -5,6 +5,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Car from "../components/car/Car";
 import Pagination from "../components/Pagination/Pagination";
+import ip from "../env";
 
 const Responses = () => {
     const token = new Cookies().get("jwt_authorization");
@@ -15,7 +16,7 @@ const Responses = () => {
 
     const getAllResponses = useCallback(async () => {
         try {
-            const response = await axios.get("http://localhost:5036/api/Notifications/GetUserResponses", {
+            const response = await axios.get(`http://${ip}/api/Notifications/GetUserResponses`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

@@ -5,6 +5,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Car from "../components/car/Car";
 import Pagination from "../components/Pagination/Pagination";
+import ip from "../env";
 
 const Match = () => {
     const token = new Cookies().get("jwt_authorization");
@@ -15,7 +16,7 @@ const Match = () => {
 
     const getAllMatches = async () => {
         try {
-            const response = await axios.get("http://localhost:5036/api/Notifications/GetUserMatch", {
+            const response = await axios.get(`http://${ip}/api/Notifications/GetUserMatch`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

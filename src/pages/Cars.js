@@ -3,7 +3,7 @@ import Car from "../components/car/Car"
 import {SyntheticEvent, useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Pagination from "../components/Pagination/Pagination";
-
+import ip from "../env";
 
 const Cars = () => {
     const [name, setName] = useState('');
@@ -14,7 +14,7 @@ const Cars = () => {
 
     const getAllCars = useCallback(async () => {
         try {
-            const response = await axios.get("http://localhost:5036/api/Car/Get", {
+            const response = await axios.get(`http://${ip}/api/Car/Get`, {
                 params: { pageNumber: currentPage }
             });
             if (response.data && response.data.items) {
@@ -30,7 +30,7 @@ const Cars = () => {
 
     const getCarsByName = useCallback(async (name) => {
         try {
-            const response = await axios.get("http://localhost:5036/api/Car/GetByName", {
+            const response = await axios.get(`http://${ip}/api/Car/GetByName`, {
                 params: { name: name, pageNumber: currentPage }
             });
             if (response.data && response.data.items.length > 0) {
