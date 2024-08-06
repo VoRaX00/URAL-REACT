@@ -5,7 +5,7 @@ import React, {useEffect, useState, useCallback} from "react";
 import Cookies from "universal-cookie";
 import Pagination from "../components/Pagination/Pagination";
 import Car from "../components/car/Car";
-import ip from "../env/env";
+import {ip} from "../env/env";
 
 const Notifications = () => {
     const token = new Cookies().get("jwt_authorization");

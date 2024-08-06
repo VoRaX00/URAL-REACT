@@ -2,7 +2,7 @@ import React, {SyntheticEvent, useState} from "react";
 import '../styles/css/Registration.css'
 import {Navigate} from "react-router-dom";
 import Phone from "../components/phone/Phone";
-import ip from "../env/env";
+import {ip} from "../env/env";
 
 const Registration = () => {
     const [name, setName] = React.useState("");
@@ -15,6 +15,7 @@ const Registration = () => {
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
         try {
+            console.log(`${ip.string}`)
             const response = await fetch(`http://${ip}/api/User/Register`, {
                 method: "POST",
                 headers: {

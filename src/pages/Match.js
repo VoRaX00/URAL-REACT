@@ -5,7 +5,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Car from "../components/car/Car";
 import Pagination from "../components/Pagination/Pagination";
-import ip from "../env/env";
+import {ip} from "../env/env";
 
 const Match = () => {
     const token = new Cookies().get("jwt_authorization");
