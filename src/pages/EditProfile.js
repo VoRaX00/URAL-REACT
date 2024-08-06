@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
+import ip from "../env";
 
 const getUser = async (token) => {
     const object = jwtDecode(token);
@@ -46,7 +47,7 @@ const EditProfile = () => {
         try {
             e.preventDefault();
             console.log(user)
-            await fetch("http://localhost:5036/api/User/Update", {
+            await fetch(`http://${ip}/api/User/Update`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

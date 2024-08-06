@@ -8,10 +8,11 @@ import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import Pagination from "../components/Pagination/Pagination";
+import ip from "../env";
 
 const getUser = async (token) => {
     const object = jwtDecode(token);
-    const response = await axios.get("http://localhost:5036/api/User/Get/" + object.Id, {
+    const response = await axios.get(`http://${ip}/api/User/Get/` + object.Id, {
         headers: {
             "Authorization": `Bearer ${token}`,
         },
@@ -62,7 +63,7 @@ const Profile = () => {
 
     const getAllCargo = async () => {
         try {
-            const response = await axios.get("http://localhost:5036/api/Cargo/GetByUserId", {
+            const response = await axios.get(`http://${ip}/api/Cargo/GetByUserId`, {
                 params: {
                     id: jwtDecode(token).Id,
                     pageNumber: currentPageCargo
@@ -86,7 +87,7 @@ const Profile = () => {
 
     const getAllCars = async () => {
         try {
-            const response = await axios.get("http://localhost:5036/api/Car/GetByUserId", {
+            const response = await axios.get(`http://${ip}/api/Car/GetByUserId`, {
                 params: {
                     id: jwtDecode(token).Id,
                     pageNumber: currentPageCars

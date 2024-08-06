@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import Phone from "../components/phone/Phone";
 import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
+import ip from "../env";
 
 
 const AddCargo = () => {
@@ -49,7 +50,7 @@ const AddCargo = () => {
     const submit = async (e: SyntheticEvent) => {
         try {
             e.preventDefault();
-            const response = await fetch("http://localhost:5036/api/Cargo/Add", {
+            const response = await fetch(`http://${ip}/api/Cargo/Add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
