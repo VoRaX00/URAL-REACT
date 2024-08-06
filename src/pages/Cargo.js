@@ -3,7 +3,7 @@ import CargoInfo from "../components/cargo/Cargo";
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
 import Pagination from "../components/Pagination/Pagination";
-import ip from "../env/env";
+import {ip} from "../env/env";
 
 const Cargo = () => {
     const [name, setName] = useState('');

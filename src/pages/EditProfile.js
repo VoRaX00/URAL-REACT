@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
-import ip from "../env/env";
+import {ip} from "../env/env";
 
 const getUser = async (token) => {
     const object = jwtDecode(token);

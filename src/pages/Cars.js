@@ -3,7 +3,7 @@ import Car from "../components/car/Car"
 import {SyntheticEvent, useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Pagination from "../components/Pagination/Pagination";
-import ip from "../env/env";
+import {ip} from "../env/env";
 
 const Cars = () => {
     const [name, setName] = useState('');
