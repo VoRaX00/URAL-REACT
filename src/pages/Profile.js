@@ -8,7 +8,7 @@ import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import Pagination from "../components/Pagination/Pagination";
-import ip from "../env";
+import ip from "../env/env";
 
 const getUser = async (token) => {
     const object = jwtDecode(token);

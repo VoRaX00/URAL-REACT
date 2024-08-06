@@ -3,7 +3,7 @@ import '../styles/css/Login.css'
 import {NavLink, useNavigate} from "react-router-dom";
 import {SyntheticEvent} from "react";
 import {useAuth} from "../context/AuthContext";
-import ip from "../env";
+import ip from "../env/env";
 
 const Login = () => {
     const [email, setEmail] = React.useState("");

@@ -6,7 +6,7 @@ import Phone from "../components/phone/Phone";
 import { Navigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import Cookies from "universal-cookie";
-import ip from "../env"
+import ip from "../env/env"
 
 const bodyTypesMap = {
   'тентовый': 1,
