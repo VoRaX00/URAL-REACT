@@ -157,7 +157,7 @@ const AddCar = () => {
     const submit = async (e: SyntheticEvent) => {
         try {
             e.preventDefault();
-            const response = await fetch(`http://${ip}:5036/api/Car/Add`, {
+            const response = await fetch(`http://${ip}/api/Car/Add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

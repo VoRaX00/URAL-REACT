@@ -8,7 +8,7 @@ import ip from "../env/env";
 
 const getUser = async (token) => {
     const object = jwtDecode(token);
-    const response = await axios.get("http://localhost:5036/api/User/Get/" + object.Id, {
+    const response = await axios.get(`http://${ip}/api/User/Get/` + object.Id, {
         headers: {
             "Authorization": `Bearer ${token}`,
         },
