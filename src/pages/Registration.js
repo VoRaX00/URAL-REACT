@@ -15,7 +15,7 @@ const Registration = () => {
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
         try {
-            console.log(`${ip.string}`)
+            console.log(ip)
             const response = await fetch(`http://${ip}/api/User/Register`, {
                 method: "POST",
                 headers: {
