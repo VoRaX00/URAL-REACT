@@ -1,24 +1,14 @@
 .car-info-container {
   flex: 1 1 calc(25% - 2%);
   margin: 1%;
-  padding: 15px;
+  padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Увеличиваем тень */
   background-color: #fff;
   box-sizing: border-box;
   transition: box-shadow 0.3s ease; /* Добавляем плавный переход для тени */
-}
-
-.respond-button {
-    bottom: 20px;
-    background-color: #217C6F;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
+  text-align: center; /* Центрируем текст */
 }
 
 .car-info-container:hover {
@@ -27,7 +17,7 @@
 
 .tabs {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   margin-bottom: 10px;
   border-bottom: 1px solid #ddd;
 }
@@ -53,12 +43,13 @@
 }
 
 .tab-content {
-  text-align: center;
+  text-align: left;
 }
 
 .tab-content-comment {
   text-align: left;
 }
+
 .car-info-container h3 {
   margin: 10px 0;
   font-size: 18px;
@@ -69,7 +60,221 @@
   color: #555;
 }
 
-.car-comment {
-  margin: 0;
-  color: #555;
+.info-section {
+  margin-bottom: 15px;
 }
+
+.info-section h3 {
+  font-size: 16px;
+  color: #333;
+}
+
+.info-section ul {
+  list-style-type: none; /* Убираем точки перед элементами списка */
+  padding: 0;
+}
+
+.info-section li {
+  background: #f9f9f9;
+  margin: 5px 0;
+  padding: 5px 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.respond-button {
+  background-color: #217C6F;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.respond-button:hover {
+  background-color: #1a635b;
+}
+
+.car-info-container h5 {
+  margin: 10px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+/*.car-info-container {*/
+/*  flex: 1 1 calc(25% - 2%);*/
+/*  margin: 1%;*/
+/*  padding: 15px;*/
+/*  border: 1px solid #ddd;*/
+/*  border-radius: 8px;*/
+/*  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); !* Увеличиваем тень *!*/
+/*  background-color: #fff;*/
+/*  box-sizing: border-box;*/
+/*  transition: box-shadow 0.3s ease; !* Добавляем плавный переход для тени *!*/
+/*}*/
+
+/*.respond-button {*/
+/*  bottom: 20px;*/
+/*  background-color: #217C6F;*/
+/*  color: white;*/
+/*  border: none;*/
+/*  padding: 10px 20px;*/
+/*  cursor: pointer;*/
+/*  border-radius: 5px;*/
+/*  font-weight: bold;*/
+/*}*/
+
+/*.car-info-container:hover {*/
+/*  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); !* Эффект тени при наведении *!*/
+/*}*/
+
+/*.tabs {*/
+/*  display: flex;*/
+/*  justify-content: space-around;*/
+/*  margin-bottom: 10px;*/
+/*  border-bottom: 1px solid #ddd;*/
+/*}*/
+
+/*.tab {*/
+/*  background: none;*/
+/*  border: none;*/
+/*  padding: 10px 20px;*/
+/*  cursor: pointer;*/
+/*  font-size: 16px;*/
+/*  color: #555;*/
+/*  transition: color 0.3s ease, border-bottom 0.3s ease;*/
+/*}*/
+
+/*.tab:hover {*/
+/*  color: #217C6F;*/
+/*}*/
+
+/*.tab.active {*/
+/*  font-weight: bold;*/
+/*  color: #217C6F;*/
+/*  border-bottom: 2px solid #217C6F;*/
+/*}*/
+
+/*.tab-content {*/
+/*  text-align: center;*/
+/*}*/
+
+/*.tab-content-comment {*/
+/*  text-align: left;*/
+/*}*/
+
+/*.car-info-container h3 {*/
+/*  margin: 10px 0;*/
+/*  font-size: 18px;*/
+/*}*/
+
+/*.car-info-container p {*/
+/*  margin: 5px 0;*/
+/*  color: #555;*/
+/*}*/
+
+/*.car-comment {*/
+/*  margin: 0;*/
+/*  color: #555;*/
+/*}*/
+
+/*.info-section {*/
+/*  margin-bottom: 15px;*/
+/*}*/
+
+/*.info-section h3 {*/
+/*  font-size: 16px;*/
+/*  color: #333;*/
+/*}*/
+
+/*.info-section ul {*/
+/*  list-style-type: none;*/
+/*  padding: 0;*/
+/*}*/
+
+/*.info-section li {*/
+/*  background: #f9f9f9;*/
+/*  margin: 5px 0;*/
+/*  padding: 5px 10px;*/
+/*  border-radius: 4px;*/
+/*}*/
+
+
+
+/*.car-info-container {*/
+/*  flex: 1 1 calc(25% - 2%);*/
+/*  margin: 1%;*/
+/*  padding: 15px;*/
+/*  border: 1px solid #ddd;*/
+/*  border-radius: 8px;*/
+/*  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); !* Увеличиваем тень *!*/
+/*  background-color: #fff;*/
+/*  box-sizing: border-box;*/
+/*  transition: box-shadow 0.3s ease; !* Добавляем плавный переход для тени *!*/
+/*}*/
+
+/*.respond-button {*/
+/*    bottom: 20px;*/
+/*    background-color: #217C6F;*/
+/*    color: white;*/
+/*    border: none;*/
+/*    padding: 10px 20px;*/
+/*    cursor: pointer;*/
+/*    border-radius: 5px;*/
+/*    font-weight: bold;*/
+/*}*/
+
+/*.car-info-container:hover {*/
+/*  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); !* Эффект тени при наведении *!*/
+/*}*/
+
+/*.tabs {*/
+/*  display: flex;*/
+/*  justify-content: space-around;*/
+/*  margin-bottom: 10px;*/
+/*  border-bottom: 1px solid #ddd;*/
+/*}*/
+
+/*.tab {*/
+/*  background: none;*/
+/*  border: none;*/
+/*  padding: 10px 20px;*/
+/*  cursor: pointer;*/
+/*  font-size: 16px;*/
+/*  color: #555;*/
+/*  transition: color 0.3s ease, border-bottom 0.3s ease;*/
+/*}*/
+
+/*.tab:hover {*/
+/*  color: #217C6F;*/
+/*}*/
+
+/*.tab.active {*/
+/*  font-weight: bold;*/
+/*  color: #217C6F;*/
+/*  border-bottom: 2px solid #217C6F;*/
+/*}*/
+
+/*.tab-content {*/
+/*  text-align: center;*/
+/*}*/
+
+/*.tab-content-comment {*/
+/*  text-align: left;*/
+/*}*/
+/*.car-info-container h3 {*/
+/*  margin: 10px 0;*/
+/*  font-size: 18px;*/
+/*}*/
+
+/*.car-info-container p {*/
+/*  margin: 5px 0;*/
+/*  color: #555;*/
+/*}*/
+
+/*.car-comment {*/
+/*  margin: 0;*/
+/*  color: #555;*/
+/*}*/

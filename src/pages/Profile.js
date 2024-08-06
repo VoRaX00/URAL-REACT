@@ -110,7 +110,7 @@ const Profile = () => {
         } else {
             getAllCars();
         }
-    }, [currentPageCargo, currentPageCars, activeTab]);
+    }, [currentPageCargo, currentPageCars, activeTab, getAllCargo, getAllCars]);
 
     return (
         <section id="content" className="container">

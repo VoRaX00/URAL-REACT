@@ -47,7 +47,6 @@ const Cars = () => {
     useEffect(() => {
         if (name === '') {
             getAllCars();
-            console.log(cars)
         } else {
             getCarsByName(name);
         }
@@ -59,7 +58,6 @@ const Cars = () => {
             getCarsByName(name);
         } else {
             getAllCars();
-            console.log(cars)
         }
     }
 
