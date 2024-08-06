@@ -13,29 +13,34 @@ const Registration = () => {
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:5036/api/User/Register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "clientUri": "http://localhost:3000/confirmEmail/",
-            },
-            body: JSON.stringify({
-                password: password,
-                userName: name,
-                email: email,
-                phoneNumber: phone,
-            })
-        });
+        try {
+            const response = await fetch("http://localhost:5036/api/User/Register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "clientUri": "http://localhost:3000/confirmEmail/",
+                },
+                body: JSON.stringify({
+                    password: password,
+                    userName: name,
+                    email: email,
+                    phoneNumber: phone,
+                })
+            });
 
-        if (response.ok) {
-            if (password === passwordAccess && password.length > 0) {
-                setRedirect(true);
+            if (response.ok) {
+                if (password === passwordAccess && password.length > 0) {
+                    setRedirect(true);
+                } else {
+                    throw "Пароли не совпадают"
+                }
             } else {
-                console.log("Пароли не совпадают");
+                throw "Не удалось выполнить запрос"
+                // console.log("Error with registration");
             }
         }
-        else{
-            console.log("Error with registration");
+        catch (error) {
+            console.log(error);
         }
     }
 

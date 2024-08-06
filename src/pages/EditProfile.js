@@ -20,11 +20,17 @@ const EditProfile = () => {
     const [user, setUser] = useState({});
     const [redirect, setRedirect] = useState(false);
 
-    useEffect(() => {
-        const fetchData = async () => {
+    const fetchData = async () => {
+        try {
             const userData = await getUser(token);
             setUser(userData);
-        };
+        }
+        catch (error){
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
         fetchData();
     }, [token]);
 
@@ -37,24 +43,29 @@ const EditProfile = () => {
     };
 
     const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
-        console.log(user)
-        await fetch("http://localhost:5036/api/User/Update", {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token,
-            },
-            body: JSON.stringify({
-                id: user.id,
-                userName: user.userName,
-                email: user.email,
-                phoneNumber: user.phoneNumber,
-                aboutMe: user.aboutMe,
-                image: user.image,
-            })
-        });
-        setRedirect(true);
+        try {
+            e.preventDefault();
+            console.log(user)
+            await fetch("http://localhost:5036/api/User/Update", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + token,
+                },
+                body: JSON.stringify({
+                    id: user.id,
+                    userName: user.userName,
+                    email: user.email,
+                    phoneNumber: user.phoneNumber,
+                    aboutMe: user.aboutMe,
+                    image: user.image,
+                })
+            });
+            setRedirect(true);
+        }
+        catch (error) {
+            console.log(error);
+        }
     };
 
     if (redirect) {

@@ -19,7 +19,7 @@ const CustomMenu = (props) => {
     );
 };
 
-const CustomDropdown = ({ options, onChange, dropdownIndicatorImg, logout }) => {
+const CustomDropdown = ({ options, onChange, dropdownIndicatorImg }) => {
     const handleChange = (selectedOption) => {
         onChange(selectedOption);
     }
@@ -44,56 +44,3 @@ const CustomDropdown = ({ options, onChange, dropdownIndicatorImg, logout }) => 
 };
 
 export default CustomDropdown;
-
-
-// // CustomDropdown.js
-// import "./style.css"
-// import Select from 'react-select';
-// import { components } from 'react-select';
-//
-// const CustomDropdownIndicator = (props) => (
-//     <components.DropdownIndicator {...props}>
-//         <img src={props.dropdownIndicatorImg} alt="dropdown indicator" className="custom-dropdown-indicator-img"/>
-//     </components.DropdownIndicator>
-// );
-//
-// const CustomMenu = (props) => {
-//     const {children, ...rest} = props;
-//     return (
-//         <components.Menu {...rest}>
-//             <div className="custom-dropdown-menu">
-//                 {children}
-//             </div>
-//         </components.Menu>
-//     );
-// };
-//
-// const CustomDropdown = ({options, onChange, dropdownIndicatorImg, logout}) => {
-//     const handleChange = (selectedOption) => {
-//         if (selectedOption.action === 'logout') {
-//             logout();
-//         } else{
-//             onChange(selectedOption);
-//         }
-//     }
-//
-//     return (
-//         <Select
-//             options={options}
-//             onChange={onChange}
-//             components={{
-//                 DropdownIndicator: (props) => <CustomDropdownIndicator {...props}
-//                                                                        dropdownIndicatorImg={dropdownIndicatorImg}/>,
-//                 Menu: CustomMenu
-//       }}
-//       className="custom-dropdown"
-//       classNamePrefix="dropdown"
-//       isSearchable={false} // Отключить поле поиска
-//       placeholder={null}
-//       menuPlacement="auto"// Размещаем меню снизу
-//       controlShouldRenderValue={false}
-//     />
-//   );
-// };
-//
-// export default CustomDropdown;
