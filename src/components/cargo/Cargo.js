@@ -8,8 +8,8 @@ const Cargo = ({ cargo }) => {
     const [activeTab, setActiveTab] = useState('info');
 
     const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
         try {
+            e.preventDefault();
             const token = new Cookies().get("jwt_authorization");
             const decodedToken = jwtDecode(token);
             const userId = decodedToken.Id;

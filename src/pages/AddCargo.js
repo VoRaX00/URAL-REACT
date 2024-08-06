@@ -47,19 +47,24 @@ const AddCargo = () => {
     const date = curr.toISOString().substring(0, 10);
 
     const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
-        const response = await fetch("http://localhost:5036/api/Cargo/Add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify(cargo)
-        });
-        if (response.ok)
-            setRedirect(true);
-        else
-            console.log("Error with addCargo");
+        try {
+            e.preventDefault();
+            const response = await fetch("http://localhost:5036/api/Cargo/Add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify(cargo)
+            });
+            if (response.ok)
+                setRedirect(true);
+            else
+                throw "Не удалось выполнить запрос"
+        }
+        catch (error){
+            console.log(error);
+        }
     };
 
     if (redirect)

@@ -25,11 +25,18 @@ const Profile = () => {
     const [user, setUser] = useState({});
     const [activeTab, setActiveTab] = useState('cargo');
 
-    useEffect(() => {
-        const fetchData = async () => {
+
+    const fetchData = async () => {
+        try {
             const userData = await getUser(token);
             setUser(userData);
-        };
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
         fetchData();
     }, [token]);
 

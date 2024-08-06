@@ -27,22 +27,26 @@ const Login = () => {
     const {login} = useAuth()
 
     const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
-        const response = await fetch("http://localhost:5036/api/User/Login", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            })
-        });
-        if(response.ok) {
-            const token = await response.text();
-            if(token) {
-                login(token)
-                //addTokenInCookie(token)
-                navigate("/")
+        try {
+            e.preventDefault();
+            const response = await fetch("http://localhost:5036/api/User/Login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                })
+            });
+            if (response.ok) {
+                const token = await response.text();
+                if (token) {
+                    login(token)
+                    navigate("/")
+                }
             }
+        }
+        catch(error) {
+            console.error(`Error with login: ${error}`)
         }
     }
 

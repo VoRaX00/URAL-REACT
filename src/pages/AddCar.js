@@ -152,22 +152,26 @@ const AddCar = () => {
     curr.setDate(curr.getDate());
     const date = curr.toISOString().substring(0, 10);
     curr.setDate(curr.getDate() + 1);
-    const toDate = curr.toISOString().substring(0, 10);
 
     const submit = async (e: SyntheticEvent) => {
-        e.preventDefault();
-        const response = await fetch("http://localhost:5036/api/Car/Add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify(car)
-        });
-        if (response.ok) {
-            setRedirect(true);
-        } else {
-            console.log("Error with addCargo");
+        try {
+            e.preventDefault();
+            const response = await fetch("http://localhost:5036/api/Car/Add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify(car)
+            });
+            if (response.ok) {
+                setRedirect(true);
+            } else {
+                throw "Не удалось выполнить запрос"
+            }
+        }
+        catch (error){
+            console.log(error)
         }
     }
 
