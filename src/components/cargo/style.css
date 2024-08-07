@@ -1,75 +1,81 @@
-.cargo-info-container {
-  flex: 1 1 calc(25% - 2%);
-  margin: 1%;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Увеличиваем тень */
-  background-color: #fff;
-  box-sizing: border-box;
-  transition: box-shadow 0.3s ease; /* Добавляем плавный переход для тени */
+.cargo-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
 }
 
-.respond-button {
-    bottom: 20px;
-    background-color: #217C6F;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-.cargo-info-container:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* Эффект тени при наведении */
+.cargo-font {
+    font-size: 0.8rem;
 }
 
 .tabs {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 .tab {
-  background: none;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 16px;
-  color: #555;
-  transition: color 0.3s ease, border-bottom 0.3s ease;
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
 .tab:hover {
-  color: #217C6F;
+    color: #217C6F;
 }
 
 .tab.active {
-  font-weight: bold;
-  color: #217C6F;
-  border-bottom: 2px solid #217C6F;
+    font-weight: bold;
+    color: #217C6F;
+    border-bottom: 2px solid #217C6F;
 }
 
-.tab-content {
-  text-align: center;
+.cargo-details {
+    display: flex;
+    flex-direction: column;
 }
 
-.tab-content-comment {
-  text-align: left;
-}
-.cargo-info-container h3 {
-  margin: 10px 0;
-  font-size: 18px;
-}
-
-.cargo-info-container p {
-  margin: 5px 0;
-  color: #555;
+.cargo-details-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
 }
 
-.cargo-comment {
-  margin: 0;
-  color: #555;
+.cargo-details p {
+    margin: 5px 0;
+    flex: 1;
+    padding: 0 10px;
+}
+
+.cargo-name {
+    font-weight: bold;
+}
+
+.cargo-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cargo-action-button {
+    padding: 10px 20px;
+    background-color: #217C6F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cargo-action-button:hover {
+    background-color: #1a5a51;
 }

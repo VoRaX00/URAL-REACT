@@ -3,7 +3,7 @@ import CargoInfo from "../components/cargo/Cargo";
 import axios from "axios";
 import React, {useEffect, useState, useCallback} from "react";
 import Cookies from "universal-cookie";
-import Pagination from "../components/Pagination/Pagination";
+import Pagination from "../components/pagination/Pagination";
 import Car from "../components/car/Car";
 import {ip} from "../env/env";
 

@@ -1,20 +1,62 @@
-.btn{
-    background-color: #217C6F;
-}
-
-.cars__container{
-    max-width: 32rem;
-}
-
-.cars__car-info-grid {
+.cars-list-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Центрирование контейнеров */
-  gap: 1%; /* Пространство между контейнерами */
+  flex-direction: column;
+  align-items: center; /* Центрируем блоки по горизонтали */
+}
+
+.cars-list-item {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin: 10px 0;
+  border-radius: 8px;
+  width: 80%; /* Уменьшаем ширину блоков */
+  max-width: 800px; /* Задаем максимальную ширину */
+}
+
+.cars-info {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
 }
 
-/* Стиль контейнера поиска */
+.cars-details {
+  flex: 1;
+}
+
+.cars-name {
+  font-weight: bold;
+}
+
+.cars-dimensions,
+.cars-weight,
+.cars-volume,
+.cars-europallets,
+.cars-dates,
+.cars-locations {
+  margin: 5px 0;
+}
+
+.cars-actions {
+  display: flex;
+  align-items: center;
+}
+
+.cars-action-button {
+  padding: 10px 20px;
+  background-color: #217C6F;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cars-action-button:hover {
+  background-color: #1a5a51;
+}
+
+
 .cars__search-container {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;

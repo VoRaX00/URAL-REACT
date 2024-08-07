@@ -5,7 +5,6 @@ const Pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) =
     const totalPages = Math.ceil(totalPosts / postsPerPage);
     let pages = [];
 
-    // Рассчитываем диапазон страниц
     const startPage = Math.max(1, currentPage - 4);
     const endPage = Math.min(totalPages, currentPage + 4);
 
@@ -38,7 +37,7 @@ export default Pagination;
 // import React from 'react';
 // import './style.css';
 //
-// const Pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) => {
+// const pagination = ({ totalPosts, postsPerPage, setCurrentPage, currentPage }) => {
 //     let pages = [];
 //
 //     for (let i = currentPage-4; i <= Math.min(Math.ceil(totalPosts / postsPerPage), currentPage+4); i++) {
@@ -61,4 +60,4 @@ export default Pagination;
 //     )
 // }
 //
-// export default Pagination;
+// export default pagination;

@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Car from "../components/car/Car";
-import Pagination from "../components/Pagination/Pagination";
+import Pagination from "../components/pagination/Pagination";
 import {ip} from "../env/env";
 
 const Match = () => {

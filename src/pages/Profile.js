@@ -7,7 +7,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
 import React, { useEffect, useState } from "react";
-import Pagination from "../components/Pagination/Pagination";
+import Pagination from "../components/pagination/Pagination";
 import {ip} from "../env/env";
 
 const getUser = async (token) => {

@@ -1,9 +1,10 @@
-import "./../styles/css/Cargo.css";
-import CargoInfo from "../components/cargo/Cargo";
-import React, { SyntheticEvent, useEffect, useState } from "react";
-import axios from "axios";
-import Pagination from "../components/Pagination/Pagination";
-import {ip} from "../env/env";
+import React, {useState, useEffect, useCallback} from 'react';
+import axios from 'axios';
+import '../styles/css/Cargo.css'
+import { ip } from "../env/env";
+import CargoItem from "../components/cargo/Cargo";
+import {SyntheticEvent} from "react";
+import Pagination from "../components/pagination/Pagination";
 
 const Cargo = () => {
     const [name, setName] = useState('');
@@ -11,9 +12,11 @@ const Cargo = () => {
     const [postsPerPage] = useState(4);
     const [totalCargo, setTotalCargo] = useState(0);
     const [cargo, setCargo] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const getAllCargo = async () => {
+     const getAllCargo = useCallback(async () => {
         try {
+            setLoading(true);
             const response = await axios.get(`http://${ip}/api/Cargo/Get`, {
                 params: { pageNumber: currentPage }
             });
@@ -25,11 +28,14 @@ const Cargo = () => {
             }
         } catch (error) {
             console.log('Error getting all cargo', error);
+        } finally {
+            setLoading(false);
         }
-    }
+    }, [currentPage]);
 
-    const getCargoByName = async (name) => {
+    const getCargoByName = useCallback(async (name) => {
         try {
+            setLoading(true);
             const response = await axios.get(`http://${ip}/api/Cargo/GetByName`, {
                 params: { name: name, pageNumber: currentPage }
             });
@@ -41,8 +47,10 @@ const Cargo = () => {
             }
         } catch (error) {
             console.log('Error getting cargo by name', error);
+        } finally {
+            setLoading(false);
         }
-    }
+    }, [currentPage]);
 
     useEffect(() => {
         if (name === '') {
@@ -54,6 +62,7 @@ const Cargo = () => {
 
     const submit = (e: SyntheticEvent) => {
         e.preventDefault();
+        setCurrentPage(1)
         if (name !== '') {
             getCargoByName(name);
         } else {
@@ -68,10 +77,11 @@ const Cargo = () => {
                 <div className="container cargo__container cargo__search-from form-margin">
                     <div className="row justify-content-center">
                         <div className="col-md-8">
-                            <form action="#" method="post" onSubmit={submit}>
+                            <form method="post" onSubmit={submit}>
                                 <div className="input-group cargo__search-container">
                                     <input type="text" className="form-control cargo__search-input" name="search_input"
-                                           id="search-input" placeholder="Поиск..." value={name} onChange={(e) => setName(e.target.value)} />
+                                           id="search-input" placeholder="Поиск..." value={name}
+                                           onChange={(e) => setName(e.target.value)}/>
                                     <div className="input-group-append">
                                         <button className="btn btn-dark cargo__search-btn" type="submit">Поиск</button>
                                     </div>
@@ -80,14 +90,17 @@ const Cargo = () => {
                         </div>
                     </div>
                 </div>
-
-                <div className="container cargo__container cargo__cargo-info-grid">
-                    {cargo.length > 0 ? (
-                        cargo.map((cargo, index) => (
-                        <CargoInfo key={index} cargo={cargo} />
-                    ))
-                    ) : (
+                <div className="cargo-list-container">
+                    {loading ? (
                         <p>Загрузка...</p>
+                    ) : (
+                        cargo.length > 0 ? (
+                            cargo.map((cargo, index) => (
+                                <CargoItem cargo={cargo}/>
+                            ))
+                        ) : (
+                            <p>Ничего не найдено</p>
+                        )
                     )}
                 </div>
             </div>
@@ -99,6 +112,6 @@ const Cargo = () => {
             />
         </>
     );
-}
+};
 
 export default Cargo;
