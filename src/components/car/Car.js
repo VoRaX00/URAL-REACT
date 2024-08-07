@@ -17,11 +17,11 @@ const CarInfo = ({ car }) => {
             if (userId === car.userId) {
                 throw new Error("Id equals");
             }
-
+            console.log(car.id);
             await axios.post(`http://${ip}/api/NotifyCar/Add`, {
                 firstUserComment: "empty",
                 secondUserComment: car.comment,
-                cargoId: car.id,
+                carId: car.id,
                 firstUserId: userId,
                 secondUserId: car.userId,
             }, {headers: {"Authorization": `Bearer ${token}`}});

@@ -8,7 +8,7 @@ import {ip} from "../env/env";
 const Cargo = () => {
     const [name, setName] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(4);
+    const [postsPerPage] = useState(4);
     const [totalCargo, setTotalCargo] = useState(0);
     const [cargo, setCargo] = useState([]);
 
@@ -19,7 +19,7 @@ const Cargo = () => {
             });
             if (response.data && response.data.items) {
                 setCargo(response.data.items);
-                setTotalCargo(response.data.totalCount); // Предполагаем, что сервер возвращает общее количество элементов
+                setTotalCargo(response.data.totalCount);
             } else {
                 console.log("No data received");
             }
@@ -35,7 +35,7 @@ const Cargo = () => {
             });
             if (response.data && response.data.items.length > 0) {
                 setCargo(response.data.items);
-                setTotalCargo(response.data.totalCount); // Предполагаем, что сервер возвращает общее количество элементов
+                setTotalCargo(response.data.totalCount);
             } else {
                 console.log("No cargo found with the given name");
             }
@@ -50,7 +50,7 @@ const Cargo = () => {
         } else {
             getCargoByName(name);
         }
-    }, [currentPage, name]);
+    }, [currentPage, getAllCargo, getCargoByName, name]);
 
     const submit = (e: SyntheticEvent) => {
         e.preventDefault();
