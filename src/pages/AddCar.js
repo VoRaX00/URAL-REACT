@@ -136,14 +136,14 @@ const AddCar = () => {
         setCar(prevCar => ({
             ...prevCar,
             [name]: name === 'capacity' || name === 'volume' || name === 'length' || name === 'width' || name === 'height'
-                ? parseInt(value) || 0 // Преобразуем значение в число, если поле числовое
+                ? parseInt(value) || 0
                 : value
     }));
 };
     const handlePhoneChange = (value) => {
         setCar(prevCar => ({
             ...prevCar,
-            phone: Number(value) // Преобразуем значение в число
+            phone: Number(value)
         }));
     };
 
