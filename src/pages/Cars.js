@@ -2,7 +2,7 @@ import "./../styles/css/Cars.css"
 import Car from "../components/car/Car"
 import {SyntheticEvent, useCallback, useEffect, useState} from "react";
 import axios from "axios";
-import Pagination from "../components/Pagination/Pagination";
+import Pagination from "../components/pagination/Pagination";
 import {ip} from "../env/env";
 
 const Cars = () => {
@@ -11,9 +11,11 @@ const Cars = () => {
     const [postsPerPage] = useState(4);
     const [totalCars, setTotalCars] = useState(0);
     const [cars, setCars] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const getAllCars = useCallback(async () => {
         try {
+            setLoading(true)
             const response = await axios.get(`http://${ip}/api/Car/Get`, {
                 params: { pageNumber: currentPage }
             });
@@ -25,11 +27,14 @@ const Cars = () => {
             }
         } catch (error) {
             console.log('Error getting all cargo', error);
+        } finally {
+            setLoading(false);
         }
-    })
+    }, [currentPage])
 
     const getCarsByName = useCallback(async (name) => {
         try {
+            setLoading(true)
             const response = await axios.get(`http://${ip}/api/Car/GetByName`, {
                 params: { name: name, pageNumber: currentPage }
             });
@@ -41,8 +46,10 @@ const Cars = () => {
             }
         } catch (error) {
             console.log('Error getting cargo by name', error);
+        } finally {
+            setLoading(false);
         }
-    })
+    }, [currentPage]);
 
     useEffect(() => {
         if (name === '') {
@@ -50,10 +57,11 @@ const Cars = () => {
         } else {
             getCarsByName(name);
         }
-    }, [cars, currentPage, getAllCars, getCarsByName, name]);
+    }, [currentPage, getAllCars, getCarsByName, name]);
 
     const submit = (e: SyntheticEvent) => {
         e.preventDefault();
+        setCurrentPage(1)
         if (name !== '') {
             getCarsByName(name);
         } else {
@@ -68,10 +76,10 @@ const Cars = () => {
                 <div className="container cars__container cars__search-from form-margin">
                     <div className="row justify-content-center">
                         <div className="col-md-8">
-                            <form action="#" method="post" onSubmit={submit}>
+                            <form method="post" onSubmit={submit}>
                                 <div className="input-group cars__search-container">
                                     <input type="text" className="form-control cars__search-input" name="search_input"
-                                           id="search-input" value={name} onChange={setName} placeholder="Поиск..."/>
+                                           id="search-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Поиск..."/>
                                     <div className="input-group-append">
                                         <button className="btn btn-dark cars__search-btn" type="submit">Поиск</button>
                                     </div>
@@ -80,19 +88,22 @@ const Cars = () => {
                         </div>
                     </div>
                 </div>
-                <div className="container cars__container cars__car-info-grid">
-                    {cars.length > 0 ? (
+                <div className="cars-list-container">
+                    {loading ? (
+                        <p>Загрузка...</p>
+                    ) :
+                        cars.length > 0 ? (
                         cars.map((car, index) => (
                             <Car key={index} car={car}/>
                         ))
                     ) : (
-                        <p>Загрузка...</p>
+                        <p>Ничего не найдено</p>
                     )}
                 </div>
             </div>
             <Pagination
                 totalPosts={totalCars}
-                posts={postsPerPage}
+                postsPerPage={postsPerPage}
                 setCurrentPage={setCurrentPage}
                 currentPage={currentPage}
             />

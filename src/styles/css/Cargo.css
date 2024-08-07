@@ -1,16 +1,62 @@
-.cargo__container{
-    max-width: 32rem;
+.cargo-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Центрируем блоки по горизонтали */
 }
 
-.cargo__cargo-info-grid {
+.cargo-list-item {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Центрирование контейнеров */
-  gap: 1%; /* Пространство между контейнерами */
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin: 10px 0;
+  border-radius: 8px;
+  width: 80%; /* Уменьшаем ширину блоков */
+  max-width: 800px; /* Задаем максимальную ширину */
+}
+
+.cargo-info {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
 }
 
-/* Стиль контейнера поиска */
+.cargo-details {
+  flex: 1;
+}
+
+.cargo-name {
+  font-weight: bold;
+}
+
+.cargo-dimensions,
+.cargo-weight,
+.cargo-volume,
+.cargo-europallets,
+.cargo-dates,
+.cargo-locations {
+  margin: 5px 0;
+}
+
+.cargo-actions {
+  display: flex;
+  align-items: center;
+}
+
+.cargo-action-button {
+  padding: 10px 20px;
+  background-color: #217C6F;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cargo-action-button:hover {
+  background-color: #1a5a51;
+}
+
+
 .cargo__search-container {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
