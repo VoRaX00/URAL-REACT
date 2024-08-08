@@ -4,6 +4,8 @@ import {SyntheticEvent, useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Pagination from "../components/pagination/Pagination";
 import {ip} from "../env/env";
+import CargoFilters from "../components/cargoFilter/CargoFilter";
+import CarFilters from "../components/carFilter/CarFilter";
 
 const Cars = () => {
     const [name, setName] = useState('');
@@ -73,41 +75,51 @@ const Cars = () => {
         <>
             <br/>
             <div className="container content-with-filters">
-                <div className="container cars__container cars__search-from form-margin">
-                    <div className="row justify-content-center">
-                        <div className="col-md-8">
-                            <form method="post" onSubmit={submit}>
-                                <div className="input-group cars__search-container">
-                                    <input type="text" className="form-control cars__search-input" name="search_input"
-                                           id="search-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Поиск..."/>
-                                    <div className="input-group-append">
-                                        <button className="btn btn-dark cars__search-btn" type="submit">Поиск</button>
-                                    </div>
+                <div className="row">
+                    <div className="col-lg-3">
+                        <CarFilters/>
+                    </div>
+                    <div className="col-lg-9">
+                        <div className="container cars__container cars__search-from form-margin">
+                            <div className="row justify-content-center">
+                                <div className="col-md-8">
+                                    <form method="post" onSubmit={submit}>
+                                        <div className="input-group cars__search-container">
+                                            <input type="text" className="form-control cars__search-input"
+                                                   name="search_input"
+                                                   id="search-input" value={name}
+                                                   onChange={(e) => setName(e.target.value)} placeholder="Поиск..."/>
+                                            <div className="input-group-append">
+                                                <button className="btn btn-dark cars__search-btn" type="submit">Поиск
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
+                            </div>
+                        </div>
+                        <div className="cars-list-container">
+                            {loading ? (
+                                    <p>Загрузка...</p>
+                                ) :
+                                cars.length > 0 ? (
+                                    cars.map((car, index) => (
+                                        <Car key={index} car={car}/>
+                                    ))
+                                ) : (
+                                    <p>Ничего не найдено</p>
+                                )}
                         </div>
                     </div>
-                </div>
-                <div className="cars-list-container">
-                    {loading ? (
-                        <p>Загрузка...</p>
-                    ) :
-                        cars.length > 0 ? (
-                        cars.map((car, index) => (
-                            <Car key={index} car={car}/>
-                        ))
-                    ) : (
-                        <p>Ничего не найдено</p>
-                    )}
+                    <Pagination
+                        totalPosts={totalCars}
+                        postsPerPage={postsPerPage}
+                        setCurrentPage={setCurrentPage}
+                        currentPage={currentPage}
+                    />
+                    <br/>
                 </div>
             </div>
-            <Pagination
-                totalPosts={totalCars}
-                postsPerPage={postsPerPage}
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-            />
-            <br/>
         </>
     )
 }

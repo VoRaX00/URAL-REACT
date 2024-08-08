@@ -248,30 +248,19 @@ const AddCar = () => {
                 </div>
                 <div className="mb-3 row">
                     <div className="col-md-6">
-                        <label className="cargoAdd__form-text" htmlFor="loadingDate">Дата загрузки:</label>
+                        <label className="cargoAdd__form-text" htmlFor="readyFrom">Готовность с:</label>
                         <input type="date" min={date} className="form-control" id="readyFrom" name="readyFrom"
                                required
                                onChange={handleInputChange}/>
                     </div>
                     <div className="col-md-6">
-                        <label className="cargoAdd__form-text" htmlFor="unloadingDate">Дата разгрузки:</label>
+                        <label className="cargoAdd__form-text" htmlFor="readyTo">Готовность по:</label>
                         <input type="date" min={date} className="form-control" id="readyTo" name="readyTo"
                                required
                                onChange={handleInputChange}/>
                     </div>
                 </div>
-                {/*<div className="mb-3">*/}
-                {/*    <label className="carAdd__form-text" htmlFor="readyFrom">Готовность с:</label>*/}
-                {/*    <input type="date" name="readyFrom" id="readyFrom" className="form-control" defaultValue={date} required*/}
-                {/*        onChange={handleInputChange} />*/}
-                {/*</div>*/}
-                {/*<div className="mb-3">*/}
-                {/*    <label className="carAdd__form-text" htmlFor="readyTo">Готовность по:</label>*/}
-                {/*    <input type="date" name="readyTo" id="readyTo" className="form-control" defaultValue={toDate} required*/}
-                {/*        onChange={handleInputChange} />*/}
-                {/*</div>*/}
                 <div className="mb-3">
-                    {/*(value) => setCar({ ...car, phone: value })*/}
                     <Phone phone={car.phone} onChange={handlePhoneChange}/>
                 </div>
                 <div className="mb-3">
