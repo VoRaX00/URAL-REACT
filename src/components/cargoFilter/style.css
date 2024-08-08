@@ -1,0 +1,43 @@
+.cargo-filters {
+  width: 250px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+}
+
+.cargo-filters h4 {
+  margin-bottom: 20px;
+}
+
+.filter-group {
+  margin-bottom: 15px;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.filter-group input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.filter-group button {
+  width: 100%;
+  padding: 10px;
+  background-color: #217C6F;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filter-group button:hover {
+  background-color: #1a5a51;
+}

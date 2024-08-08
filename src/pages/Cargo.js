@@ -1,10 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
-import '../styles/css/Cargo.css'
+import '../styles/css/Cargo.css';
 import { ip } from "../env/env";
 import CargoItem from "../components/cargo/Cargo";
 import {SyntheticEvent} from "react";
 import Pagination from "../components/pagination/Pagination";
+import CargoFilters from "../components/cargoFilter/CargoFilter"; // Импортируем компонент фильтров
 
 const Cargo = () => {
     const [name, setName] = useState('');
@@ -13,12 +14,16 @@ const Cargo = () => {
     const [totalCargo, setTotalCargo] = useState(0);
     const [cargo, setCargo] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [filters, setFilters] = useState({}); // Состояние для фильтров
 
-     const getAllCargo = useCallback(async () => {
+    const getAllCargo = useCallback(async () => {
         try {
             setLoading(true);
             const response = await axios.get(`http://${ip}/api/Cargo/Get`, {
-                params: { pageNumber: currentPage }
+                params: {
+                    pageNumber: currentPage,
+                    ...filters // Передаем фильтры на сервер
+                }
             });
             if (response.data && response.data.items) {
                 setCargo(response.data.items);
@@ -31,7 +36,7 @@ const Cargo = () => {
         } finally {
             setLoading(false);
         }
-    }, [currentPage]);
+    }, [currentPage, filters]);
 
     const getCargoByName = useCallback(async (name) => {
         try {
@@ -52,13 +57,18 @@ const Cargo = () => {
         }
     }, [currentPage]);
 
+    const applyFilters = (newFilters) => {
+        setFilters(newFilters);
+        setCurrentPage(1);
+    };
+
     useEffect(() => {
         if (name === '') {
             getAllCargo();
         } else {
             getCargoByName(name);
         }
-    }, [currentPage, getAllCargo, getCargoByName, name]);
+    }, [currentPage, getAllCargo, getCargoByName, name, filters]);
 
     const submit = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -74,42 +84,49 @@ const Cargo = () => {
         <>
             <br/>
             <div className="container content-with-filters">
-                <div className="container cargo__container cargo__search-from form-margin">
-                    <div className="row justify-content-center">
-                        <div className="col-md-8">
-                            <form method="post" onSubmit={submit}>
-                                <div className="input-group cargo__search-container">
-                                    <input type="text" className="form-control cargo__search-input" name="search_input"
-                                           id="search-input" placeholder="Поиск..." value={name}
-                                           onChange={(e) => setName(e.target.value)}/>
-                                    <div className="input-group-append">
-                                        <button className="btn btn-dark cargo__search-btn" type="submit">Поиск</button>
-                                    </div>
+                <div className="row">
+                    <div className="col-lg-3">
+                        <CargoFilters/>
+                    </div>
+                    <div className="col-lg-9">
+                        <div className="container cargo__container cargo__search-from form-margin">
+                            <div className="row justify-content-center">
+                                <div className="col-md-8">
+                                    <form method="post" onSubmit={submit}>
+                                        <div className="input-group cargo__search-container">
+                                            <input type="text" className="form-control cargo__search-input" name="search_input"
+                                                   id="search-input" placeholder="Поиск..." value={name}
+                                                   onChange={(e) => setName(e.target.value)}/>
+                                            <div className="input-group-append">
+                                                <button className="btn btn-dark cargo__search-btn" type="submit">Поиск</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
+                            </div>
                         </div>
+                        <div className="cargo-list-container">
+                            {loading ? (
+                                <p>Загрузка...</p>
+                            ) : (
+                                cargo.length > 0 ? (
+                                    cargo.map((cargo, index) => (
+                                        <CargoItem cargo={cargo} key={index} />
+                                    ))
+                                ) : (
+                                    <p>Ничего не найдено</p>
+                                )
+                            )}
+                        </div>
+                        <Pagination
+                            totalPosts={totalCargo}
+                            postsPerPage={postsPerPage}
+                            setCurrentPage={setCurrentPage}
+                            currentPage={currentPage}
+                        />
                     </div>
                 </div>
-                <div className="cargo-list-container">
-                    {loading ? (
-                        <p>Загрузка...</p>
-                    ) : (
-                        cargo.length > 0 ? (
-                            cargo.map((cargo, index) => (
-                                <CargoItem cargo={cargo}/>
-                            ))
-                        ) : (
-                            <p>Ничего не найдено</p>
-                        )
-                    )}
-                </div>
             </div>
-            <Pagination
-                totalPosts={totalCargo}
-                postsPerPage={postsPerPage}
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-            />
         </>
     );
 };
