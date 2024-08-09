@@ -46,22 +46,22 @@ const CarInfo = ({ car, typeSubmit }) => {
             <div className="cars-details">
                 <p className="cars-name">{car.name}</p>
                 <div className="cars-details-row">
-                    <p className="cars-font">
-                        Тип кузова:
+                    <div className="cars-font">
+                        <strong>Тип кузова:</strong>
                         <ul>
                             {car.bodyTypes.map((bodyType) => (
                                 <li className="cars-font" key={bodyType.id}>{bodyType.name}</li>
                             ))}
                         </ul>
-                    </p>
-                    <p className="cars-font">
-                        Тип разгрузки:
+                    </div>
+                    <div className="cars-font">
+                        <strong>Тип разгрузки:</strong>
                         <ul>
                             {car.loadingTypes.map((loadingType) => (
                                 <li className="cars-font" key={loadingType.id}>{loadingType.name}</li>
                             ))}
                         </ul>
-                    </p>
+                    </div>
                 </div>
                 <div className="cars-details-row">
                     <p className="cars-font">Вместимость: {car.capacity}, Объем: {car.volume}</p>

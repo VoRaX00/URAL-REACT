@@ -4,7 +4,6 @@ import {SyntheticEvent, useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Pagination from "../components/pagination/Pagination";
 import {ip} from "../env/env";
-import CargoFilters from "../components/cargoFilter/CargoFilter";
 import CarFilters from "../components/carFilter/CarFilter";
 
 const Cars = () => {
@@ -14,6 +13,20 @@ const Cars = () => {
     const [totalCars, setTotalCars] = useState(0);
     const [cars, setCars] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState({
+        name: '',
+        length: 0,
+        width: 0,
+        height: 0,
+        capacity: 0,
+        volume: 0,
+        readyFrom: '',
+        readyTo: '',
+        whereFrom: '',
+        whereTo: '',
+        bodyTypes: [],
+        loadingTypes: []
+    });
 
     const getAllCars = useCallback(async () => {
         try {
@@ -34,32 +47,52 @@ const Cars = () => {
         }
     }, [currentPage])
 
-    const getCarsByName = useCallback(async (name) => {
+    const applyFilters = useCallback(async (newFilters) => {
         try {
-            setLoading(true)
-            const response = await axios.get(`http://${ip}/api/Car/GetByName`, {
-                params: { name: name, pageNumber: currentPage }
+            setFilter(newFilters);
+            setCurrentPage(1);
+            console.log(newFilters)
+            const validFilters = Object.keys(newFilters)
+            .filter(key => newFilters[key] !== null && newFilters[key] !== [] && newFilters[key] !== '' && newFilters[key] !== 0)
+            .reduce((obj, key) => {
+                obj[key] = newFilters[key];
+                return obj;
+            }, {});
+            console.log(validFilters);
+            const response = await axios.get(`http://${ip}/api/Car/GetByFilters`, {
+                params: {
+                    ...validFilters,
+                    pageNumber: currentPage
+                }
             });
-            if (response.data && response.data.items.length > 0) {
+            if (response.status === 200) {
                 setCars(response.data.items);
                 setTotalCars(response.data.totalCount);
             } else {
-                console.log("No cargo found with the given name");
+                throw new Error("No cargo found with the given name");
             }
+        }
+        catch (error){
+            console.log('Error getting cargo with filters', error);
+        }
+    }, [currentPage]);
+
+    const getCarsByName = useCallback(async (name) => {
+        try {
+            setLoading(true);
+            await applyFilters({name: name})
         } catch (error) {
             console.log('Error getting cargo by name', error);
         } finally {
             setLoading(false);
         }
-    }, [currentPage]);
+    }, [applyFilters]);
 
     useEffect(() => {
         if (name === '') {
             getAllCars();
-        } else {
-            getCarsByName(name);
         }
-    }, [currentPage, getAllCars, getCarsByName, name]);
+    }, [currentPage, getAllCars, name]);
 
     const submit = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -77,7 +110,7 @@ const Cars = () => {
             <div className="container content-with-filters">
                 <div className="row">
                     <div className="col-lg-3">
-                        <CarFilters/>
+                        <CarFilters filter={filter} setFilter={setFilter} name={name} applyFilters={applyFilters} />
                     </div>
                     <div className="col-lg-9">
                         <div className="container cars__container cars__search-from form-margin">

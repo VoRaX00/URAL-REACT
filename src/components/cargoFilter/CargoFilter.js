@@ -1,24 +1,8 @@
 import React, {SyntheticEvent, useEffect, useState} from 'react';
 import './style.css';
 
-const CargoFilters = ({name, setName, applyFilters}) => {
-    const [filter, setFilter] = useState({
-        name: name || '',
-        length: 0,
-        width: 0,
-        height: 0,
-        weight: 0,
-        volume: 0,
-        countPlace: 0,
-        loadingDate: '',
-        unloadingDate: '',
-        loadingPlace: '',
-        unloadingPlace: '',
-        priceCash: 0,
-        priceCashNds: 0,
-        priceCashWithoutNds: 0,
-        requestPrice: false,
-    });
+const CargoFilters = ({filter, setFilter, name, applyFilters}) => {
+
 
     useEffect(() => {
         setFilter((prevFilter) => ({
@@ -38,15 +22,7 @@ const CargoFilters = ({name, setName, applyFilters}) => {
     const submit = async (e: SyntheticEvent) => {
         try {
             e.preventDefault();
-
-            const preparedFilters = Object.fromEntries(
-                Object.entries(filter).map(([key, value]) => {
-                    if (value === '' || value === 0)
-                        return [key, null];
-                    return [key, value];
-                })
-            );
-            applyFilters(preparedFilters);
+            applyFilters(filter);
         }
         catch (error){
             console.log(error);
