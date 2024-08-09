@@ -1,31 +1,11 @@
-import React, {SyntheticEvent, useState} from 'react';
+import React, {SyntheticEvent, useEffect, useState} from 'react';
 import './style.css';
-import {ip} from "../../env/env";
-import axios from "axios";
 import SelectBody from "../selectBody/SelectBody";
 import SelectLoading from "../selectLoading/SelectLoading";
 
 
 
-const CarFilters = () => {
-    const [filter, setFilter] = useState({
-        name: '',
-        length: 0,
-        width: 0,
-        height: 0,
-        capacity: 0,
-        volume: 0,
-        countPlace: 0,
-        readyFrom: '',
-        readyTo: '',
-        loadingPlace: '',
-        unloadingPlace: '',
-        priceCash: 0,
-        priceCashNds: 0,
-        priceCashWithoutNds: 0,
-        requestPrice: false,
-    });
-
+const CarFilters = ({filter, setFilter, name, applyFilters}) => {
     const [selectedOptionsBody, setSelectedOptionsBody] = useState([]);
     const [selectedOptionsLoading, setSelectedOptionsLoading] = useState([]);
 
@@ -45,6 +25,13 @@ const CarFilters = () => {
         }));
     };
 
+    useEffect(() => {
+        setFilter((prevFilter) => ({
+            ...prevFilter,
+            name: name, // Обновление поля "name", когда оно изменяется на основной странице
+        }));
+    }, [name]);
+
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFilter(prevCargo => ({
@@ -56,13 +43,7 @@ const CarFilters = () => {
     const submit = async (e: SyntheticEvent) => {
         try {
             e.preventDefault();
-            const response = await axios.get(`http://${ip}/api/Car/GetByFilters`, {
-                params: {
-
-                }
-            });
-            if (!response.ok)
-                throw "Не удалось выполнить запрос"
+            applyFilters(filter)
         }
         catch (error){
             console.log(error);

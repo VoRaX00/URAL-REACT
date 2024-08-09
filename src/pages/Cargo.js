@@ -14,7 +14,23 @@ const Cargo = () => {
     const [totalCargo, setTotalCargo] = useState(0);
     const [cargo, setCargo] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filters, setFilters] = useState({}); // Состояние для фильтров
+    const [filter, setFilter] = useState({
+        name: name || '',
+        length: 0,
+        width: 0,
+        height: 0,
+        weight: 0,
+        volume: 0,
+        countPlace: 0,
+        loadingDate: '',
+        unloadingDate: '',
+        loadingPlace: '',
+        unloadingPlace: '',
+        priceCash: 0,
+        priceCashNds: 0,
+        priceCashWithoutNds: 0,
+        requestPrice: null,
+    });
 
     const getAllCargo = useCallback(async () => {
         try {
@@ -22,7 +38,6 @@ const Cargo = () => {
             const response = await axios.get(`http://${ip}/api/Cargo/Get`, {
                 params: {
                     pageNumber: currentPage,
-                    ...filters // Передаем фильтры на сервер
                 }
             });
             if (response.data && response.data.items) {
@@ -36,39 +51,54 @@ const Cargo = () => {
         } finally {
             setLoading(false);
         }
-    }, [currentPage, filters]);
+    }, [currentPage]);
+
+    const applyFilters = useCallback(async (newFilters) => {
+        try {
+            setFilter(newFilters);
+            setCurrentPage(1);
+            console.log(newFilters)
+            const validFilters = Object.keys(newFilters)
+            .filter(key => newFilters[key] !== null && newFilters[key] !== '' && newFilters[key] !== 0)
+            .reduce((obj, key) => {
+                obj[key] = newFilters[key];
+                return obj;
+            }, {});
+            console.log(validFilters)
+            const response = await axios.get(`http://${ip}/api/Cargo/GetByFilters`, {
+                params: {
+                    ...validFilters,
+                    pageNumber: currentPage
+                }
+            });
+            if (response.status === 200) {
+                setCargo(response.data.items);
+                setTotalCargo(response.data.totalCount);
+            } else {
+                throw new Error("No cargo found with the given name");
+            }
+        }
+        catch (error){
+            console.log('Error getting cargo with filters', error);
+        }
+    }, [currentPage]);
 
     const getCargoByName = useCallback(async (name) => {
         try {
             setLoading(true);
-            const response = await axios.get(`http://${ip}/api/Cargo/GetByName`, {
-                params: { name: name, pageNumber: currentPage }
-            });
-            if (response.data && response.data.items.length > 0) {
-                setCargo(response.data.items);
-                setTotalCargo(response.data.totalCount);
-            } else {
-                console.log("No cargo found with the given name");
-            }
+            await applyFilters({name: name})
         } catch (error) {
             console.log('Error getting cargo by name', error);
         } finally {
             setLoading(false);
         }
-    }, [currentPage]);
-
-    const applyFilters = (newFilters) => {
-        setFilters(newFilters);
-        setCurrentPage(1);
-    };
+    }, [applyFilters]);
 
     useEffect(() => {
         if (name === '') {
             getAllCargo();
-        } else {
-            getCargoByName(name);
         }
-    }, [currentPage, getAllCargo, getCargoByName, name, filters]);
+    }, [currentPage, getAllCargo, name]);
 
     const submit = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -80,13 +110,15 @@ const Cargo = () => {
         }
     }
 
+
+
     return (
         <>
             <br/>
             <div className="container content-with-filters">
                 <div className="row">
                     <div className="col-lg-3">
-                        <CargoFilters/>
+                        <CargoFilters filter={filter} setFilter={setFilter} name={name} applyFilters={applyFilters} />
                     </div>
                     <div className="col-lg-9">
                         <div className="container cargo__container cargo__search-from form-margin">

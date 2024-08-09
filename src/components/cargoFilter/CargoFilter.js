@@ -1,26 +1,15 @@
-import React, {SyntheticEvent, useState} from 'react';
+import React, {SyntheticEvent, useEffect, useState} from 'react';
 import './style.css';
-import {ip} from "../../env/env";
-import axios from "axios";
 
-const CargoFilters = () => {
-    const [filter, setFilter] = useState({
-        name: '',
-        length: 0,
-        width: 0,
-        height: 0,
-        weight: 0,
-        volume: 0,
-        countPlace: 0,
-        loadingDate: '',
-        unloadingDate: '',
-        loadingPlace: '',
-        unloadingPlace: '',
-        priceCash: 0,
-        priceCashNds: 0,
-        priceCashWithoutNds: 0,
-        requestPrice: false,
-    });
+const CargoFilters = ({filter, setFilter, name, applyFilters}) => {
+
+
+    useEffect(() => {
+        setFilter((prevFilter) => ({
+            ...prevFilter,
+            name: name, // Обновление поля "name", когда оно изменяется на основной странице
+        }));
+    }, [name]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -33,13 +22,7 @@ const CargoFilters = () => {
     const submit = async (e: SyntheticEvent) => {
         try {
             e.preventDefault();
-            const response = await axios.get(`http://${ip}/api/Cargo/GetByFilters`, {
-                params: {
-
-                }
-            });
-            if (!response.ok)
-                throw "Не удалось выполнить запрос"
+            applyFilters(filter);
         }
         catch (error){
             console.log(error);
