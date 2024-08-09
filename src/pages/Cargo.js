@@ -57,10 +57,27 @@ const Cargo = () => {
         }
     }, [currentPage]);
 
-    const applyFilters = (newFilters) => {
-        setFilters(newFilters);
-        setCurrentPage(1);
-    };
+    const applyFilters = useCallback(async (newFilters) => {
+        try {
+            setFilters(newFilters);
+            setCurrentPage(1);
+            const response = await axios.get(`http://${ip}/api/Cargo/GetByFilters`, {
+                params: {
+                    filters,
+                    pageNumber: currentPage
+                }
+            });
+            if (response.data && response.data.items.length > 0) {
+                setCargo(response.data.items);
+                setTotalCargo(response.data.totalCount);
+            } else {
+                throw new Error("No cargo found with the given name");
+            }
+        }
+        catch (error){
+            console.log('Error getting cargo with filters', error);
+        }
+    }, [currentPage, filters]);
 
     useEffect(() => {
         if (name === '') {
@@ -86,7 +103,7 @@ const Cargo = () => {
             <div className="container content-with-filters">
                 <div className="row">
                     <div className="col-lg-3">
-                        <CargoFilters/>
+                        <CargoFilters applyFilters={applyFilters} />
                     </div>
                     <div className="col-lg-9">
                         <div className="container cargo__container cargo__search-from form-margin">
