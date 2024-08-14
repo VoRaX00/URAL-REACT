@@ -14,8 +14,9 @@ const notification = [
 ];
 
 const profile = [
-  { value: 'Профиль', label: 'Профиль', url: '/profile' },
-  { value: 'Выход', label: 'Выход', action: 'logout' },
+    { value: 'Профиль', label: 'Профиль', url: '/profile' },
+    { value: 'Мои чаты', label: 'Мои чаты', url: '/chats' },
+    { value: 'Выход', label: 'Выход', action: 'logout' },
 ];
 
 const unauthorized = [

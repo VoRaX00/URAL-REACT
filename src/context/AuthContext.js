@@ -1,5 +1,4 @@
-import React, {createContext, useContext, useReducer, useState} from 'react'
-import Context from 'universal-cookie'
+import React, {createContext, useContext, useState} from 'react'
 import Cookies from "universal-cookie";
 
 const AuthContext = createContext()

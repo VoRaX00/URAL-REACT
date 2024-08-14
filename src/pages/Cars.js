@@ -1,5 +1,6 @@
 import "./../styles/css/Cars.css"
 import Car from "../components/car/Car"
+import qs from "qs"
 import {SyntheticEvent, useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Pagination from "../components/pagination/Pagination";
@@ -36,7 +37,7 @@ const Cars = () => {
             });
             if (response.data && response.data.items) {
                 setCars(response.data.items);
-                setTotalCars(response.data.totalCount); // Предполагаем, что сервер возвращает общее количество элементов
+                setTotalCars(response.data.totalCount);
             } else {
                 console.log("No data received");
             }
@@ -63,7 +64,8 @@ const Cars = () => {
                 params: {
                     ...validFilters,
                     pageNumber: currentPage
-                }
+                },
+                paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' })
             });
             if (response.status === 200) {
                 setCars(response.data.items);

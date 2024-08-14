@@ -1,0 +1,11 @@
+.chat-list-container {
+  width: 300px;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+.chat-container {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
