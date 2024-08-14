@@ -2,7 +2,7 @@ import React, {SyntheticEvent, useState} from "react";
 import '../styles/css/Registration.css'
 import {Navigate} from "react-router-dom";
 import Phone from "../components/phone/Phone";
-import {ip} from "../env/env";
+import {confirmLink, ip} from "../env/env";
 
 const Registration = () => {
     const [name, setName] = React.useState("");
@@ -20,7 +20,7 @@ const Registration = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "clientUri": "http://bscar-go.ru/confirmEmail/",
+                    "clientUri": `http://${confirmLink}/confirmEmail/`,
                 },
                 body: JSON.stringify({
                     password: password,

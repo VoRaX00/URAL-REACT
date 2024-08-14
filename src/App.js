@@ -18,6 +18,8 @@ import ConfirmEmail from "./pages/ConfirmEmail";
 import ProtectedRoute from "./route/ProtectedRoute";
 import {AuthProvider} from "./context/AuthContext";
 import PublicRoute from "./route/PublicRoute";
+import Chat from "./components/chat/Chat";
+import Messenger from "./pages/Messenger";
 
 
 function App() {
@@ -35,6 +37,7 @@ function App() {
                             <Route path="/add-car" element={<AddCar/>}/>
                             <Route path="/add-cargo" element={<AddCargo/>}/>
                             <Route path="/profile" element={<Profile/>}/>
+                            <Route path="/chats" element={<Messenger/>}/>
                             <Route path="/edit-profile" element={<EditProfile/>}/>
                             <Route path="/notifications" element={<Notifications/>}/>
                             <Route path="/responses" element={<Responses/>}/>

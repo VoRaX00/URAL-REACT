@@ -10,10 +10,11 @@ const CarFilters = ({filter, setFilter, name, applyFilters}) => {
     const [selectedOptionsLoading, setSelectedOptionsLoading] = useState([]);
 
     const handleMultiSelectChangeBody = (selectedOptions) => {
+        const selectedBodyNames = selectedOptions.map(option => option.value);
         setSelectedOptionsBody(selectedOptions);
         setFilter(prevCar => ({
             ...prevCar,
-            bodyTypes: selectedOptions
+            bodyTypes: selectedBodyNames
         }));
     };
 
@@ -28,9 +29,9 @@ const CarFilters = ({filter, setFilter, name, applyFilters}) => {
     useEffect(() => {
         setFilter((prevFilter) => ({
             ...prevFilter,
-            name: name, // Обновление поля "name", когда оно изменяется на основной странице
+            name: name,
         }));
-    }, [name]);
+    }, [name, setFilter]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
