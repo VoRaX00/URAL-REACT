@@ -1,11 +1,17 @@
+/* Messenger.css */
+.container.content-with-filters {
+    display: flex;
+    height: calc(100vh - 60px); /* Высота окна за вычетом высоты navbar */
+}
+
 .chat-list-container {
-  width: 300px;
-  border-right: 1px solid #ccc;
-  overflow-y: auto;
+    width: 300px;
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
 }
 
 .chat-container {
-  flex-grow: 1;
-  padding: 20px;
-  overflow-y: auto;
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
 }

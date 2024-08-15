@@ -18,7 +18,6 @@ import ConfirmEmail from "./pages/ConfirmEmail";
 import ProtectedRoute from "./route/ProtectedRoute";
 import {AuthProvider} from "./context/AuthContext";
 import PublicRoute from "./route/PublicRoute";
-import Chat from "./components/chat/Chat";
 import Messenger from "./pages/Messenger";
 
 
