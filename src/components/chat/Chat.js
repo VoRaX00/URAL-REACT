@@ -11,10 +11,10 @@ const Chat = ({ chat }) => {
     };
 
     const handleEdit = (index) => {
-        const newMessage = prompt("Введите новое сообщение:", messages[index]);
+        const newMessage = prompt("Введите новое сообщение:", messages[index].text);
         if (newMessage !== null) {
             const updatedMessages = [...messages];
-            updatedMessages[index] = newMessage;
+            updatedMessages[index] = { ...updatedMessages[index], text: newMessage };
             setMessages(updatedMessages);
         }
     };
@@ -31,10 +31,12 @@ const Chat = ({ chat }) => {
                 {messages.map((message, index) => (
                     <Message
                         key={index}
-                        message={message}
-                        onReply={() => handleReply(message)}
+                        message={message} // Передаем объект сообщения целиком
+                        sender={message.sender}
+                        onReply={() => handleReply(message.text)}
                         onEdit={() => handleEdit(index)}
                         onDelete={() => handleDelete(index)}
+                        isSent={message.sender === 'Me'}
                     />
                 ))}
             </div>

@@ -1,45 +1,85 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
+import { Dropdown, Menu } from "antd";
 import './style.css';
 
-const Message = ({ message, onReply, onEdit, onDelete }) => {
-    const [isMenuVisible, setIsMenuVisible] = useState(false);
-    const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
-    const menuRef = useRef(null);
+const Message = ({ message, sender, time, read, onReply, onEdit, onDelete, isSent, onNameClick }) => {
+    const [menuVisible, setMenuVisible] = useState(false);
+    const [posX, setPosX] = useState(0);
+    const [posY, setPosY] = useState(0);
+    const [value, setValue] = useState();
 
-    const handleRightClick = (e) => {
-        e.preventDefault();
-        setMenuPosition({ x: e.clientX, y: e.clientY });
-        setIsMenuVisible(true);
+    const onClick = useCallback(
+        ({ key }) => {
+            setMenuVisible(false);
+            switch (key) {
+                case "1":
+                    onReply(value);
+                    break;
+                case "2":
+                    onEdit(value);
+                    break;
+                case "3":
+                    onDelete(value);
+                    break;
+                default:
+                    break;
+            }
+        },
+        [value, onReply, onEdit, onDelete]
+    );
+
+    const menu = useMemo(() => (
+        <Menu onClick={onClick} items={[
+            {
+                key: "1",
+                label: "Ответить"
+            },
+            {
+                key: "2",
+                label: "Изменить"
+            },
+            {
+                key: "3",
+                label: "Удалить"
+            }
+        ]} />
+    ), [onClick]);
+
+    const handleContextMenu = (event) => {
+        event.preventDefault();
+        const { clientX, clientY, target } = event;
+        setPosX(clientX);
+        setPosY(clientY);
+        setValue(target.innerHTML);
+        setMenuVisible(true);
     };
-
-    const handleClickOutside = (e) => {
-        if (menuRef.current && !menuRef.current.contains(e.target)) {
-            setIsMenuVisible(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
 
     return (
-        <div className="message-container" onContextMenu={handleRightClick}>
-            <p className="message-text">{message}</p>
-            {isMenuVisible && (
-                <ul
-                    className="context-menu"
-                    style={{ top: menuPosition.y, left: menuPosition.x }}
-                    ref={menuRef}
-                >
-                    <li onClick={onReply}>Ответить</li>
-                    <li onClick={onEdit}>Изменить</li>
-                    <li onClick={onDelete}>Удалить</li>
-                </ul>
-            )}
-        </div>
+        <Dropdown
+            overlay={menu}
+            visible={menuVisible}
+            trigger={["contextMenu"]}
+            onVisibleChange={setMenuVisible}
+            overlayStyle={{ position: 'absolute', top: posY, left: posX }}
+        >
+            <div
+                className={`message-container ${isSent ? 'sent' : ''}`}
+                onContextMenu={handleContextMenu}
+            >
+                <div className="message-bubble">
+                    <div className="sender-name" onClick={() => onNameClick(sender)}>
+                        {isSent ? 'You' : sender}
+                    </div>
+                    <div className="message-text">
+                        {message.text}
+                    </div>
+                </div>
+                <div className="message-time">
+                    {time}
+                    {read && <span className="checkmark">✓✓</span>}
+                </div>
+            </div>
+        </Dropdown>
     );
 };
 

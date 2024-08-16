@@ -1,24 +1,60 @@
 .message-container {
-    position: relative; /* Добавьте это, чтобы меню позиционировалось относительно контейнера сообщения */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    max-width: 80%;
 }
 
-.context-menu {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 120px;
-    z-index: 1000; /* Убедитесь, что меню отображается поверх других элементов */
+.message-container.sent {
+    align-items: flex-end;
+    margin-left: auto;
 }
 
-.context-menu li {
-    padding: 8px 12px;
+.message-bubble {
+    background-color: #0084ff;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    word-wrap: break-word;
+    max-width: 100%;
+    position: relative;
+}
+
+.message-container.sent .message-bubble {
+    background-color: #4CAF50;
+}
+
+.sender-name {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #cce4ff;
+    margin-bottom: 5px;
+    display: block;
     cursor: pointer;
 }
 
-.context-menu li:hover {
-    background-color: #f0f0f0;
+.message-container.sent .sender-name {
+    color: #d8fdd8;
+}
+
+.message-text {
+    margin: 0;
+}
+
+.message-time {
+    font-size: 0.7em;
+    color: #999;
+    margin-top: 5px;
+    align-self: flex-end;
+}
+
+.message-container.sent .message-time {
+    color: #e0ffe0;
+}
+
+.checkmark {
+    margin-left: 5px;
+    color: #4caf50;
 }

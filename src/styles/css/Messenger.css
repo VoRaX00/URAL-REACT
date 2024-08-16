@@ -1,7 +1,6 @@
-/* Messenger.css */
 .container.content-with-filters {
     display: flex;
-    height: calc(100vh - 60px); /* Высота окна за вычетом высоты navbar */
+    height: calc(100vh - 60px);
 }
 
 .chat-list-container {
