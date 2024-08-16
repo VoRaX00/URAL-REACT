@@ -56,10 +56,10 @@ const Message = ({ message, sender, time, read, onReply, onEdit, onDelete, isSen
 
     return (
         <Dropdown
-            overlay={menu}
-            visible={menuVisible}
+            menu={menu}
+            open={menuVisible}
             trigger={["contextMenu"]}
-            onVisibleChange={setMenuVisible}
+            onOpenChange={setMenuVisible}
             overlayStyle={{ position: 'absolute', top: posY, left: posX }}
         >
             <div

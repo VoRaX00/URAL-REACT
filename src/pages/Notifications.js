@@ -24,7 +24,7 @@ const Notifications = () => {
                     pageNumber: currentPageNotify,
                 }
             });
-            if (response.data && response.data.items.length > 0) {
+            if (response.data && response.data.items.length) {
                 setNotifications(response.data.items);
                 setTotalNotify(response.data.totalCount);
             } else{
