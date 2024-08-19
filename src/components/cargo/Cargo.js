@@ -18,26 +18,60 @@ const CargoItem = ({ cargo, typeSubmit }) => {
                 throw new Error("Id equals");
             }
 
-            if (typeSubmit === 'Notification') {
-                await axios.put(`http://${ip}/api/NotifyCargo/Add`, {
-                    firstUserComment: "empty",
-                    secondUserComment: cargo.comment,
-                    cargoId: cargo.id,
-                    firstUserId: userId,
-                    secondUserId: cargo.userId,
-                }, {
-                    headers: { "Authorization": `Bearer ${token}` },
-                    params: cargo.id
-                });
-            } else if (typeSubmit === 'Responses') {
-                await axios.post(`http://${ip}/api/NotifyCargo/Add`, {
-                    firstUserComment: "empty",
-                    secondUserComment: cargo.comment,
-                    cargoId: cargo.id,
-                    firstUserId: userId,
-                    secondUserId: cargo.userId,
-                }, { headers: { "Authorization": `Bearer ${token}` } });
+            switch (typeSubmit){
+                case 'Cargo': {
+                    const requestData = {
+                        firstUserComment: "",
+                        secondUserComment: cargo.comment,
+                        cargoId: cargo.id,
+                        firstUserId: userId,
+                        secondUserId: cargo.userId,
+                    }
+
+                    await axios.post(`http://${ip}/api/NotifyCargo/Add`, requestData, {
+                        headers: { "Authorization": `Bearer ${token}` },
+                        params: {id: cargo.id}
+                    });
+                    break;
+                }
+
+                case 'Notification': {
+                    const requestData = {
+                        firstUserComment: "",
+                        secondUserComment: cargo.comment,
+                        cargoId: cargo.id,
+                        firstUserId: userId,
+                        secondUserId: cargo.userId,
+                    }
+
+                    await axios.put(`http://${ip}/api/NotifyCargo/Add`, requestData, {
+                        headers: { "Authorization": `Bearer ${token}` },
+                        params: {id: cargo.id}
+                    });
+                    break;
+                }
+
+                case 'Responses': {
+                    const requestData = {
+                        firstUserComment: "",
+                        secondUserComment: cargo.comment,
+                        cargoId: cargo.id,
+                        firstUserId: userId,
+                        secondUserId: cargo.userId,
+                    }
+
+                    await axios.post(`http://${ip}/api/NotifyCargo/Add`, requestData, {
+                        headers: { "Authorization": `Bearer ${token}` },
+                        params: {id: cargo.id}
+                    });
+                    break;
+                }
+
+                default:
+                    console.log("default case in cargo");
+                    break;
             }
+
         } catch (err) {
             console.log(err);
         }
@@ -85,9 +119,20 @@ const CargoItem = ({ cargo, typeSubmit }) => {
                     <h5>{cargo.comment}</h5>
                 </div>
             )}
-            <div className="cargo-actions">
-                <button className="cargo-action-button" onClick={submit}>Откликнуться</button>
-            </div>
+            {typeSubmit === 'Cargo' ? (
+                <div className="cargo-actions">
+                    <button className="cargo-action-button" onClick={submit}>Откликнуться</button>
+                </div>
+            ) : (typeSubmit === 'Notification' ? (
+                <div className="cargo-actions">
+                    <button className="cargo-action-button" onClick={submit}>Отклонить</button>
+                    <button className="cargo-action-button" onClick={submit}>Откликнуться</button>
+                </div>
+            ) : (
+                <div className="cargo-actions">
+                    <button className="cargo-action-button" onClick={submit}>Удалить</button>
+                </div>
+            ))}
         </div>
     );
 };

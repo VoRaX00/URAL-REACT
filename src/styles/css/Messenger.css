@@ -1,4 +1,4 @@
-.container.content-with-filters {
+.chat-container {
     display: flex;
     height: calc(100vh - 60px);
 }
