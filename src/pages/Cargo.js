@@ -143,7 +143,7 @@ const Cargo = () => {
                             ) : (
                                 cargo.length > 0 ? (
                                     cargo.map((cargo, index) => (
-                                        <CargoItem cargo={cargo} typeSubmit={'Notification'} key={index} />
+                                        <CargoItem cargo={cargo} typeSubmit={'Cargo'} key={index} />
                                     ))
                                 ) : (
                                     <p>Ничего не найдено</p>

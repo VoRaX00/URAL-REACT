@@ -1,11 +1,11 @@
 import "../styles/css/Notifications.css";
-import CargoInfo from "../components/cargo/Cargo";
 import axios from "axios";
 import React, {useEffect, useState, useCallback} from "react";
 import Cookies from "universal-cookie";
 import Pagination from "../components/pagination/Pagination";
-import Car from "../components/car/Car";
 import {ip} from "../env/env";
+import NotifyCargo from "../components/notifyCargo/NotifyCargo";
+import NotifyCar from "../components/notifyCar/NotifyCar";
 
 const Notifications = () => {
     const token = new Cookies().get("jwt_authorization");
@@ -46,9 +46,9 @@ const Notifications = () => {
                 <div className="container notifications__container notifications__notifications-info-grid">
                     {notifications.length > 0 ? (
                         notifications.map((notify, index) => (notify.car === null ? (
-                                <CargoInfo key={index} cargo={notify.cargo}/>
+                                <NotifyCargo key={index} notify={notify}/>
                             ) : (
-                                <Car key={index} car={notify.car}/>
+                                <NotifyCar key={index} notify={notify}/>
                             )
                         ))) : (
                         <p>Загрузка...</p>

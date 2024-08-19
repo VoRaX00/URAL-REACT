@@ -5,73 +5,52 @@ import Cookies from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
 import { ip } from "../../env/env";
 
+const AddNotification = async (cargo, userId, token ) => {
+    const requestData = {
+        firstUserComment: "",
+        secondUserComment: cargo.comment,
+        cargoId: cargo.id,
+        firstUserId: userId,
+        secondUserId: cargo.userId,
+    }
+
+    await axios.post(`http://${ip}/api/NotifyCargo/Add`, requestData, {
+        headers: { "Authorization": `Bearer ${token}` },
+        params: {id: cargo.id}
+    });
+}
+
+const DeleteCargo = async (cargoId, token) => {
+    await axios.delete(`http://${ip}/api/Cargo/Delete`, {
+        headers: { "Authorization": `Bearer ${token}` },
+        params: {id: cargoId}
+    });
+}
+
 const CargoItem = ({ cargo, typeSubmit }) => {
     const [activeTab, setActiveTab] = useState('info');
+    const token = useState(new Cookies().get("jwt_authorization"));
+
     const submit = async (e: SyntheticEvent) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
-            const token = new Cookies().get("jwt_authorization");
-            const decodedToken = jwtDecode(token);
-            const userId = decodedToken.Id;
-
-            if (userId === cargo.userId) {
-                throw new Error("Id equals");
-            }
-
             switch (typeSubmit){
                 case 'Cargo': {
-                    const requestData = {
-                        firstUserComment: "",
-                        secondUserComment: cargo.comment,
-                        cargoId: cargo.id,
-                        firstUserId: userId,
-                        secondUserId: cargo.userId,
-                    }
+                    const userId = jwtDecode(token).Id;
+                    if (userId === cargo.userId)
+                        throw new Error("Id equals");
 
-                    await axios.post(`http://${ip}/api/NotifyCargo/Add`, requestData, {
-                        headers: { "Authorization": `Bearer ${token}` },
-                        params: {id: cargo.id}
-                    });
+                    await AddNotification(cargo, userId, token);
                     break;
                 }
-
-                case 'Notification': {
-                    const requestData = {
-                        firstUserComment: "",
-                        secondUserComment: cargo.comment,
-                        cargoId: cargo.id,
-                        firstUserId: userId,
-                        secondUserId: cargo.userId,
-                    }
-
-                    await axios.put(`http://${ip}/api/NotifyCargo/Add`, requestData, {
-                        headers: { "Authorization": `Bearer ${token}` },
-                        params: {id: cargo.id}
-                    });
+                case 'Profile':
+                    await DeleteCargo(cargo.id, token)
                     break;
-                }
-
-                case 'Responses': {
-                    const requestData = {
-                        firstUserComment: "",
-                        secondUserComment: cargo.comment,
-                        cargoId: cargo.id,
-                        firstUserId: userId,
-                        secondUserId: cargo.userId,
-                    }
-
-                    await axios.post(`http://${ip}/api/NotifyCargo/Add`, requestData, {
-                        headers: { "Authorization": `Bearer ${token}` },
-                        params: {id: cargo.id}
-                    });
-                    break;
-                }
 
                 default:
                     console.log("default case in cargo");
                     break;
             }
-
         } catch (err) {
             console.log(err);
         }
@@ -123,16 +102,11 @@ const CargoItem = ({ cargo, typeSubmit }) => {
                 <div className="cargo-actions">
                     <button className="cargo-action-button" onClick={submit}>Откликнуться</button>
                 </div>
-            ) : (typeSubmit === 'Notification' ? (
-                <div className="cargo-actions">
-                    <button className="cargo-action-button" onClick={submit}>Отклонить</button>
-                    <button className="cargo-action-button" onClick={submit}>Откликнуться</button>
-                </div>
             ) : (
                 <div className="cargo-actions">
                     <button className="cargo-action-button" onClick={submit}>Удалить</button>
                 </div>
-            ))}
+            )}
         </div>
     );
 };

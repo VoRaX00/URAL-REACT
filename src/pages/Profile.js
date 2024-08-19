@@ -39,7 +39,7 @@ const Profile = () => {
 
     useEffect(() => {
         fetchData();
-    }, [token]);
+    }, [fetchData, token]);
 
     let image;
     if (!user.image) {
@@ -177,7 +177,7 @@ const Profile = () => {
                                     <div className="container cargo__container cargo__cargo-info-grid">
                                         {cargo.length > 0 ? (
                                             cargo.map((cargo, index) => (
-                                                <CargoInfo key={index} cargo={cargo} />
+                                                <CargoInfo key={index} typeSubmit={'Profile'} cargo={cargo} />
                                             ))
                                         ) : (
                                             <p>Загрузка...</p>

@@ -5,31 +5,54 @@ import axios from "axios";
 import {ip} from "../../env/env";
 import './style.css'
 
+const AddNotificationCar = async (car, userId, token) => {
+    await axios.post(`http://${ip}/api/NotifyCar/Add`, {
+        firstUserComment: "empty",
+        secondUserComment: car.comment,
+        carId: car.id,
+        firstUserId: userId,
+        secondUserId: car.userId,
+    }, {headers: {"Authorization": `Bearer ${token}`}});
+}
+
+const DeleteCar = async (carId, token) => {
+    await axios.delete(`http://${ip}/api/Car/Delete`, {
+        headers: { "Authorization": `Bearer ${token}` },
+        params: {id: carId}
+    });
+}
+
 const CarInfo = ({ car, typeSubmit }) => {
     const [activeTab, setActiveTab] = useState('info');
+    const token = new Cookies().get("jwt_authorization");
 
     const submit = async (e: SyntheticEvent) => {
         try {
             e.preventDefault();
-            const token = new Cookies().get("jwt_authorization");
-            const decodedToken = jwtDecode(token);
-            const userId = decodedToken.Id;
 
-            if (userId === car.userId) {
-                throw new Error("Id equals");
+            switch (typeSubmit) {
+                case 'Car': {
+                    const userId = jwtDecode(token).Id;
+                    if (userId === car.userId)
+                        throw new Error("Id equals");
+
+                    await AddNotificationCar(car, userId, token);
+                    break;
+                }
+                case 'Profile': {
+                    await DeleteCar(car.id, token)
+                    break;
+                }
+                default:
+                    console.log('default case car')
+                    break
             }
-            console.log(car.id);
-            await axios.post(`http://${ip}/api/NotifyCar/Add`, {
-                firstUserComment: "empty",
-                secondUserComment: car.comment,
-                carId: car.id,
-                firstUserId: userId,
-                secondUserId: car.userId,
-            }, {headers: {"Authorization": `Bearer ${token}`}});
+
         } catch (err) {
             console.log(err);
         }
     };
+
     return (
         <div className="cars-item">
             <div className="tabs">
@@ -82,9 +105,16 @@ const CarInfo = ({ car, typeSubmit }) => {
                 <h5>{car.comment}</h5>
             </div>
         )}
-            <div className="cars-actions">
-                <button className="cars-action-button" onClick={submit}>Откликнуться</button>
-            </div>
+            {typeSubmit === 'Car' ? (
+                <div className="cars-actions">
+                    <button className="cars-action-button" onClick={submit}>Откликнуться</button>
+                </div>
+            ) : (
+                <div className="cars-actions">
+                    <button className="cars-action-button" onClick={submit}>Удалить</button>
+                </div>
+            )}
+
         </div>
     );
 };
