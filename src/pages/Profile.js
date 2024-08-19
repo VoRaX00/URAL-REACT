@@ -198,7 +198,7 @@ const Profile = () => {
                                     <div className="container cargo__container cargo__cargo-info-grid">
                                         {cars.length > 0 ? (
                                             cars.map((car, index) => (
-                                                <Car key={index} car={car} />
+                                                <Car key={index} car={car} typeSubmit='Profile'/>
                                             ))
                                         ) : (
                                             <p>Загрузка...</p>
