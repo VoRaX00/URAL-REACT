@@ -13,7 +13,7 @@ const Cars = () => {
     const [postsPerPage] = useState(4);
     const [totalCars, setTotalCars] = useState(0);
     const [cars, setCars] = useState([]);
-    const [loading, setLoading] = useState(true);
+        const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState({
         name: '',
         length: 0,
@@ -139,7 +139,7 @@ const Cars = () => {
                                 ) :
                                 cars.length > 0 ? (
                                     cars.map((car, index) => (
-                                        <Car key={index} car={car}/>
+                                        <Car key={index} car={car} typeSubmit='Car'/>
                                     ))
                                 ) : (
                                     <p>Ничего не найдено</p>

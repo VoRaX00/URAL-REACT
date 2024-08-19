@@ -1,11 +1,11 @@
 import "../styles/css/Responses.css"
-import CargoInfo from "../components/cargo/Cargo";
 import Cookies from "universal-cookie";
 import React, {useCallback, useEffect, useState} from "react";
 import axios from "axios";
-import Car from "../components/car/Car";
 import Pagination from "../components/pagination/Pagination";
 import {ip} from "../env/env";
+import ResponseCargo from "../components/responseCargo/ResponseCargo";
+import ResponseCar from "../components/responseCar/ResponseCar";
 
 const Responses = () => {
     const token = new Cookies().get("jwt_authorization");
@@ -46,9 +46,9 @@ const Responses = () => {
                 <div className="container responses__container responses__responses-info-grid">
                     {responses.length > 0 ? (
                         responses.map((response, index) => (response.car === null ? (
-                                <CargoInfo key={index} cargo={response.cargo}/>
+                                <ResponseCargo key={index} response={response}/>
                             ) : (
-                                <Car key={index} car={response.car}/>
+                                <ResponseCar key={index} response={response}/>
                             )
                         ))) : (
                         <p>Загрузка...</p>

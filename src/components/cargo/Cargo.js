@@ -5,38 +5,51 @@ import Cookies from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
 import { ip } from "../../env/env";
 
+const AddNotification = async (cargo, userId, token ) => {
+    const requestData = {
+        firstUserComment: "",
+        secondUserComment: cargo.comment,
+        cargoId: cargo.id,
+        firstUserId: userId,
+        secondUserId: cargo.userId,
+    }
+
+    await axios.post(`http://${ip}/api/NotifyCargo/Add`, requestData, {
+        headers: { "Authorization": `Bearer ${token}` },
+        params: {id: cargo.id}
+    });
+}
+
+const DeleteCargo = async (cargoId, token) => {
+    await axios.delete(`http://${ip}/api/Cargo/Delete`, {
+        headers: { "Authorization": `Bearer ${token}` },
+        params: {id: cargoId}
+    });
+}
+
 const CargoItem = ({ cargo, typeSubmit }) => {
     const [activeTab, setActiveTab] = useState('info');
+    const token = useState(new Cookies().get("jwt_authorization"));
+
     const submit = async (e: SyntheticEvent) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
-            const token = new Cookies().get("jwt_authorization");
-            const decodedToken = jwtDecode(token);
-            const userId = decodedToken.Id;
+            switch (typeSubmit){
+                case 'Cargo': {
+                    const userId = jwtDecode(token).Id;
+                    if (userId === cargo.userId)
+                        throw new Error("Id equals");
 
-            if (userId === cargo.userId) {
-                throw new Error("Id equals");
-            }
+                    await AddNotification(cargo, userId, token);
+                    break;
+                }
+                case 'Profile':
+                    await DeleteCargo(cargo.id, token)
+                    break;
 
-            if (typeSubmit === 'Notification') {
-                await axios.put(`http://${ip}/api/NotifyCargo/Add`, {
-                    firstUserComment: "empty",
-                    secondUserComment: cargo.comment,
-                    cargoId: cargo.id,
-                    firstUserId: userId,
-                    secondUserId: cargo.userId,
-                }, {
-                    headers: { "Authorization": `Bearer ${token}` },
-                    params: cargo.id
-                });
-            } else if (typeSubmit === 'Responses') {
-                await axios.post(`http://${ip}/api/NotifyCargo/Add`, {
-                    firstUserComment: "empty",
-                    secondUserComment: cargo.comment,
-                    cargoId: cargo.id,
-                    firstUserId: userId,
-                    secondUserId: cargo.userId,
-                }, { headers: { "Authorization": `Bearer ${token}` } });
+                default:
+                    console.log("default case in cargo");
+                    break;
             }
         } catch (err) {
             console.log(err);
@@ -85,9 +98,15 @@ const CargoItem = ({ cargo, typeSubmit }) => {
                     <h5>{cargo.comment}</h5>
                 </div>
             )}
-            <div className="cargo-actions">
-                <button className="cargo-action-button" onClick={submit}>Откликнуться</button>
-            </div>
+            {typeSubmit === 'Cargo' ? (
+                <div className="cargo-actions">
+                    <button className="cargo-action-button" onClick={submit}>Откликнуться</button>
+                </div>
+            ) : (
+                <div className="cargo-actions">
+                    <button className="cargo-action-button" onClick={submit}>Удалить</button>
+                </div>
+            )}
         </div>
     );
 };
