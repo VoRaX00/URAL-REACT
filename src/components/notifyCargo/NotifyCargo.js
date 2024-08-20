@@ -4,52 +4,53 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { ip } from "../../env/env";
 
+const AcceptNotify = async ({notifyId, token})  => {
+    const requestData = {
+        id: notifyId,
+        firstUserStatus: "y",
+        secondUserStatus: "y",
+        firstUserComment: "",
+        secondUserComment: "",
+    }
+
+    await axios.put(`http://${ip}/api/NotifyCargo/Update`, requestData, {
+        headers: { "Authorization": `Bearer ${token}` },
+        params: {id: notifyId}
+    });
+}
+
+const RejectNotify = async ({notifyId, token}) => {
+    const requestData = {
+        id: notifyId,
+        firstUserStatus: "y",
+        secondUserStatus: "n",
+        firstUserComment: "",
+        secondUserComment: "",
+    }
+
+    await axios.put(`http://${ip}/api/NotifyCargo/Update`, requestData, {
+        headers: { "Authorization": `Bearer ${token}` },
+        params: {id: notifyId}
+    });
+}
+
 const NotifyCargo = ({ notify }) => {
     const [activeTab, setActiveTab] = useState('info');
+    const token = new Cookies().get("jwt_authorization");
 
     const submit = async (e: SyntheticEvent) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
-            const token = new Cookies().get("jwt_authorization");
-
-            const requestData = {
-                id: notify.id,
-                firstUserStatus: "y",
-                secondUserStatus: "y",
-                firstUserComment: "",
-                secondUserComment: "",
-            }
-
-            await axios.put(`http://${ip}/api/NotifyCargo/Add`, requestData, {
-                headers: { "Authorization": `Bearer ${token}` },
-                params: {id: notify.id}
-            });
-
-
+            await AcceptNotify(notify.id, token);
         } catch (err) {
             console.log(err);
         }
     };
 
     const reject = async (e: SyntheticEvent) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
-            const token = new Cookies().get("jwt_authorization");
-
-            const requestData = {
-                id: notify.id,
-                firstUserStatus: "n",
-                secondUserStatus: "y",
-                firstUserComment: "",
-                secondUserComment: "",
-            }
-
-            await axios.put(`http://${ip}/api/NotifyCargo/Add`, requestData, {
-                headers: { "Authorization": `Bearer ${token}` },
-                params: {id: notify.id}
-            });
-
-
+            await RejectNotify(notify.id, token);
         } catch (err) {
             console.log(err);
         }

@@ -4,27 +4,29 @@ import axios from "axios";
 import {ip} from "../../env/env";
 import './style.css'
 
+const cancelNotify = async ({responseId, token}) => {
+    const requestData = {
+        id: responseId,
+        firstUserStatus: "n",
+        secondUserStatus: "u",
+        firstUserComment: "",
+        secondUserComment: "",
+    }
+
+    await axios.put(`http://${ip}/api/NotifyCar/Update`, requestData, {
+        headers: { "Authorization": `Bearer ${token}` },
+        params: {id: responseId}
+    });
+}
+
 const ResponseCar = ({ response }) => {
     const [activeTab, setActiveTab] = useState('info');
+    const token = new Cookies().get("jwt_authorization");
 
     const submit = async (e: SyntheticEvent) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
-            const token = new Cookies().get("jwt_authorization");
-
-            const requestData = {
-                id: response.id,
-                firstUserStatus: "y",
-                secondUserStatus: "n",
-                firstUserComment: "",
-                secondUserComment: "",
-            }
-
-            await axios.put(`http://${ip}/api/NotifyCargo/Add`, requestData, {
-                headers: { "Authorization": `Bearer ${token}` },
-                params: {id: response.id}
-            });
-
+            await cancelNotify(response.id, token);
         } catch (err) {
             console.log(err);
         }

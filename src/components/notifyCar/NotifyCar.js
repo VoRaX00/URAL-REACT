@@ -4,31 +4,57 @@ import axios from "axios";
 import {ip} from "../../env/env";
 import './style.css'
 
+const AcceptNotify = async ({notifyId, token}) => {
+    const requestData = {
+        id: notifyId,
+        firstUserStatus: "y",
+        secondUserStatus: "y",
+        firstUserComment: "",
+        secondUserComment: "",
+    }
+
+    await axios.put(`http://${ip}/api/NotifyCar/Update`, requestData, {
+        headers: { "Authorization": `Bearer ${token}` },
+        params: {id: notifyId}
+    });
+}
+
+const RejectNotify = async ({notifyId, token}) => {
+    const requestData = {
+        id: notifyId,
+        firstUserStatus: "y",
+        secondUserStatus: "n",
+        firstUserComment: "",
+        secondUserComment: "",
+    }
+
+    await axios.put(`http://${ip}/api/NotifyCar/Update`, requestData, {
+        headers: { "Authorization": `Bearer ${token}` },
+        params: {id: notifyId}
+    });
+}
+
 const NotifyCar = ({ notify }) => {
     const [activeTab, setActiveTab] = useState('info');
+    const token = new Cookies().get("jwt_authorization");
 
     const submit = async (e: SyntheticEvent) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
-            const token = new Cookies().get("jwt_authorization");
-
-            const requestData = {
-                id: notify.id,
-                firstUserStatus: "y",
-                secondUserStatus: "y",
-                firstUserComment: "",
-                secondUserComment: "",
-            }
-
-            await axios.put(`http://${ip}/api/NotifyCargo/Add`, requestData, {
-                headers: { "Authorization": `Bearer ${token}` },
-                params: {id: notify.id}
-            });
-
-        } catch (err) {
-            console.log(err);
+            await AcceptNotify(notify.id, token);
+        } catch (error) {
+            console.log(error);
         }
     };
+
+    const reject = async (e: SyntheticEvent) => {
+        e.preventDefault()
+        try{
+            await RejectNotify(notify.id, token);
+        } catch (error){
+            console.log(error);
+        }
+    }
 
     return (
         <div className="cars-item">
@@ -83,7 +109,8 @@ const NotifyCar = ({ notify }) => {
             </div>
         )}
             <div className="cars-actions">
-                <button className="cars-action-button" onClick={submit}>Откликнуться</button>
+                <button className="cars-action-button" onClick={reject}>Отклонить</button>
+                <button className="cars-action-button" onClick={submit}>Принять</button>
             </div>
         </div>
     );
