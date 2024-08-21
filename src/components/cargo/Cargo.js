@@ -5,7 +5,7 @@ import Cookies from "universal-cookie";
 import { jwtDecode } from "jwt-decode";
 import { ip } from "../../env/env";
 
-const AddNotification = async (cargo, userId, token ) => {
+const AddNotification = async (cargo, userId, token) => {
     const requestData = {
         firstUserComment: "",
         secondUserComment: cargo.comment,
@@ -29,7 +29,7 @@ const DeleteCargo = async (cargoId, token) => {
 
 const CargoItem = ({ cargo, typeSubmit }) => {
     const [activeTab, setActiveTab] = useState('info');
-    const token = useState(new Cookies().get("jwt_authorization"));
+    const token = new Cookies().get("jwt_authorization");
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();

@@ -1,7 +1,7 @@
 import "../styles/css/Match.css"
 import CargoInfo from "../components/cargo/Cargo";
 import Cookies from "universal-cookie";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Car from "../components/car/Car";
 import Pagination from "../components/pagination/Pagination";
@@ -13,9 +13,11 @@ const Match = () => {
     const [postsPerPageMatch] = useState(4);
     const [totalMatch, setTotalMatch] = useState(0);
     const [matches, setMatches] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const getAllMatches = async () => {
+    const getAllMatches = useCallback(async () => {
         try {
+            setLoading(true);
             const response = await axios.get(`http://${ip}/api/Notifications/GetUserMatch`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -33,8 +35,10 @@ const Match = () => {
             }
         } catch (error) {
             console.log('Error getting all cargo', error);
+        } finally {
+            setLoading(false);
         }
-    }
+    }, [currentPageMatch, matches, token]);
 
     useEffect(() => {
         getAllMatches();
@@ -45,14 +49,16 @@ const Match = () => {
             <br/>
             <div className="container content-with-filters">
                 <div className="container match__container match__match-info-grid">
-                    {matches.length > 0 ? (
+                    { loading ? (
+                        <p>Загрузка...</p>
+                    ) : matches.length > 0 ? (
                         matches.map((match, index) => (match.notifyType === 0 ? (
                                 <CargoInfo key={index} cargo={match.notification}/>
                             ) : (
                                 <Car key={index} car={match.notification}/>
                             )
                         ))) : (
-                        <p>Загрузка...</p>
+                        <p>Ничего не найдено</p>
                     )}
                 </div>
                 <Pagination

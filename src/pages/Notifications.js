@@ -13,9 +13,11 @@ const Notifications = () => {
     const [postsPerPageNotify] = useState(4);
     const [totalNotify, setTotalNotify] = useState(0);
     const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const getAllNotifications = useCallback(async () => {
         try {
+            setLoading(true)
             const response = await axios.get(`http://${ip}/api/Notifications/GetUserNotifications`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -32,6 +34,8 @@ const Notifications = () => {
             }
         } catch (error) {
             console.log('Error getting all cargo', error);
+        } finally {
+            setLoading(false);
         }
     }, [token, currentPageNotify]);
 
@@ -44,14 +48,16 @@ const Notifications = () => {
             <br/>
             <div className="container content-with-filters">
                 <div className="container notifications__container notifications__notifications-info-grid">
-                    {notifications.length > 0 ? (
+                    { loading ? (
+                        <p>Загрузка...</p>
+                    ) : notifications.length > 0 ? (
                         notifications.map((notify, index) => (notify.car === null ? (
                                 <NotifyCargo key={index} notify={notify}/>
                             ) : (
                                 <NotifyCar key={index} notify={notify}/>
                             )
                         ))) : (
-                        <p>Загрузка...</p>
+                        <p>Ничего не найдено</p>
                     )}
                 </div>
                 <Pagination

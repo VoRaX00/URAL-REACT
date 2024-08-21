@@ -13,9 +13,11 @@ const Responses = () => {
     const [postsPerPageResponses] = useState(4);
     const [totalResponses, setTotalResponses] = useState(0);
     const [responses, setResponses] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const getAllResponses = useCallback(async () => {
         try {
+            setLoading(true)
             const response = await axios.get(`http://${ip}/api/Notifications/GetUserResponses`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -32,6 +34,8 @@ const Responses = () => {
             }
         } catch (error) {
             console.log('Error getting all cargo', error);
+        } finally {
+            setLoading(false);
         }
     }, [token, currentPageResponses]);
 
@@ -44,15 +48,17 @@ const Responses = () => {
             <br/>
             <div className="container content-with-filters">
                 <div className="container responses__container responses__responses-info-grid">
-                    {responses.length > 0 ? (
+                    {loading ?(
+                        <p>Загрузка...</p>
+                    ) : (responses.length > 0 ? (
                         responses.map((response, index) => (response.car === null ? (
                                 <ResponseCargo key={index} response={response}/>
                             ) : (
                                 <ResponseCar key={index} response={response}/>
                             )
                         ))) : (
-                        <p>Загрузка...</p>
-                    )}
+                        <p>Ничего не найдено</p>
+                    ))}
                 </div>
                 <Pagination
                     totalPosts={totalResponses}

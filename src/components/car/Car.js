@@ -6,20 +6,20 @@ import {ip} from "../../env/env";
 import './style.css'
 
 const AddNotificationCar = async (car, userId, token) => {
-    await axios.post(`http://${ip}/api/NotifyCar/Add`, {
+    const requestData = {
         firstUserComment: "empty",
         secondUserComment: car.comment,
         carId: car.id,
         firstUserId: userId,
         secondUserId: car.userId,
-    }, {headers: {"Authorization": `Bearer ${token}`}});
+    }
+
+    await axios.post(`http://${ip}/api/NotifyCar/Add`, requestData,
+        {headers: {"Authorization": `Bearer ${token}`}});
 }
 
 const DeleteCar = async (carId, token) => {
-    await axios.delete(`http://${ip}/api/Car/Delete`, {
-        headers: { "Authorization": `Bearer ${token}` },
-        params: {id: carId}
-    });
+    await axios.delete(`http://${ip}/api/Car/Delete/${carId}`, {headers: { "Authorization": `Bearer ${token}` },});
 }
 
 const CarInfo = ({ car, typeSubmit }) => {

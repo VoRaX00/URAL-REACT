@@ -4,7 +4,7 @@ import axios from "axios";
 import {ip} from "../../env/env";
 import './style.css'
 
-const AcceptNotify = async ({notifyId, token}) => {
+const AcceptNotify = async (notifyId, token) => {
     const requestData = {
         id: notifyId,
         firstUserStatus: "y",
@@ -13,13 +13,12 @@ const AcceptNotify = async ({notifyId, token}) => {
         secondUserComment: "",
     }
 
-    await axios.put(`http://${ip}/api/NotifyCar/Update`, requestData, {
+    await axios.put(`http://${ip}/api/NotifyCar/Update/${notifyId}`, requestData, {
         headers: { "Authorization": `Bearer ${token}` },
-        params: {id: notifyId}
     });
 }
 
-const RejectNotify = async ({notifyId, token}) => {
+const RejectNotify = async (notifyId, token) => {
     const requestData = {
         id: notifyId,
         firstUserStatus: "y",
@@ -28,9 +27,8 @@ const RejectNotify = async ({notifyId, token}) => {
         secondUserComment: "",
     }
 
-    await axios.put(`http://${ip}/api/NotifyCar/Update`, requestData, {
+    await axios.put(`http://${ip}/api/NotifyCar/Update/${notifyId}`, requestData, {
         headers: { "Authorization": `Bearer ${token}` },
-        params: {id: notifyId}
     });
 }
 

@@ -4,18 +4,9 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { ip } from "../../env/env";
 
-const cancelResponse = async ({responseId, token}) => {
-    const requestData = {
-        id: responseId,
-        firstUserStatus: "n",
-        secondUserStatus: "u",
-        firstUserComment: "",
-        secondUserComment: "",
-    }
-
-    await axios.put(`http://${ip}/api/NotifyCargo/Update`, requestData, {
-        headers: { "Authorization": `Bearer ${token}` },
-        params: {id: responseId}
+const cancelResponse = async (responseId, token) => {
+    await axios.delete(`http://${ip}/api/NotifyCargo/Delete/${responseId}`, {
+        headers: { "Authorization": `Bearer ${token}` }
     });
 }
 

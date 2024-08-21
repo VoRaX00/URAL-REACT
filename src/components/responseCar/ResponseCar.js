@@ -4,18 +4,9 @@ import axios from "axios";
 import {ip} from "../../env/env";
 import './style.css'
 
-const cancelNotify = async ({responseId, token}) => {
-    const requestData = {
-        id: responseId,
-        firstUserStatus: "n",
-        secondUserStatus: "u",
-        firstUserComment: "",
-        secondUserComment: "",
-    }
-
-    await axios.put(`http://${ip}/api/NotifyCar/Update`, requestData, {
+const cancelResponse = async (responseId, token) => {
+    await axios.put(`http://${ip}/api/NotifyCar/Delete/${responseId}`, {
         headers: { "Authorization": `Bearer ${token}` },
-        params: {id: responseId}
     });
 }
 
@@ -26,7 +17,7 @@ const ResponseCar = ({ response }) => {
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
         try {
-            await cancelNotify(response.id, token);
+            await cancelResponse(response.id, token);
         } catch (err) {
             console.log(err);
         }

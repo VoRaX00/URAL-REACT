@@ -110,8 +110,6 @@ const Cargo = () => {
         }
     }
 
-
-
     return (
         <>
             <br/>
