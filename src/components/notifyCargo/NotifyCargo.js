@@ -4,7 +4,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { ip } from "../../env/env";
 
-const AcceptNotify = async ({notifyId, token})  => {
+const AcceptNotify = async (notifyId, token)  => {
     const requestData = {
         id: notifyId,
         firstUserStatus: "y",
@@ -19,7 +19,7 @@ const AcceptNotify = async ({notifyId, token})  => {
     });
 }
 
-const RejectNotify = async ({notifyId, token}) => {
+const RejectNotify = async (notifyId, token) => {
     const requestData = {
         id: notifyId,
         firstUserStatus: "y",

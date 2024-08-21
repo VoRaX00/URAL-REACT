@@ -2,8 +2,6 @@ import React, {SyntheticEvent, useEffect, useState} from 'react';
 import './style.css';
 
 const CargoFilters = ({filter, setFilter, name, applyFilters}) => {
-
-
     useEffect(() => {
         setFilter((prevFilter) => ({
             ...prevFilter,
