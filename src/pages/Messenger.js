@@ -22,6 +22,7 @@ const Messenger = () => {
     const [connection, setConnection] = useState(null)
 
     const getChats = useCallback(async () => {
+        setLoading(true);
         try {
             const response = await axios.get(`http://${ip}/api/Chat/Get`, {
                 headers: {
@@ -29,19 +30,20 @@ const Messenger = () => {
                 }
             });
 
-            if (response.data && response.data.items) {
-                setListChats(response.data.items);
-                console.log(response.data.items);
-            }
-            else
+            if (response.data) {
+                setListChats(response.data);
+                console.log("Chats received:", response.data);
+            } else {
                 console.log("No data received");
+            }
 
         } catch (error) {
             console.log("Error getting chats", error);
         } finally {
             setLoading(false);
         }
-    }, [token]);
+    }, [token]); // Убираем listChats из зависимостей
+
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -64,33 +66,35 @@ const Messenger = () => {
         } catch (error) {
             console.log("Error getting chats", error);
         }
-    }, [token, ip]);
+    }, [token]);
 
     useEffect(() => {
         const fetchDataAndSetSelectedChat = async () => {
             await getChats();
         };
         fetchDataAndSetSelectedChat();
-    }, [getChats, joinChat]);
+    }, [getChats]);
 
     return (
         <div className="container content-with-filters chat-container">
             {loading ? (
-                <p>Загрузка</p>
-            ) :
-                listChats.length === 0 ? (
-                    <>
-                        <div className="chat-list-container">
-                            <ListChats chats={listChats} joinChat={joinChat} />
-                        </div>
-                        <div className="chat-container">
-                            {selected? <Chat key={selected.id} chat={selected} /> : <div>Выберите чат</div>}
-                        </div>
-                    </>
-                ) : (
-                    <p>Ничего не найдено</p>
-                )
-            }
+                <p>Загрузка...</p>
+            ) : listChats.length > 0 ? ( // Изменено условие
+                <>
+                    <div className="chat-list-container">
+                        <ListChats chats={listChats} joinChat={joinChat}/>
+                    </div>
+                    <div className="chat-container">
+                        {selected ? (
+                            <Chat key={selected.id} chat={selected}/>
+                        ) : (
+                            <div>Выберите чат</div>
+                        )}
+                    </div>
+                </>
+            ) : (
+                <p>Ничего не найдено</p>
+            )}
         </div>
     );
 }

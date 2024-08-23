@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import './style.css';
 
@@ -7,6 +7,10 @@ const ListChats = ({ chats, joinChat }) => {
         e.preventDefault();
         joinChat(chatId, chatId);
     }
+
+    useEffect(() => {
+        console.log(chats)
+    })
 
     return (
         <div className="chat-list">
