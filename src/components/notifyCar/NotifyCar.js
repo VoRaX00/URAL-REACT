@@ -4,6 +4,19 @@ import axios from "axios";
 import {ip} from "../../env/env";
 import './style.css'
 
+const AddChat = async (name, notifyId, firstUserId, token) => {
+    const requestData = {
+        name: name,
+        notifyCargoId: null,
+        notifyCarId: notifyId,
+        firstUserId: firstUserId,
+    }
+
+    await axios.post(`http://${ip}/api/Chat/Add`, requestData, {
+        headers: { "Authorization": `Bearer ${token}` }
+    })
+}
+
 const AcceptNotify = async (notifyId, token) => {
     const requestData = {
         id: notifyId,
@@ -40,6 +53,7 @@ const NotifyCar = ({ notify }) => {
         e.preventDefault();
         try {
             await AcceptNotify(notify.id, token);
+            await AddChat(notify.car.name, notify.id, token);
         } catch (error) {
             console.log(error);
         }
