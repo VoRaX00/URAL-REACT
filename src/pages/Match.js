@@ -1,11 +1,12 @@
 import "../styles/css/Match.css"
-import CargoInfo from "../components/cargo/Cargo";
 import Cookies from "universal-cookie";
 import React, {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import Car from "../components/car/Car";
 import Pagination from "../components/pagination/Pagination";
 import {ip} from "../env/env";
+import MatchCargo from "../components/matchCargo/MatchCargo";
+import MatchCar from "../components/matchCar/MatchCar";
 
 const Match = () => {
     const token = new Cookies().get("jwt_authorization");
@@ -26,9 +27,9 @@ const Match = () => {
                     pageNumber: currentPageMatch,
                 }
             });
-            if (response.data && response.data.items.length > 0) {
+
+            if (response.data && response.data.items.length) {
                 setMatches(response.data.items);
-                console.log(matches)
                 setTotalMatch(response.data.totalCount);
             } else {
                 console.log("No data received");
@@ -38,7 +39,7 @@ const Match = () => {
         } finally {
             setLoading(false);
         }
-    }, [currentPageMatch, matches, token]);
+    }, [currentPageMatch, token]);
 
     useEffect(() => {
         getAllMatches();
@@ -52,10 +53,11 @@ const Match = () => {
                     { loading ? (
                         <p>Загрузка...</p>
                     ) : matches.length > 0 ? (
-                        matches.map((match, index) => (match.notifyType === 0 ? (
-                                <CargoInfo key={index} cargo={match.notification}/>
+                        matches.map((match, index) => (
+                            match.car === null ? (
+                                <MatchCargo key={index} match={match}/>
                             ) : (
-                                <Car key={index} car={match.notification}/>
+                                <MatchCar key={index} match={match}/>
                             )
                         ))) : (
                         <p>Ничего не найдено</p>

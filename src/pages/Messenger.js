@@ -29,8 +29,10 @@ const Messenger = () => {
                 }
             });
 
-            if (response.data && response.data.items)
+            if (response.data && response.data.items) {
                 setListChats(response.data.items);
+                console.log(response.data.items);
+            }
             else
                 console.log("No data received");
 

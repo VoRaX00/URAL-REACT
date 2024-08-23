@@ -36,6 +36,7 @@ const Notifications = () => {
             console.log('Error getting all cargo', error);
         } finally {
             setLoading(false);
+            console.log(notifications)
         }
     }, [token, currentPageNotify]);
 

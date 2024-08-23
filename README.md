@@ -17,11 +17,10 @@ using bootstrap5 styles.
 
 - [BSCAR-GO](http://bscar-go.ru)
 
-
 ## Developers
 
 - [Kerzhakov Nikita](https://github.com/VoRaX00)
 
 ## License
 
-Project URAL-REACT is distributed under the MIT license.
+* **Project URAL-REACT is distributed under the MIT license.**

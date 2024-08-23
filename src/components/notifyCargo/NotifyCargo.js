@@ -4,6 +4,19 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { ip } from "../../env/env";
 
+const AddChat = async (name, notifyId, firstUserId, token) => {
+    const requestData = {
+        name: name,
+        notifyCargoId: notifyId,
+        notifyCarId: null,
+        firstUserId: firstUserId,
+    }
+
+    await axios.post(`http://${ip}/api/Chat/Add`, requestData, {
+        headers: { "Authorization": `Bearer ${token}` }
+    })
+}
+
 const AcceptNotify = async (notifyId, token)  => {
     const requestData = {
         id: notifyId,
@@ -13,9 +26,8 @@ const AcceptNotify = async (notifyId, token)  => {
         secondUserComment: "",
     }
 
-    await axios.put(`http://${ip}/api/NotifyCargo/Update`, requestData, {
+    await axios.put(`http://${ip}/api/NotifyCargo/Update/${notifyId}`, requestData, {
         headers: { "Authorization": `Bearer ${token}` },
-        params: {id: notifyId}
     });
 }
 
@@ -28,10 +40,16 @@ const RejectNotify = async (notifyId, token) => {
         secondUserComment: "",
     }
 
-    await axios.put(`http://${ip}/api/NotifyCargo/Update`, requestData, {
+    await axios.put(`http://${ip}/api/NotifyCargo/Update/${notifyId}`, requestData, {
         headers: { "Authorization": `Bearer ${token}` },
-        params: {id: notifyId}
     });
+}
+
+const GetInfoNotifyCargo = async (notifyId, token) => {
+    const request = await axios.get(`http://${ip}/api/NotifyCargo/Get/${notifyId}`, {
+        headers: { "Authorization": `Bearer ${token}` },
+    })
+    return request.data
 }
 
 const NotifyCargo = ({ notify }) => {
@@ -41,7 +59,10 @@ const NotifyCargo = ({ notify }) => {
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
         try {
+            console.log(notify)
             await AcceptNotify(notify.id, token);
+            const infoNotify = await GetInfoNotifyCargo(notify.id, token);
+            await AddChat(notify.cargo.name, notify.id, infoNotify.firstUserId, token);
         } catch (err) {
             console.log(err);
         }
