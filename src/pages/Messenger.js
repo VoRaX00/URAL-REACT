@@ -22,19 +22,20 @@ const Messenger = () => {
     const [connection, setConnection] = useState(null)
 
     const getChats = useCallback(async () => {
+        setLoading(true);
         try {
-            const response = await axios.get(`http://${ip}/api/Chat/Get`, {
+            const response = await axios.get(`http://${ip}/api/Chat/GetImages`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
             });
 
-            if (response.data && response.data.items) {
-                setListChats(response.data.items);
-                console.log(response.data.items);
-            }
-            else
+            if (response.data) {
+                setListChats(response.data);
+                console.log("Chats received:", response.data);
+            } else {
                 console.log("No data received");
+            }
 
         } catch (error) {
             console.log("Error getting chats", error);
@@ -43,11 +44,12 @@ const Messenger = () => {
         }
     }, [token]);
 
+
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const chatId = parseInt(searchParams.get('chatId'));
 
-    const [selected, setSelected] = useState(null);
+    const [selectedChat, setSelectedChat] = useState(null);
 
     const joinChat = useCallback(async (chatId) => {
         let connection = new HubConnectionBuilder()
@@ -58,42 +60,51 @@ const Messenger = () => {
         try {
             const user = jwtDecode(token);
             await connection.start();
+            console.log("WebSocket connection established.");
             await connection.invoke("JoinChat", { chatId: chatId, userId: user.Id, userName: user.UserName });
 
-            setConnection(connection)
+            setConnection(connection);
         } catch (error) {
-            console.log("Error getting chats", error);
+            console.error("Error joining chat", error);
         }
     }, [token, ip]);
+
+
+    // Функция для выбора чата
+    const handleSelectChat = (chat) => {
+        setSelectedChat(chat);
+        joinChat(chat.id); // Подключаемся к чату через SignalR
+    };
 
     useEffect(() => {
         const fetchDataAndSetSelectedChat = async () => {
             await getChats();
         };
         fetchDataAndSetSelectedChat();
-    }, [getChats, joinChat]);
+    }, [getChats]);
 
     return (
-        <div className="container content-with-filters chat-container">
+        <div className="container messenger-chat-container">
             {loading ? (
-                <p>Загрузка</p>
-            ) :
-                listChats.length === 0 ? (
-                    <>
-                        <div className="chat-list-container">
-                            <ListChats chats={listChats} joinChat={joinChat} />
-                        </div>
-                        <div className="chat-container">
-                            {selected? <Chat key={selected.id} chat={selected} /> : <div>Выберите чат</div>}
-                        </div>
-                    </>
-                ) : (
-                    <p>Ничего не найдено</p>
-                )
-            }
+                <p>Загрузка...</p>
+            ) : listChats.length > 0 ? ( // Изменено условие
+                <>
+                    <div className="messenger-chat-list-container">
+                        <ListChats chats={listChats}  handleSelectChat={handleSelectChat}/>
+                    </div>
+                    <div className="messenger-chat-container">
+                        {selectedChat ? (
+                            <Chat key={selectedChat.id} chat={selectedChat}/>
+                        ) : (
+                            <div>Выберите чат</div>
+                        )}
+                    </div>
+                </>
+            ) : (
+                <p>Ничего не найдено</p>
+            )}
         </div>
     );
 }
 
 export default Messenger;
-

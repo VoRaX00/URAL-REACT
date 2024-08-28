@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Message from '../message/Message';
 import './style.css';
 
 const Chat = ({ chat }) => {
-    const [messages, setMessages] = useState(chat.messages);
+    const [messages, setMessages] = useState([]);
 
+    useEffect(() => {
+        if (chat && chat.messages) {
+            setMessages(chat.messages);
+        } else {
+            setMessages([]); // Если сообщений нет, устанавливаем пустой массив
+        }
+    }, [chat]);
+
+    // Логика для ответа на сообщение
     const handleReply = (message) => {
         console.log("Ответить на сообщение:", message);
-        // Логика для ответа на сообщение
     };
 
+    // Логика для редактирования сообщения
     const handleEdit = (index) => {
-        const newMessage = prompt("Введите новое сообщение:", messages[index].text);
+        const newMessage = prompt("Введите новое сообщение:", messages[index]?.text);
         if (newMessage !== null) {
             const updatedMessages = [...messages];
             updatedMessages[index] = { ...updatedMessages[index], text: newMessage };
@@ -19,10 +28,15 @@ const Chat = ({ chat }) => {
         }
     };
 
+    // Логика для удаления сообщения
     const handleDelete = (index) => {
         const updatedMessages = messages.filter((_, i) => i !== index);
         setMessages(updatedMessages);
     };
+
+    if (!chat) {
+        return <div>Чат не выбран</div>;
+    }
 
     return (
         <div className="chat-container">

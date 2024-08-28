@@ -1,16 +1,23 @@
-.chat-container {
+.messenger-chat-container {
     display: flex;
     height: calc(100vh - 60px);
 }
 
-.chat-list-container {
+.messenger-chat-list-container {
     width: 300px;
     border-right: 1px solid #ccc;
     overflow-y: auto;
 }
 
-.chat-container {
+.messenger-chat-container {
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
+}
+
+.messenger-wrapper {
+    display: flex;
+    flex-direction: row; /* Размещаем список чатов и чат рядом */
+    height: 100vh;
+    width: 100%;
 }
