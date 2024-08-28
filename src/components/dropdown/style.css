@@ -1,14 +1,14 @@
 .custom-dropdown .custom-dropdown-menu {
-  position: fixed; /* Меняем position на fixed */
-  top: auto; /* Меню откроется снизу */
-  right: 0; /* Прикрепляем меню к правому краю */
-  min-width: 150px; /* Ширина меню */
-  z-index: 9999; /* Чтобы меню всегда было поверх других элементов */
+  position: fixed;
+  top: auto;
+  right: 0;
+  min-width: 150px;
+  z-index: 9999;
   background: transparent;
-  background-color: white; /* Фон меню */
-  border: 1px solid #ccc; /* Граница меню */
-  border-radius: 4px; /* Скругленные углы */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Тень меню */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .custom-dropdown .dropdown__menu-list {
@@ -20,66 +20,10 @@
 .custom-dropdown .dropdown__menu-item {
   padding: 10px 15px;
   cursor: pointer;
-  text-align: left; /* Текст выравнивается по левому краю */
+  text-align: left;
 }
-
-/*.custom-dropdown .dropdown__menu-item:hover {*/
-/*  background-color: #f0f0f0; !* Цвет фона при наведении *!*/
-/*}*/
 
 .custom-dropdown-indicator-img {
-  width: 24px; /* Размер изображения */
+  width: 24px;
   height: 24px;
 }
-
-
-/*.custom-dropdown .dropdown__control {*/
-/*  border: none; !* Убирает границу *!*/
-/*  box-shadow: none; !* Убирает тень *!*/
-/*  padding: 0; !* Убирает внутренние отступы *!*/
-/*  background: transparent; !* Прозрачный фон *!*/
-/*  cursor: pointer; !* Курсор указателя *!*/
-/*  display: flex; !* Flexbox для выравнивания *!*/
-/*  align-items: center; !* Центрирование по вертикали *!*/
-/*}*/
-
-/*.custom-dropdown .dropdown__value-container {*/
-/*  padding: 0; !* Убираем отступы контейнера *!*/
-/*}*/
-
-/*.custom-dropdown .dropdown__indicators {*/
-/*  padding: 0; !* Убираем отступы индикаторов *!*/
-/*}*/
-
-/*.custom-dropdown .custom-dropdown-menu {*/
-/*  position: absolute;*/
-/*  top: 100%; !* Меню открывается под кнопкой *!*/
-/*  margin-top: 5px; !* Расстояние между кнопкой и меню *!*/
-/*  min-width: 150px; !* Ширина меню *!*/
-/*  z-index: 9999; !* Чтобы меню всегда было поверх других элементов *!*/
-/*  background-color: white; !* Фон меню *!*/
-/*  border: 1px solid #ccc; !* Граница меню *!*/
-/*  border-radius: 4px; !* Скругленные углы *!*/
-/*  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); !* Тень меню *!*/
-/*}*/
-
-/*.custom-dropdown .dropdown__menu-list {*/
-/*  padding: 0;*/
-/*  margin: 0;*/
-/*  list-style: none;*/
-/*}*/
-
-/*.custom-dropdown .dropdown__menu-item {*/
-/*  padding: 10px 15px;*/
-/*  cursor: pointer;*/
-/*  text-align: left; !* Текст выравнивается по левому краю *!*/
-/*}*/
-
-/*.custom-dropdown .dropdown__menu-item:hover {*/
-/*  background-color: #f0f0f0; !* Цвет фона при наведении *!*/
-/*}*/
-
-/*.custom-dropdown-indicator-img {*/
-/*  width: 24px; !* Размер изображения *!*/
-/*  height: 24px;*/
-/*}*/
