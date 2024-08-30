@@ -2,7 +2,6 @@ import React, {useState, useEffect, useCallback} from 'react';
 import Chat from "../components/chat/Chat";
 import "../styles/css/Messenger.css";
 import ListChats from "../components/listChats/ListChats";
-import { useLocation } from 'react-router-dom';
 import Cookies from "universal-cookie";
 import axios from "axios";
 import {ip} from "../env/env";
@@ -32,7 +31,6 @@ const Messenger = () => {
 
             if (response.data) {
                 setListChats(response.data);
-                console.log("Chats received:", response.data);
             } else {
                 console.log("No data received");
             }
@@ -45,10 +43,6 @@ const Messenger = () => {
     }, [token]);
 
 
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const chatId = parseInt(searchParams.get('chatId'));
-
     const [selectedChat, setSelectedChat] = useState(null);
 
     const joinChat = useCallback(async (chatId) => {
@@ -57,18 +51,21 @@ const Messenger = () => {
             .withAutomaticReconnect()
             .build();
 
+        // connection.on("ReceiveMessages", (userName, loadedMessages) => {
+        //         console.log("UserName:", userName);
+        //         console.log("LoadMessages:", loadedMessages);
+        //     });
+
         try {
             const user = jwtDecode(token);
             await connection.start();
             console.log("WebSocket connection established.");
             await connection.invoke("JoinChat", { chatId: chatId, userId: user.Id, userName: user.UserName });
-
             setConnection(connection);
         } catch (error) {
             console.error("Error joining chat", error);
         }
     }, [token, ip]);
-
 
     // Функция для выбора чата
     const handleSelectChat = (chat) => {
@@ -94,7 +91,7 @@ const Messenger = () => {
                     </div>
                     <div className="messenger-chat-container">
                         {selectedChat ? (
-                            <Chat key={selectedChat.id} chat={selectedChat}/>
+                            <Chat key={selectedChat.id} chat={selectedChat} connection={connection} token={token}/>
                         ) : (
                             <div>Выберите чат</div>
                         )}
