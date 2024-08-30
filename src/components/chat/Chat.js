@@ -1,21 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import Message from '../message/Message';
 import './style.css';
+import {jwtDecode} from "jwt-decode";
 
-const Chat = ({ chat }) => {
+const getUserName = async (token) => {
+    return jwtDecode(token).UserName
+}
+
+const getUserId = async (token) => {
+    return jwtDecode(token).Id
+}
+
+const Chat = ({ chat, connection, token}) => {
     const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState(""); // Состояние для отслеживания ввода нового сообщения
 
     useEffect(() => {
-        if (chat && chat.messages) {
-            setMessages(chat.messages);
-        } else {
-            setMessages([]); // Если сообщений нет, устанавливаем пустой массив
+        if (connection) {
+            console.log("connection:", connection);
+            connection.on("ReceiveMessage", (userName, message) => {
+                setMessages(prevMessages => [...prevMessages, message]);
+            });
+
+            // Обрабатываем получение предыдущих сообщений
+            connection.on("ReceiveMessages", (userName, loadedMessages) => {
+                console.log("LoadMessages:", loadedMessages);
+                setMessages(loadedMessages);
+            });
+            console.log("Messages: ", messages);
         }
-    }, [chat]);
+
+        return () => {
+            if (connection) {
+                connection.off("ReceiveMessage");
+                connection.off("ReceiveMessages");
+            }
+        };
+    }, [connection]);
 
     // Логика для ответа на сообщение
     const handleReply = (message) => {
-        console.log("Ответить на сообщение:", message);
+
     };
 
     // Логика для редактирования сообщения
@@ -38,35 +63,76 @@ const Chat = ({ chat }) => {
         return <div>Чат не выбран</div>;
     }
 
+    // Обработка ввода текста
+    const handleInputChange = (e) => {
+        setNewMessage(e.target.value);
+    };
+
+    // Отправка сообщения
+    const handleSendMessage = async () => {
+        if (newMessage.trim() === "") return;
+        console.log(chat)
+        const userId = await getUserId(token);
+        const messageToSend = {
+            userId: userId,
+            chatId: chat.id,
+            content: newMessage
+        };
+
+        try {
+            const name = await getUserName(token);
+            const requestData = {
+                UserName: name,
+                Message: messageToSend
+            }
+            await connection.invoke("SendMessage", requestData);
+            setNewMessage("");
+        } catch (error) {
+            console.error("Ошибка при отправке сообщения:", error);
+        }
+    };
+
+    if (!chat) {
+        return <div>Чат не выбран</div>;
+    }
+
     return (
         <div className="chat-container">
             <h2>{chat.name}</h2>
-            <div className="chat-messages">
-                {messages.map((message, index) => (
-                    <Message
-                        key={index}
-                        message={message} // Передаем объект сообщения целиком
-                        sender={message.sender}
-                        onReply={() => handleReply(message.text)}
-                        onEdit={() => handleEdit(index)}
-                        onDelete={() => handleDelete(index)}
-                        isSent={message.sender === 'Me'}
-                    />
-                ))}
-            </div>
-            <div className="chat-input-container">
-                <button className="attach-button">
-                    📎
-                </button>
-                <input
-                    type="text"
-                    className="chat-input"
-                    placeholder="Введите сообщение..."
-                />
-                <button className="send-button">
-                    ➤
-                </button>
-            </div>
+            {connection ? (
+                <>
+                    <div className="chat-messages">
+                        {messages.map((message, index) => (
+                            <Message
+                                key={index}
+                                message={message} // Передаем объект сообщения целиком
+                                sender={message.sender}
+                                onReply={() => handleReply(message.text)}
+                                onEdit={() => handleEdit(index)}
+                                onDelete={() => handleDelete(index)}
+                                isSent={message.sender === 'Me'}
+                            />
+                        ))}
+                    </div>
+                    <div className="chat-input-container">
+                        <button className="attach-button">
+                            📎
+                        </button>
+                        <input
+                            type="text"
+                            className="chat-input"
+                            value={newMessage}
+                            onChange={handleInputChange} // Обработчик изменения поля ввода
+                            placeholder="Введите сообщение..."
+                        />
+                        <button className="send-button" onClick={handleSendMessage}>
+                            ➤
+                        </button>
+                    </div>
+                </>
+            ) : (
+                <p>Соединение не установлено</p>
+            )}
         </div>
     );
 };
