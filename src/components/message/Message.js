@@ -2,12 +2,14 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { Dropdown, Menu } from "antd";
 import './style.css';
 
-const Message = ({ message, sender, time, read, onReply, onEdit, onDelete, isSent, onNameClick }) => {
+const Message = ({ message, currentUserId, onReply, onEdit, onDelete, onNameClick }) => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [posX, setPosX] = useState(0);
     const [posY, setPosY] = useState(0);
     const [value, setValue] = useState();
 
+    const isSent = message.userId === currentUserId; // Проверяем, чьё это сообщение
+    console.log(isSent, message.userId, currentUserId);
     const onClick = useCallback(
         ({ key }) => {
             setMenuVisible(false);
@@ -67,17 +69,17 @@ const Message = ({ message, sender, time, read, onReply, onEdit, onDelete, isSen
                 onContextMenu={handleContextMenu}
             >
                 <div className="message-bubble">
-                    <div className="sender-name" onClick={() => onNameClick(sender)}>
-                        {isSent ? 'You' : sender}
+                    <div className="sender-name" onClick={() => onNameClick(message.sender)}>
+                        {isSent ? 'You' : message.sender}
                     </div>
                     <div className="message-text">
-                        {message.text}
+                        {message.content} {/* Используем message.content для текста сообщения */}
                     </div>
                 </div>
-                <div className="message-time">
-                    {time}
-                    {read && <span className="checkmark">✓✓</span>}
-                </div>
+                {/*<div className="message-time">*/}
+                {/*    {message.sentAt} /!* Используем message.sentAt для отображения времени *!/*/}
+                {/*    {message.read && <span className="checkmark">✓✓</span>}*/}
+                {/*</div>*/}
             </div>
         </Dropdown>
     );

@@ -4,46 +4,41 @@ import './style.css';
 import {jwtDecode} from "jwt-decode";
 
 const getUserName = async (token) => {
-    return jwtDecode(token).UserName
+    return jwtDecode(token).UserName;
 }
 
 const getUserId = async (token) => {
-    return jwtDecode(token).Id
+    return jwtDecode(token).Id;
 }
 
-const Chat = ({ chat, connection, token}) => {
-    const [messages, setMessages] = useState([]);
+const Chat = ({ chat, connection, token, messages, setMessages }) => {
     const [newMessage, setNewMessage] = useState(""); // Состояние для отслеживания ввода нового сообщения
+    const [userId, setUserId] = useState(null); // Состояние для хранения userId
+
+    useEffect(() => {
+        const fetchUserId = async () => {
+            const id = await getUserId(token);
+            setUserId(id);
+        };
+        fetchUserId();
+    }, [token]);
 
     useEffect(() => {
         if (connection) {
-            console.log("connection:", connection);
             connection.on("ReceiveMessage", (userName, message) => {
                 setMessages(prevMessages => [...prevMessages, message]);
             });
 
-            // Обрабатываем получение предыдущих сообщений
-            connection.on("ReceiveMessages", (userName, loadedMessages) => {
-                console.log("LoadMessages:", loadedMessages);
-                setMessages(loadedMessages);
-            });
-            console.log("Messages: ", messages);
-        }
-
-        return () => {
-            if (connection) {
+            return () => {
                 connection.off("ReceiveMessage");
-                connection.off("ReceiveMessages");
-            }
-        };
-    }, [connection]);
+            };
+        }
+    }, [connection, setMessages]);
 
-    // Логика для ответа на сообщение
     const handleReply = (message) => {
-
+        // Логика для ответа на сообщение
     };
 
-    // Логика для редактирования сообщения
     const handleEdit = (index) => {
         const newMessage = prompt("Введите новое сообщение:", messages[index]?.text);
         if (newMessage !== null) {
@@ -53,7 +48,6 @@ const Chat = ({ chat, connection, token}) => {
         }
     };
 
-    // Логика для удаления сообщения
     const handleDelete = (index) => {
         const updatedMessages = messages.filter((_, i) => i !== index);
         setMessages(updatedMessages);
@@ -63,18 +57,15 @@ const Chat = ({ chat, connection, token}) => {
         return <div>Чат не выбран</div>;
     }
 
-    // Обработка ввода текста
     const handleInputChange = (e) => {
         setNewMessage(e.target.value);
     };
 
-    // Отправка сообщения
     const handleSendMessage = async () => {
         if (newMessage.trim() === "") return;
-        console.log(chat)
-        const userId = await getUserId(token);
+
         const messageToSend = {
-            userId: userId,
+            userId: userId, // Используем userId из состояния
             chatId: chat.id,
             content: newMessage
         };
@@ -84,7 +75,7 @@ const Chat = ({ chat, connection, token}) => {
             const requestData = {
                 UserName: name,
                 Message: messageToSend
-            }
+            };
             await connection.invoke("SendMessage", requestData);
             setNewMessage("");
         } catch (error) {
@@ -92,8 +83,9 @@ const Chat = ({ chat, connection, token}) => {
         }
     };
 
-    if (!chat) {
-        return <div>Чат не выбран</div>;
+
+    if (!userId) {
+        return <div>Загрузка...</div>; // Показываем загрузку, пока userId не получен
     }
 
     return (
@@ -106,11 +98,10 @@ const Chat = ({ chat, connection, token}) => {
                             <Message
                                 key={index}
                                 message={message} // Передаем объект сообщения целиком
-                                sender={message.sender}
+                                currentUserId={userId} // Передаем userId в Message компонент
                                 onReply={() => handleReply(message.text)}
                                 onEdit={() => handleEdit(index)}
                                 onDelete={() => handleDelete(index)}
-                                isSent={message.sender === 'Me'}
                             />
                         ))}
                     </div>
