@@ -36,7 +36,7 @@ const Chat = ({ chat, connection, token, messages, setMessages }) => {
     }, [connection, setMessages]);
 
     const handleReply = (message) => {
-        // Логика для ответа на сообщение
+
     };
 
     const handleEdit = (index) => {
@@ -65,7 +65,7 @@ const Chat = ({ chat, connection, token, messages, setMessages }) => {
         if (newMessage.trim() === "") return;
 
         const messageToSend = {
-            userId: userId, // Используем userId из состояния
+            userId: userId,
             chatId: chat.id,
             content: newMessage
         };
@@ -85,7 +85,7 @@ const Chat = ({ chat, connection, token, messages, setMessages }) => {
 
 
     if (!userId) {
-        return <div>Загрузка...</div>; // Показываем загрузку, пока userId не получен
+        return <div>Загрузка...</div>;
     }
 
     return (
@@ -97,8 +97,8 @@ const Chat = ({ chat, connection, token, messages, setMessages }) => {
                         {messages.map((message, index) => (
                             <Message
                                 key={index}
-                                message={message} // Передаем объект сообщения целиком
-                                currentUserId={userId} // Передаем userId в Message компонент
+                                message={message}
+                                currentUserId={userId}
                                 onReply={() => handleReply(message.text)}
                                 onEdit={() => handleEdit(index)}
                                 onDelete={() => handleDelete(index)}
@@ -113,7 +113,7 @@ const Chat = ({ chat, connection, token, messages, setMessages }) => {
                             type="text"
                             className="chat-input"
                             value={newMessage}
-                            onChange={handleInputChange} // Обработчик изменения поля ввода
+                            onChange={handleInputChange}
                             placeholder="Введите сообщение..."
                         />
                         <button className="send-button" onClick={handleSendMessage}>

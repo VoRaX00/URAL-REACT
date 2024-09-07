@@ -70,7 +70,7 @@ const Message = ({ message, currentUserId, onReply, onEdit, onDelete, onNameClic
             >
                 <div className="message-bubble">
                     <div className="sender-name" onClick={() => onNameClick(message.sender)}>
-                        {isSent ? 'You' : message.sender}
+                        {isSent ? 'You' : message.userName}
                     </div>
                     <div className="message-text">
                         {message.content} {/* Используем message.content для текста сообщения */}
