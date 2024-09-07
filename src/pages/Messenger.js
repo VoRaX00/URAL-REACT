@@ -19,6 +19,7 @@ const Messenger = () => {
     const [listChats, setListChats] = useState([]);
     const [loading, setLoading] = useState(false);
     const [connection, setConnection] = useState(null)
+    const [messages, setMessages] = useState([]);
 
     const getChats = useCallback(async () => {
         setLoading(true);
@@ -51,10 +52,16 @@ const Messenger = () => {
             .withAutomaticReconnect()
             .build();
 
-        // connection.on("ReceiveMessages", (userName, loadedMessages) => {
-        //         console.log("UserName:", userName);
-        //         console.log("LoadMessages:", loadedMessages);
-        //     });
+        connection.on("ReceiveMessages", (userName, loadedMessages) => {
+                console.log("UserName:", userName);
+                console.log("LoadMessages:", loadedMessages);
+                setMessages(loadedMessages.items);
+            });
+
+        connection.on("ReceiveMessage", (userName, message) => {
+            console.log("New message received:", message);
+            setMessages(prevMessages => [...prevMessages, message]);
+        });
 
         try {
             const user = jwtDecode(token);
@@ -91,7 +98,13 @@ const Messenger = () => {
                     </div>
                     <div className="messenger-chat-container">
                         {selectedChat ? (
-                            <Chat key={selectedChat.id} chat={selectedChat} connection={connection} token={token}/>
+                            <Chat
+                                key={selectedChat.id}
+                                chat={selectedChat}
+                                connection={connection}
+                                token={token}
+                                messages={messages}
+                                setMessages={setMessages}/>
                         ) : (
                             <div>Выберите чат</div>
                         )}
