@@ -9,12 +9,6 @@ import {HubConnectionBuilder} from "@microsoft/signalr";
 import {jwtDecode} from "jwt-decode";
 
 const Messenger = () => {
-    // const chats = [
-    //     { id: 1, name: 'Chat 1', lastMessage: 'How are you?', messages: [{ text: 'Hello', sender: 'Name_sender' }, { text: 'How are you?', sender: 'Me' }], avatar: 'https://via.placeholder.com/50' },
-    //     { id: 2, name: 'Chat 2', lastMessage: 'What’s up?', messages: [{ text: 'Hi!', sender: 'Name_sender' }, { text: 'What’s up?', sender: 'Name_sender' }], avatar: 'https://via.placeholder.com/50' },
-    //     { id: 3, name: 'Chat 3', lastMessage: 'Good morning!', messages: [{ text: 'Hey!', sender: 'Name_sender' }, { text: 'Good morning!', sender: "Name_sender" }], avatar: 'https://via.placeholder.com/50' },
-    // ];
-
     const token = new Cookies().get("jwt_authorization");
     const [listChats, setListChats] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -51,11 +45,6 @@ const Messenger = () => {
             .withAutomaticReconnect()
             .build();
 
-        // connection.on("ReceiveMessages", (userName, loadedMessages) => {
-        //         console.log("UserName:", userName);
-        //         console.log("LoadMessages:", loadedMessages);
-        //     });
-
         try {
             const user = jwtDecode(token);
             await connection.start();
@@ -67,10 +56,9 @@ const Messenger = () => {
         }
     }, [token, ip]);
 
-    // Функция для выбора чата
     const handleSelectChat = (chat) => {
         setSelectedChat(chat);
-        joinChat(chat.id); // Подключаемся к чату через SignalR
+        joinChat(chat.id);
     };
 
     useEffect(() => {

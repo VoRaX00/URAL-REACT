@@ -52,7 +52,7 @@ const Login = () => {
                 </div>
                 <div className="d-flex flex-column align-items-center">
                     <button type="submit" className="btn btn-dark mb-3 login__form-text">Войти</button>
-                    <NavLink to={"/registration"} className="register-link login__form-text">Зарегистрироваться</NavLink>
+                    <NavLink to="/registration" className="register-link login__form-text">Зарегистрироваться</NavLink>
                 </div>
             </form>
         </div>

@@ -13,7 +13,7 @@ const getUserId = async (token) => {
 
 const Chat = ({ chat, connection, token}) => {
     const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState(""); // Состояние для отслеживания ввода нового сообщения
+    const [newMessage, setNewMessage] = useState("");
 
     useEffect(() => {
         if (connection) {
@@ -22,7 +22,6 @@ const Chat = ({ chat, connection, token}) => {
                 setMessages(prevMessages => [...prevMessages, message]);
             });
 
-            // Обрабатываем получение предыдущих сообщений
             connection.on("ReceiveMessages", (userName, loadedMessages) => {
                 console.log("LoadMessages:", loadedMessages);
                 setMessages(loadedMessages);
@@ -38,12 +37,10 @@ const Chat = ({ chat, connection, token}) => {
         };
     }, [connection]);
 
-    // Логика для ответа на сообщение
     const handleReply = (message) => {
 
     };
 
-    // Логика для редактирования сообщения
     const handleEdit = (index) => {
         const newMessage = prompt("Введите новое сообщение:", messages[index]?.text);
         if (newMessage !== null) {

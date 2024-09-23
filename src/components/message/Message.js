@@ -18,9 +18,6 @@ const Message = ({ message, sender, time, read, onReply, onEdit, onDelete, isSen
                 case "2":
                     onEdit(value);
                     break;
-                case "3":
-                    onDelete(value);
-                    break;
                 default:
                     break;
             }
@@ -38,10 +35,6 @@ const Message = ({ message, sender, time, read, onReply, onEdit, onDelete, isSen
                 key: "2",
                 label: "Изменить"
             },
-            {
-                key: "3",
-                label: "Удалить"
-            }
         ]} />
     ), [onClick]);
 
@@ -68,7 +61,7 @@ const Message = ({ message, sender, time, read, onReply, onEdit, onDelete, isSen
             >
                 <div className="message-bubble">
                     <div className="sender-name" onClick={() => onNameClick(sender)}>
-                        {isSent ? 'You' : sender}
+                        {isSent ? 'Вы' : sender}
                     </div>
                     <div className="message-text">
                         {message.text}

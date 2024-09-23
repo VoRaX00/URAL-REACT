@@ -125,7 +125,7 @@ const AddCar = () => {
         whereTo: "",
         readyFrom: '',
         readyTo: '',
-        phone: parseInt(object.PhoneNumber),
+        phoneNumber: parseInt(object.PhoneNumber),
         comment: "",
         bodyTypes: [],
         loadingTypes: [],
@@ -143,7 +143,7 @@ const AddCar = () => {
     const handlePhoneChange = (value) => {
         setCar(prevCar => ({
             ...prevCar,
-            phone: Number(value)
+            phoneNumber: value
         }));
     };
 
@@ -261,7 +261,7 @@ const AddCar = () => {
                     </div>
                 </div>
                 <div className="mb-3">
-                    <Phone phone={car.phone} onChange={handlePhoneChange}/>
+                    <Phone phone={car.phoneNumber} onChange={(value) => setCar({...car, phoneNumber: value })} />
                 </div>
                 <div className="mb-3">
                     <label className="carAdd__form-text" htmlFor="comment">Комментарий:</label>
