@@ -16,6 +16,11 @@ const Registration = () => {
         e.preventDefault();
         try {
             console.log(ip)
+            if (phone[0] === '+'){
+                setPhone(phone.slice(1));
+                return
+            }
+
             const response = await fetch(`http://${ip}/api/User/Register`, {
                 method: "POST",
                 headers: {

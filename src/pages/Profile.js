@@ -123,7 +123,7 @@ const Profile = () => {
                     <div className="media-body va-m">
                         <h2 className="media-heading">{user.userName}</h2>
                         <div className="media-body va-m">
-                            <NavLink className="btn profile__btn" to={"/edit-profile"}>Редактировать профиль</NavLink>
+                            <NavLink className="btn profile__btn" to="/edit-profile">Редактировать профиль</NavLink>
                             <br />
                         </div>
                     </div>
