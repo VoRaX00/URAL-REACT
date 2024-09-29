@@ -1,10 +1,12 @@
-import React, { SyntheticEvent, useState } from 'react';
+import React, {SyntheticEvent, useEffect, useState} from 'react';
 import './../styles/css/AddCargo.css';
 import { Navigate } from "react-router-dom";
 import Phone from "../components/phone/Phone";
 import Cookies from "universal-cookie";
 import {jwtDecode} from "jwt-decode";
 import {ip} from "../env/env";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 
 
 const AddCargo = () => {
@@ -67,6 +69,18 @@ const AddCargo = () => {
             console.log(error);
         }
     };
+
+    useEffect(() => {
+        flatpickr("#loadingDate", {
+            dateFormat: "d.m.Y",
+            minDate: date,
+        });
+
+        flatpickr("#unloadingDate", {
+            dateFormat: "d.m.Y",
+            minDate: date,
+        });
+    }, []);
 
     if (redirect)
         return <Navigate to={"/cargo"} />

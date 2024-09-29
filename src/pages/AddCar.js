@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from "react";
+import React, {SyntheticEvent, useEffect, useState} from "react";
 import SelectBody from "../components/selectBody/SelectBody";
 import SelectLoading from "../components/selectLoading/SelectLoading";
 import "./../styles/css/AddCar.css";
@@ -7,6 +7,8 @@ import { Navigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode";
 import Cookies from "universal-cookie";
 import {ip} from "../env/env"
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 
 const bodyTypesMap = {
   'тентовый': 1,
@@ -154,6 +156,18 @@ const AddCar = () => {
     const date = curr.toISOString().substring(0, 10);
     curr.setDate(curr.getDate() + 1);
 
+    useEffect(() => {
+        flatpickr("#readyFrom", {
+            dateFormat: "d.m.Y",
+            minDate: date,
+        });
+
+        flatpickr("#readyTo", {
+            dateFormat: "d.m.Y",
+            minDate: date,
+        });
+    }, [date]);
+
     const submit = async (e: SyntheticEvent) => {
         try {
             e.preventDefault();
@@ -170,8 +184,7 @@ const AddCar = () => {
             } else {
                 throw "Не удалось выполнить запрос"
             }
-        }
-        catch (error){
+        } catch (error) {
             console.log(error)
         }
     }
@@ -249,19 +262,19 @@ const AddCar = () => {
                 <div className="mb-3 row">
                     <div className="col-md-6">
                         <label className="cargoAdd__form-text" htmlFor="readyFrom">Готовность с:</label>
-                        <input type="date" min={date} className="form-control" id="readyFrom" name="readyFrom"
+                        <input type="text" min={date} className="form-control" id="readyFrom" name="readyFrom"
                                required
                                onChange={handleInputChange}/>
                     </div>
                     <div className="col-md-6">
                         <label className="cargoAdd__form-text" htmlFor="readyTo">Готовность по:</label>
-                        <input type="date" min={date} className="form-control" id="readyTo" name="readyTo"
+                        <input type="text" min={date} className="form-control" id="readyTo" name="readyTo"
                                required
                                onChange={handleInputChange}/>
                     </div>
                 </div>
                 <div className="mb-3">
-                    <Phone phone={car.phoneNumber} onChange={(value) => setCar({...car, phoneNumber: value })} />
+                    <Phone value={car.phoneNumber} onChange={handlePhoneChange} />
                 </div>
                 <div className="mb-3">
                     <label className="carAdd__form-text" htmlFor="comment">Комментарий:</label>

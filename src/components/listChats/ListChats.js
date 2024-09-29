@@ -1,5 +1,5 @@
 import React from 'react';
-import userImg from "../img/default.png";
+import userImg from "../../img/default.png";
 import './style.css';
 
 const ListChats = ({ chats, handleSelectChat }) => {
